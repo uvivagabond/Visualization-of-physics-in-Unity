@@ -28,7 +28,7 @@ public class PhysXSphereCast : MonoBehaviour
 	{
 		GizmosForPhysics3D.DrawSphereCast (hittedBySphere: hittedBySphere, origin: origin, radius: radius, direction: direction, maxDistance: maxDistance);
 		GizmosForPhysics3D.DrawSphereCast (hittedBySphere: hittedBySphere, ray: ray, radius: radius, maxDistance: maxDistance);
-		GizmosForPhysics3D.DrawSphereCastAll (hittedBySphere: hittedBySphereTab, origin: origin, radius: radius, direction: direction, maxDistance: maxDistance);
+		GizmosForPhysics3D.DrawSphereCastAll (origin: origin, radius: radius, direction: direction, maxDistance: maxDistance);
 		GizmosForPhysics3D.DrawSphereCastAll (hittedBySphere: hittedBySphereTab, ray: ray, radius: radius, maxDistance: maxDistance);
 
 		

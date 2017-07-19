@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Security.AccessControl;
 
 public static class GizmosForPhysics3D
 {
@@ -22,12 +21,235 @@ public static class GizmosForPhysics3D
 	static Color nonOverlappedColorY = Color.yellow;
 	const int AdditionalDots = 0;
 	const int DefaultSign = 1;
-
 	const bool isDotted = false;
 
 	#endregion
 
-	#region RAYCASTING3D
+	#region RAYCASTING QUERIES
+
+	#region Raycast3D
+
+	public static void DrawRaycast (Vector3 origin, Vector3 direction, float maxDistance = Mathf.Infinity
+		, int layerMask = Physics.DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal)
+	{
+		bool isHit = Physics.Raycast (origin, direction, maxDistance, layerMask, queryTriggerInteraction);
+		DrawRaycast3DRaw (origin, direction, maxDistance, isHit);
+	}
+
+	public static void DrawRaycast (Ray ray, float maxDistance = Mathf.Infinity
+		, int layerMask = Physics.DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal)
+	{
+		DrawRaycast (ray.origin, ray.direction, maxDistance, layerMask, queryTriggerInteraction);
+	}
+
+	public static void DrawRaycastAll (Vector3 origin, Vector3 direction, float maxDistance = Mathf.Infinity
+		, int layerMask = Physics.DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal)
+	{
+		DrawRaycast (origin, direction, maxDistance, layerMask, queryTriggerInteraction);
+	}
+
+	public static void DrawRaycastAll (Ray ray, float maxDistance = Mathf.Infinity
+		, int layerMask = Physics.DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal)
+	{
+		DrawRaycast (ray.origin, ray.direction, maxDistance, layerMask, queryTriggerInteraction);
+	}
+
+	public static void DrawRaycastNonAlloc (Vector3 origin, Vector3 direction, float maxDistance = Mathf.Infinity
+		, int layerMask = Physics.DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal)
+	{
+		DrawRaycast (origin, direction, maxDistance, layerMask, queryTriggerInteraction);
+
+	}
+
+	public static void DrawRaycastNonAlloc (Ray ray, float maxDistance = Mathf.Infinity
+		, int layerMask = Physics.DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal)
+	{
+		DrawRaycast (ray.origin, ray.direction, maxDistance, layerMask, queryTriggerInteraction);
+	}
+
+	public static void DrawRaycastNonAlloc (int hitColliderCount, Vector3 origin, Vector3 direction, float maxDistance = Mathf.Infinity)
+	{
+		bool isHit = (hitColliderCount > 0);	
+		DrawRaycast3DRaw (origin, direction, maxDistance, isHit);
+	}
+
+	public static void DrawRaycastNonAlloc (int hitColliderCount, Ray ray, float maxDistance = Mathf.Infinity)
+	{
+		bool isHit = (hitColliderCount > 0);	
+		DrawRaycast3DRaw (ray.origin, ray.direction, maxDistance, isHit);
+	}
+
+
+	public static void DrawRaycast (bool isHit, Vector3 origin, Vector3 direction, float maxDistance = Mathf.Infinity)
+	{
+		DrawRaycast3DRaw (origin, direction, maxDistance, isHit);
+	}
+
+	public static void DrawRaycast (bool isHit, Ray ray, float maxDistance = Mathf.Infinity)
+	{
+		DrawRaycast3DRaw (ray.origin, ray.direction, maxDistance, isHit);
+	}
+
+	public static void DrawRaycast (RaycastHit hitByRay, Vector3 origin, Vector3 direction, float maxDistance = Mathf.Infinity)
+	{
+		bool isHit = hitByRay.collider != null;
+		DrawRaycast3DRaw (origin, direction, maxDistance, isHit);
+	}
+
+	public static void DrawRaycast (RaycastHit hitByRay, Ray ray, float maxDistance = Mathf.Infinity)
+	{
+		bool isHit = hitByRay.collider != null;
+		DrawRaycast3DRaw (ray.origin, ray.direction, maxDistance, isHit);
+	}
+
+	public static void DrawRaycastAll (RaycastHit[] hitByRay, Ray ray, float maxDistance = Mathf.Infinity)
+	{
+		bool isHit = (hitByRay != null && hitByRay.Length > 0);
+		DrawRaycast3DRaw (ray.origin, ray.direction, maxDistance, isHit);
+	}
+
+	public static void DrawRaycastAll (RaycastHit[] hitByRay, Vector3 origin, Vector3 direction, float maxDistance = Mathf.Infinity)
+	{
+		bool isHit = (hitByRay != null && hitByRay.Length > 0);
+		DrawRaycast3DRaw (origin, direction, maxDistance, isHit);
+	}
+
+	static void DrawRaycast3DRaw (Vector3 origin, Vector3 direction, float maxDistance, bool isHit)
+	{		
+		Gizmos.color = (isHit) ? hitColorR : nonHitColorB;
+		direction = direction.normalized;
+		direction = (maxDistance == Mathf.Infinity) ? direction * 100000f : direction;
+		Gizmos.DrawRay (origin, direction * maxDistance);
+		Gizmos.DrawSphere (origin, 0.05f);
+		Gizmos.color = Color.white;	
+	}
+
+	#endregion
+
+	#region Linecast3D
+
+	public static void DrawLineCast (Vector3 start, Vector3 end
+		, int layerMask = Physics.DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal)
+	{
+		bool isHit = Physics.Linecast (start, end, layerMask, queryTriggerInteraction);
+		DrawLineCast3DRaw (start, end, isHit);
+	}
+
+	public static void DrawLineCast (bool isHit, Vector3 start, Vector3 end
+		, int layerMask = Physics.DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal)
+	{
+		DrawLineCast3DRaw (start, end, isHit);
+	}
+
+	public static void DrawLineCast (RaycastHit hittedByLine, Vector3 start, Vector3 end
+	)
+	{
+		bool isHit = hittedByLine.collider != null;
+		DrawLineCast3DRaw (start, end, isHit);
+	}
+
+	static void DrawLineCast3DRaw (Vector3 start, Vector3 end, bool isHit)
+	{
+		Gizmos.color = (isHit) ? hitColorR : nonHitColorB;
+		Gizmos.DrawLine (start, end);
+		Gizmos.DrawSphere (start, 0.05f);
+		Gizmos.DrawSphere (end, 0.05f);
+	}
+
+	#endregion
+
+	#endregion
+
+	#region OVERLAPPING QUERIES
+
+	#region Overlap Box 3D
+
+	static void DrawOverlapBoxRaw3D (Vector3 center, Vector3 halfExtents, Quaternion orientation, bool isOverlaped)
+	{
+		Gizmos.matrix = Matrix4x4.TRS (center, orientation, Vector3.one);
+		Gizmos.color = (isOverlaped) ? overlappedColorR : nonHitColorB;
+		Gizmos.DrawWireCube (Vector3.zero, 2f * halfExtents * 0.95f);
+		Gizmos.color = (isOverlaped) ? overlappedColorR : nonOverlappedColorY;
+		Gizmos.DrawWireCube (Vector3.zero, 2f * halfExtents);
+		Gizmos.matrix = Matrix4x4.identity;
+	}
+
+	public 	static	void DrawOverlapBox (Collider[] overlapedColliders, Vector3 center, Vector3 halfExtents, Quaternion orientation = default(Quaternion))
+	{
+		bool isOverlaped = (overlapedColliders != null && overlapedColliders.Length > 0);
+		Gizmos.color = (isOverlaped) ? overlappedColorR : nonHitColorB;
+		DrawOverlapBoxRaw3D (center, halfExtents, orientation, isOverlaped);
+		Gizmos.color = (isOverlaped) ? overlappedColorR : nonOverlappedColorY;
+		DrawOverlapBoxRaw3D (center, halfExtents, orientation, isOverlaped);
+
+	}
+
+	public 	static	void DrawCheckBox (bool isOverlaped, Vector3 center, Vector3 halfExtents, Quaternion orientation = default(Quaternion))
+	{
+		Gizmos.color = (isOverlaped) ? overlappedColorR : nonHitColorB;
+		DrawOverlapBoxRaw3D (center, halfExtents, orientation, isOverlaped);
+		Gizmos.color = (isOverlaped) ? overlappedColorR : nonOverlappedColorY;
+		DrawOverlapBoxRaw3D (center, halfExtents, orientation, isOverlaped);
+
+	}
+
+	#endregion
+
+	#region OverLap Capsule 3D
+
+	static void DrawCapsule3D (Vector3 point1, Vector3 point2, float radius)
+	{
+		Vector3 origin = (point1 - point2) / 2 + point1;
+		Gizmos.matrix = Matrix4x4.TRS (origin, Quaternion.identity, new Vector3 (radius, radius, radius));
+		DrawHemispheresOfCapsule (point1, point2, radius);
+		Gizmos.matrix = Matrix4x4.identity;
+		DrawLineConnectingHS (point1, point2, radius);
+	}
+
+	public 	static	void DrawOverlapCapsule (Collider[] overlapedColliders, Vector3 point0, Vector3 point1, float radius)
+	{
+		bool isOverlaped = (overlapedColliders != null && overlapedColliders.Length > 0);
+		Gizmos.color = (isOverlaped) ? overlappedColorR : nonOverlappedColorY;
+		DrawCapsule3D (point0, point1, radius);
+	}
+
+	public 	static	void DrawCheckCapsule (bool isOverlaped, Vector3 start, Vector3 end, float radius)
+	{
+		Gizmos.color = (isOverlaped) ? overlappedColorR : nonOverlappedColorY;
+		DrawCapsule3D (start, end, radius);
+	}
+
+	#endregion
+
+	#region Overlap Sphere 3D
+
+	static void DrawOverlapSphere3DRaw (Vector3 position, float radius, bool isOverlaped)
+	{
+		Gizmos.color = (isOverlaped) ? overlappedColorR : nonOverlappedColorY;
+		Gizmos.matrix = Matrix4x4.TRS (position, Quaternion.identity, new Vector3 (1, 1, 1));
+		DrawHemiSphere (Vector3.zero, radius, Vector3.up);
+		DrawHemiSphere (Vector3.zero, radius, Vector3.down);
+		Gizmos.matrix = Matrix4x4.identity;
+	}
+
+
+	public 	static	void DrawOverlapSphere (Collider[] overlapedColliders, Vector3 position, float radius)
+	{
+		bool isOverlaped = (overlapedColliders != null && overlapedColliders.Length > 0);
+		DrawOverlapSphere3DRaw (position, radius, isOverlaped);	
+	}
+
+	public 	static	void DrawCheckSphere (bool isOverlaped, Vector3 position, float radius)
+	{
+		DrawOverlapSphere3DRaw (position, radius, isOverlaped);	
+	}
+
+	#endregion
+
+	#endregion
+
+
+	#region SWEEP QUERIES
 
 	#region BoxCast3D
 
@@ -89,182 +311,91 @@ public static class GizmosForPhysics3D
 		Gizmos.matrix = Matrix4x4.identity;
 	}
 
-	public static void DrawBoxCast (Vector3 center, Vector3 halfExtents, Vector3 direction, Quaternion orientation = default(Quaternion), float maxDistance = Mathf.Infinity)
+	public static void DrawBoxCast (Vector3 center, Vector3 halfExtents, Vector3 direction, Quaternion orientation = default(Quaternion), float maxDistance = Mathf.Infinity
+		, int layerMask = Physics.DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal)
 	{
-		bool isHit = Physics.BoxCast (center, halfExtents, direction, orientation, maxDistance);
+		bool isHit = Physics.BoxCast (center, halfExtents, direction, orientation, maxDistance, layerMask, queryTriggerInteraction);
 		DrawBoxCast3DRaw (center, halfExtents, direction, orientation, maxDistance, isHit);
 	}
 
-	public static void DrawBoxCast (RaycastHit hittedByBox, Vector3 center, Vector3 halfExtents, Vector3 direction, Quaternion orientation = default(Quaternion), float maxDistance = Mathf.Infinity)
+	public static void DrawBoxCast (RaycastHit hitByBox, Vector3 center, Vector3 halfExtents, Vector3 direction, Quaternion orientation = default(Quaternion), float maxDistance = Mathf.Infinity)
 	{
-		bool isHit = hittedByBox.collider != null;
+		bool isHit = hitByBox.collider != null;
 		DrawBoxCast3DRaw (center, halfExtents, direction, orientation, maxDistance, isHit);
 	}
 
-	public static void DrawBoxCastAll (RaycastHit[] hittedByBox, Vector3 center, Vector3 halfExtents, Vector3 direction, Quaternion orientation = default(Quaternion), float maxDistance = Mathf.Infinity)
+	public static void DrawBoxCast (bool isHit, Vector3 center, Vector3 halfExtents, Vector3 direction, Quaternion orientation = default(Quaternion), float maxDistance = Mathf.Infinity)
 	{
-		bool isHit = (hittedByBox != null && hittedByBox.Length > 0);
 		DrawBoxCast3DRaw (center, halfExtents, direction, orientation, maxDistance, isHit);
 	}
 
-	#endregion
-
-	#region Raycast3D
-
-	static void DrawRaycast3DRaw (Vector3 origin, Vector3 direction, float maxDistance, bool isHit)
-	{		
-		Gizmos.color = (isHit) ? hitColorR : nonHitColorB;
-		direction = direction.normalized;
-		direction = (maxDistance == Mathf.Infinity) ? direction * 100000f : direction;
-		Gizmos.DrawRay (origin, direction * maxDistance);
-		Gizmos.DrawSphere (origin, 0.05f);
-		Gizmos.color = Color.white;	
+	public static void DrawBoxCastAll (Vector3 center, Vector3 halfExtents, Vector3 direction, Quaternion orientation = default(Quaternion), float maxDistance = Mathf.Infinity
+		, int layerMask = Physics.DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal)
+	{
+		DrawBoxCast (center, halfExtents, direction, orientation, maxDistance, layerMask, queryTriggerInteraction);
 	}
 
-
-	public static void DrawRaycast (RaycastHit hittedByRay, Vector3 origin, Vector3 direction, float maxDistance = Mathf.Infinity)
+	public static void DrawBoxCastAll (RaycastHit[] hitByBox, Vector3 center, Vector3 halfExtents, Vector3 direction, Quaternion orientation = default(Quaternion), float maxDistance = Mathf.Infinity)
 	{
-		bool isHit = hittedByRay.collider != null;
-		DrawRaycast3DRaw (origin, direction, maxDistance, isHit);
+		bool isHit = (hitByBox != null && hitByBox.Length > 0);
+		DrawBoxCast3DRaw (center, halfExtents, direction, orientation, maxDistance, isHit);
 	}
 
-	public static void DrawRaycast (RaycastHit hittedByRay, Ray ray, float maxDistance = Mathf.Infinity)
+	public static void DrawBoxCastNonAlloc (Vector3 center, Vector3 halfExtents, Vector3 direction, Quaternion orientation = default(Quaternion), float maxDistance = Mathf.Infinity
+		, int layerMask = Physics.DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal)
 	{
-		bool isHit = hittedByRay.collider != null;
-		DrawRaycast3DRaw (ray.origin, ray.direction, maxDistance, isHit);
+		DrawBoxCast (center, halfExtents, direction, orientation, maxDistance, layerMask, queryTriggerInteraction);
 	}
 
-	public static void DrawRaycastAll (RaycastHit[] hittedByRay, Ray ray, float maxDistance = Mathf.Infinity)
+	public static void DrawBoxCastNonAlloc (int hitColliderCount, Vector3 center, Vector3 halfExtents, Vector3 direction, Quaternion orientation = default(Quaternion), float maxDistance = Mathf.Infinity)
 	{
-		bool isHit = (hittedByRay != null && hittedByRay.Length > 0);
-		DrawRaycast3DRaw (ray.origin, ray.direction, maxDistance, isHit);
-	}
-
-	public static void DrawRaycastAll (RaycastHit[] hittedByRay, Vector3 origin, Vector3 direction, float maxDistance = Mathf.Infinity)
-	{
-		bool isHit = (hittedByRay != null && hittedByRay.Length > 0);
-		DrawRaycast3DRaw (origin, direction, maxDistance, isHit);
-	}
-
-	#endregion
-
-	#region Linecast3D
-
-	public static void DrawLineCast (RaycastHit hittedByLine, Vector3 start, Vector3 end)
-	{
-		bool isHit = hittedByLine.collider != null;
-		DrawLineCast3DRaw (start, end, isHit);
-	}
-
-	static void DrawLineCast3DRaw (Vector3 start, Vector3 end, bool isHit)
-	{
-		Gizmos.color = (isHit) ? hitColorR : nonHitColorB;
-		Gizmos.DrawLine (start, end);
-		Gizmos.DrawSphere (start, 0.05f);
-		Gizmos.DrawSphere (end, 0.05f);
-	}
-
-	#endregion
-
-	#region SphereCast3D
-
-	static void FindSphereAndCapsuleMesh ()
-	{
-		if (sphereMesh == null) {
-			sphereMesh = Resources.GetBuiltinResource (typeof(Mesh), "Sphere.fbx") as Mesh; 
-		}
-	}
-
-	static void DrawSphereCast3DRaw (Vector3 origin, float radius, Vector3 direction, float maxDistance, bool isHit)
-	{
-		direction = direction.normalized;
-		FindSphereAndCapsuleMesh ();
-		direction = direction.normalized;
-		Vector3 endPositionOfSphere = direction.normalized * (maxDistance - 0) + origin;
-		Vector3 tangentToDirection = Vector3.zero;
-		Vector3.OrthoNormalize (ref direction, ref tangentToDirection);
-		Vector3 tangendOffset = tangentToDirection * radius;	
-
-		#region Drawing SphereCast3D
-		Gizmos.color = (isHit) ? hitColorO : nonHitColorB;
-		Gizmos.matrix = Matrix4x4.identity;
-		Gizmos.matrix = Matrix4x4.TRS (endPositionOfSphere, Quaternion.identity, new Vector3 (radius, radius, radius));
-		Gizmos.DrawWireMesh (sphereMesh);
-		Gizmos.color = (isHit) ? hitColorR : nonHitColorBaseG;
-		Gizmos.matrix = Matrix4x4.TRS (origin, Quaternion.identity, new Vector3 (radius, radius, radius));
-		Gizmos.DrawWireMesh (sphereMesh);
-		Gizmos.matrix = Matrix4x4.identity;
-		#endregion
-		if (radius == 0) {
-			Gizmos.DrawSphere (origin, 0.05f);
-		}
-		#region Draw sphere connecting lines
-		Gizmos.matrix = Matrix4x4.TRS (origin, Quaternion.identity, Vector3.one);
-		Vector3 basePositionOfLine = tangendOffset;
-		Vector3 endPositionOfLine = direction.normalized * (maxDistance) + tangendOffset;
-		Quaternion connectingLinesAngularOffset = Quaternion.AngleAxis (18, direction);
-		Gizmos.color = (isHit) ? hitColorR : nonHitColorB;
-		Vector3 beginPosition = basePositionOfLine;
-
-		Vector3 endPosition = beginPosition;
-		Vector3 beginPosition2 = endPositionOfLine;
-		Vector3 endPosition2 = beginPosition2;
-		Vector3 lastPosition = (new Vector3 (radius * Mathf.Cos (Mathf.PI), radius * Mathf.Sin (Mathf.PI), 0));
-		Gizmos.color = (isHit) ? hitColorR2 : nonHitColorB2;
-		for (int i = 0; i < 20; i++) {
-			Gizmos.DrawLine (basePositionOfLine, endPositionOfLine);
-			basePositionOfLine = connectingLinesAngularOffset * basePositionOfLine;
-			endPositionOfLine = connectingLinesAngularOffset * endPositionOfLine;
-		}
-		#endregion
-	}
-
-	public static void DrawSphereCast (RaycastHit hittedBySphere, Vector3 origin, float radius, Vector3 direction, float maxDistance = Mathf.Infinity)
-	{
-		bool isHit = hittedBySphere.collider != null;
-		DrawSphereCast3DRaw (origin, radius, direction, maxDistance, isHit);
-	}
-
-	public static void DrawSphereCast (RaycastHit hittedBySphere, Ray ray, float radius, float maxDistance = Mathf.Infinity)
-	{
-		bool isHit = hittedBySphere.collider != null;
-		DrawSphereCast3DRaw (ray.origin, radius, ray.direction, maxDistance, isHit);
-	}
-
-	public static void DrawSphereCastAll (RaycastHit[] hittedBySphere, Vector3 origin, float radius, Vector3 direction, float maxDistance = Mathf.Infinity)
-	{
-		bool isHit = (hittedBySphere != null && hittedBySphere.Length > 0);		
-		DrawSphereCast3DRaw (origin, radius, direction, maxDistance, isHit);
-	}
-
-	public static void DrawSphereCastAll (RaycastHit[] hittedBySphere, Ray ray, float radius, float maxDistance = Mathf.Infinity)
-	{
-		bool isHit = (hittedBySphere != null && hittedBySphere.Length > 0);
-		DrawSphereCast3DRaw (ray.origin, radius, ray.direction, maxDistance, isHit);
-	}
-
-	static float GetDeltaForLoop (float radius, bool isDotted)
-	{
-		float delta = 0.1f;
-		if (isDotted && radius > 0.2f) {//
-			delta = delta / radius;
-		}
-		return delta;
+		bool isHit = (hitColliderCount > 0);	
+		DrawBoxCast3DRaw (center, halfExtents, direction, orientation, maxDistance, isHit);
 	}
 
 	#endregion
 
 	#region CapsuleCast3D
 
-	public static void DrawCapsuleCast (RaycastHit hittedByCapsule, Vector3 point1, Vector3 point2, float radius, Vector3 direction, float maxDistance = Mathf.Infinity)
+	public static void DrawCapsuleCast (Vector3 point1, Vector3 point2, float radius, Vector3 direction, float maxDistance = Mathf.Infinity, 
+	                                    int layerMask = Physics.DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal)
 	{
-		bool isHit = hittedByCapsule.collider != null;		
+		bool isHit = Physics.CapsuleCast (point1, point2, radius, direction, maxDistance, layerMask, queryTriggerInteraction);
 		DrawCapsuleCast3DRaw (point1, point2, radius, direction, maxDistance, isHit);
 	}
 
-	public static void DrawCapsuleCastAll (RaycastHit[] hittedByCapsule, Vector3 point1, Vector3 point2, float radius, Vector3 direction, float maxDistance = Mathf.Infinity)
+	public static void DrawCapsuleCast (RaycastHit hitByCapsule, Vector3 point1, Vector3 point2, float radius, Vector3 direction, float maxDistance = Mathf.Infinity)
 	{
-		bool isHit = (hittedByCapsule != null && hittedByCapsule.Length > 0);
+		bool isHit = hitByCapsule.collider != null;		
+		DrawCapsuleCast3DRaw (point1, point2, radius, direction, maxDistance, isHit);
+	}
+
+	public static void DrawCapsuleCast (bool isHit, Vector3 point1, Vector3 point2, float radius, Vector3 direction, float maxDistance = Mathf.Infinity)
+	{
+		DrawCapsuleCast3DRaw (point1, point2, radius, direction, maxDistance, isHit);
+	}
+
+	public static void DrawCapsuleCastNonAlloc (Vector3 point1, Vector3 point2, float radius, Vector3 direction, float maxDistance = Mathf.Infinity, 
+	                                            int layerMask = Physics.DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal)
+	{
+		DrawCapsuleCast (point1, point2, radius, direction, maxDistance, layerMask, queryTriggerInteraction);
+	}
+
+	public static void DrawCapsuleCastNonAlloc (int hitColliderCount, Vector3 point1, Vector3 point2, float radius, Vector3 direction, float maxDistance = Mathf.Infinity)
+	{
+		bool isHit = (hitColliderCount > 0);
+		DrawCapsuleCast3DRaw (point1, point2, radius, direction, maxDistance, isHit);
+	}
+
+	public static void DrawCapsuleCastAll (Vector3 point1, Vector3 point2, float radius, Vector3 direction, float maxDistance = Mathf.Infinity, 
+	                                       int layerMask = Physics.DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal)
+	{
+		DrawCapsuleCast (point1, point2, radius, direction, maxDistance, layerMask, queryTriggerInteraction);
+	}
+
+	public static void DrawCapsuleCastAll (RaycastHit[] hitByCapsule, Vector3 point1, Vector3 point2, float radius, Vector3 direction, float maxDistance = Mathf.Infinity)
+	{
+		bool isHit = (hitByCapsule != null && hitByCapsule.Length > 0);
 		DrawCapsuleCast3DRaw (point1, point2, radius, direction, maxDistance, isHit);
 	}
 
@@ -319,7 +450,7 @@ public static class GizmosForPhysics3D
 		float numberOfLines = Mathf.Abs ((point1 - point2).magnitude);
 		Vector3 beginOfSideOfCapsule = point1 + binormalToDirectionOfHS * sign * radius;
 		Vector3 endOfSideOfCapsule = point1 + binormalToDirectionOfHS * sign * radius + distanceBetweenHS;
-//		Gizmos.color = Color.yellow;
+		//		Gizmos.color = Color.yellow;
 		for (float i = 0; i < numberOfLines; i = i + 1f) {	
 			//			Gizmos.color = Color.red;
 			Vector3 offset = -i * directionOfHS / numberOfLines;
@@ -421,7 +552,7 @@ public static class GizmosForPhysics3D
 		Vector3 endPosition = beginPosition;
 		Vector3 lastPosition = arcRotation * origin + arcRotation * (new Vector3 (radius * Mathf.Cos (Mathf.PI), radius * Mathf.Sin (Mathf.PI)));
 		for (int i = 0; i < 1; i++) {			
-		
+
 			for (float deltaAngle = 0f; deltaAngle <= Mathf.PI; deltaAngle += delta) {
 
 				x = radius * Mathf.Cos (deltaAngle);
@@ -459,93 +590,141 @@ public static class GizmosForPhysics3D
 
 	#endregion
 
-	#endregion
+	#region SphereCast3D
 
-	#region OVERLAPPING3D
-
-	#region Overlap Box 3D
-
-	static void DrawOverlapBoxRaw3D (Vector3 center, Vector3 halfExtents, Quaternion orientation, bool isOverlaped)
+	public static void DrawSphereCast (Vector3 origin, float radius, Vector3 direction, float maxDistance = Mathf.Infinity,
+	                                   int layerMask = Physics.DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal)
 	{
-		Gizmos.matrix = Matrix4x4.TRS (center, orientation, Vector3.one);
-		Gizmos.color = (isOverlaped) ? overlappedColorR : nonHitColorB;
-		Gizmos.DrawWireCube (Vector3.zero, 2f * halfExtents * 0.95f);
-		Gizmos.color = (isOverlaped) ? overlappedColorR : nonOverlappedColorY;
-		Gizmos.DrawWireCube (Vector3.zero, 2f * halfExtents);
+		bool isHit = Physics.SphereCast (new Ray (origin, direction), radius, maxDistance, layerMask, queryTriggerInteraction);
+		DrawSphereCast3DRaw (origin, radius, direction, maxDistance, isHit);
+	}
+
+	public static void DrawSphereCast (Ray ray, float radius, float maxDistance = Mathf.Infinity,
+	                                   int layerMask = Physics.DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal)
+	{
+		bool isHit = Physics.SphereCast (ray, radius, maxDistance, layerMask, queryTriggerInteraction);
+		DrawSphereCast3DRaw (ray.origin, radius, ray.direction, maxDistance, isHit);
+	}
+
+	public static void DrawSphereCast (RaycastHit hittedBySphere, Vector3 origin, float radius, Vector3 direction, float maxDistance = Mathf.Infinity)
+	{
+		bool isHit = hittedBySphere.collider != null;
+		DrawSphereCast3DRaw (origin, radius, direction, maxDistance, isHit);
+	}
+
+	public static void DrawSphereCast (RaycastHit hittedBySphere, Ray ray, float radius, float maxDistance = Mathf.Infinity)
+	{
+		bool isHit = hittedBySphere.collider != null;
+		DrawSphereCast3DRaw (ray.origin, radius, ray.direction, maxDistance, isHit);
+	}
+
+	public static void DrawSphereCastAll (Vector3 origin, float radius, Vector3 direction, float maxDistance = Mathf.Infinity,
+	                                      int layerMask = Physics.DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal)
+	{
+		DrawSphereCast (origin, radius, direction, maxDistance, layerMask, queryTriggerInteraction);
+	}
+
+	public static void DrawSphereCastAll (Ray ray, float radius, float maxDistance = Mathf.Infinity,
+	                                      int layerMask = Physics.DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal)
+	{
+		DrawSphereCast (ray, radius, maxDistance, layerMask, queryTriggerInteraction);
+	}
+
+	public static void DrawSphereCastNonAlloc (Vector3 origin, float radius, Vector3 direction, float maxDistance = Mathf.Infinity,
+	                                           int layerMask = Physics.DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal)
+	{
+		DrawSphereCast (origin, radius, direction, maxDistance, layerMask, queryTriggerInteraction);
+	}
+
+	public static void DrawSphereCastNonAlloc (Ray ray, float radius, float maxDistance = Mathf.Infinity,
+	                                           int layerMask = Physics.DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal)
+	{
+		DrawSphereCast (ray, radius, maxDistance, layerMask, queryTriggerInteraction);
+	}
+
+	public static void DrawSphereCastNonAlloc (int hitColliderCount, Vector3 origin, float radius, Vector3 direction, float maxDistance = Mathf.Infinity)
+	{
+		bool isHit = (hitColliderCount > 0);
+		DrawSphereCast3DRaw (origin, radius, direction, maxDistance, isHit);
+	}
+
+	public static void DrawSphereCastNonAlloc (int hitColliderCount, Ray ray, float radius, float maxDistance = Mathf.Infinity)
+	{
+		bool isHit = (hitColliderCount > 0);
+		DrawSphereCast3DRaw (ray.origin, radius, ray.direction, maxDistance, isHit);
+	}
+
+	public static void DrawSphereCastAll (RaycastHit[] hittedBySphere, Vector3 origin, float radius, Vector3 direction, float maxDistance = Mathf.Infinity)
+	{
+		bool isHit = (hittedBySphere != null && hittedBySphere.Length > 0);
+		DrawSphereCast3DRaw (origin, radius, direction, maxDistance, isHit);
+	}
+
+	public static void DrawSphereCastAll (RaycastHit[] hittedBySphere, Ray ray, float radius, float maxDistance = Mathf.Infinity)
+	{
+		bool isHit = (hittedBySphere != null && hittedBySphere.Length > 0);
+		DrawSphereCast3DRaw (ray.origin, radius, ray.direction, maxDistance, isHit);
+	}
+
+	static float GetDeltaForLoop (float radius, bool isDotted)
+	{
+		float delta = 0.1f;
+		if (isDotted && radius > 0.2f) {//
+			delta = delta / radius;
+		}
+		return delta;
+	}
+
+	static void FindSphereAndCapsuleMesh ()
+	{
+		if (sphereMesh == null) {
+			sphereMesh = Resources.GetBuiltinResource (typeof(Mesh), "Sphere.fbx") as Mesh; 
+		}
+	}
+
+	static void DrawSphereCast3DRaw (Vector3 origin, float radius, Vector3 direction, float maxDistance, bool isHit)
+	{
+		direction = direction.normalized;
+		FindSphereAndCapsuleMesh ();
+		direction = direction.normalized;
+		Vector3 endPositionOfSphere = direction.normalized * (maxDistance - 0) + origin;
+		Vector3 tangentToDirection = Vector3.zero;
+		Vector3.OrthoNormalize (ref direction, ref tangentToDirection);
+		Vector3 tangendOffset = tangentToDirection * radius;	
+
+		#region Drawing SphereCast3D
+		Gizmos.color = (isHit) ? hitColorO : nonHitColorB;
 		Gizmos.matrix = Matrix4x4.identity;
-	}
-
-	public 	static	void DrawOverlapBox (Collider[] overlapedColliders, Vector3 center, Vector3 halfExtents, Quaternion orientation = default(Quaternion))
-	{
-		bool isOverlaped = (overlapedColliders != null && overlapedColliders.Length > 0);
-		Gizmos.color = (isOverlaped) ? overlappedColorR : nonHitColorB;
-		DrawOverlapBoxRaw3D (center, halfExtents, orientation, isOverlaped);
-		Gizmos.color = (isOverlaped) ? overlappedColorR : nonOverlappedColorY;
-		DrawOverlapBoxRaw3D (center, halfExtents, orientation, isOverlaped);
-
-	}
-
-	public 	static	void DrawCheckBox (bool isOverlaped, Vector3 center, Vector3 halfExtents, Quaternion orientation = default(Quaternion))
-	{
-		Gizmos.color = (isOverlaped) ? overlappedColorR : nonHitColorB;
-		DrawOverlapBoxRaw3D (center, halfExtents, orientation, isOverlaped);
-		Gizmos.color = (isOverlaped) ? overlappedColorR : nonOverlappedColorY;
-		DrawOverlapBoxRaw3D (center, halfExtents, orientation, isOverlaped);
-
-	}
-
-	#endregion
-
-	#region OverLap Capsule 3D
-
-	static void DrawCapsule3D (Vector3 point1, Vector3 point2, float radius)
-	{
-		Vector3 origin = (point1 - point2) / 2 + point1;
+		Gizmos.matrix = Matrix4x4.TRS (endPositionOfSphere, Quaternion.identity, new Vector3 (radius, radius, radius));
+		Gizmos.DrawWireMesh (sphereMesh);
+		Gizmos.color = (isHit) ? hitColorR : nonHitColorBaseG;
 		Gizmos.matrix = Matrix4x4.TRS (origin, Quaternion.identity, new Vector3 (radius, radius, radius));
-		DrawHemispheresOfCapsule (point1, point2, radius);
+		Gizmos.DrawWireMesh (sphereMesh);
 		Gizmos.matrix = Matrix4x4.identity;
-		DrawLineConnectingHS (point1, point2, radius);
+		#endregion
+		if (radius == 0) {
+			Gizmos.DrawSphere (origin, 0.05f);
+		}
+		#region Draw sphere connecting lines
+		Gizmos.matrix = Matrix4x4.TRS (origin, Quaternion.identity, Vector3.one);
+		Vector3 basePositionOfLine = tangendOffset;
+		Vector3 endPositionOfLine = direction.normalized * (maxDistance) + tangendOffset;
+		Quaternion connectingLinesAngularOffset = Quaternion.AngleAxis (18, direction);
+		Gizmos.color = (isHit) ? hitColorR : nonHitColorB;
+		Vector3 beginPosition = basePositionOfLine;
+
+		Vector3 endPosition = beginPosition;
+		Vector3 beginPosition2 = endPositionOfLine;
+		Vector3 endPosition2 = beginPosition2;
+		Vector3 lastPosition = (new Vector3 (radius * Mathf.Cos (Mathf.PI), radius * Mathf.Sin (Mathf.PI), 0));
+		Gizmos.color = (isHit) ? hitColorR2 : nonHitColorB2;
+		for (int i = 0; i < 20; i++) {
+			Gizmos.DrawLine (basePositionOfLine, endPositionOfLine);
+			basePositionOfLine = connectingLinesAngularOffset * basePositionOfLine;
+			endPositionOfLine = connectingLinesAngularOffset * endPositionOfLine;
+		}
+		#endregion
 	}
-
-	public 	static	void DrawOverlapCapsule (Collider[] overlapedColliders, Vector3 point0, Vector3 point1, float radius)
-	{
-		bool isOverlaped = (overlapedColliders != null && overlapedColliders.Length > 0);
-		Gizmos.color = (isOverlaped) ? overlappedColorR : nonOverlappedColorY;
-		DrawCapsule3D (point0, point1, radius);
-	}
-
-	public 	static	void DrawCheckCapsule (bool isOverlaped, Vector3 start, Vector3 end, float radius)
-	{
-		Gizmos.color = (isOverlaped) ? overlappedColorR : nonOverlappedColorY;
-		DrawCapsule3D (start, end, radius);
-	}
-
-	#endregion
-
-	#region Overlap Sphere 3D
-
-	static void DrawOverlapSphere3DRaw (Vector3 position, float radius, bool isOverlaped)
-	{
-		Gizmos.color = (isOverlaped) ? overlappedColorR : nonOverlappedColorY;
-		Gizmos.matrix = Matrix4x4.TRS (position, Quaternion.identity, new Vector3 (1, 1, 1));
-		DrawHemiSphere (Vector3.zero, radius, Vector3.up);
-		DrawHemiSphere (Vector3.zero, radius, Vector3.down);
-		Gizmos.matrix = Matrix4x4.identity;
-	}
-
-
-	public 	static	void DrawOverlapSphere (Collider[] overlapedColliders, Vector3 position, float radius)
-	{
-		bool isOverlaped = (overlapedColliders != null && overlapedColliders.Length > 0);
-		DrawOverlapSphere3DRaw (position, radius, isOverlaped);	
-	}
-
-	public 	static	void DrawCheckSphere (bool isOverlaped, Vector3 position, float radius)
-	{
-		DrawOverlapSphere3DRaw (position, radius, isOverlaped);	
-	}
-
-	#endregion
 
 	#endregion
 
@@ -686,6 +865,6 @@ public static class GizmosForPhysics3D
 
 	#endregion
 
-
+	#endregion
 }
 

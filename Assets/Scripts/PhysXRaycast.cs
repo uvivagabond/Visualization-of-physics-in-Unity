@@ -29,10 +29,10 @@ public class PhysXRaycast : MonoBehaviour
 
 	void OnDrawGizmos ()
 	{
-		GizmosForPhysics3D.DrawRaycast (hittedByRay: hittedByRayCast, origin: origin, direction: direction, maxDistance: maxDistance);
-		GizmosForPhysics3D.DrawRaycast (hittedByRay: hittedByRayCast, ray: ray, maxDistance: maxDistance);
-		GizmosForPhysics3D.DrawRaycastAll (hittedByRay: hittedByRayCastTab, origin: origin, direction: direction, maxDistance: maxDistance);
-		GizmosForPhysics3D.DrawRaycastAll (hittedByRay: hittedByRayCastTab, ray: ray, maxDistance: maxDistance);
+		GizmosForPhysics3D.DrawRaycast (hitByRay: hittedByRayCast, origin: origin, direction: direction, maxDistance: maxDistance);
+		GizmosForPhysics3D.DrawRaycast (hitByRay: hittedByRayCast, ray: ray, maxDistance: maxDistance);
+		GizmosForPhysics3D.DrawRaycastAll (hitByRay: hittedByRayCastTab, origin: origin, direction: direction, maxDistance: maxDistance);
+		GizmosForPhysics3D.DrawRaycastAll (hitByRay: hittedByRayCastTab, ray: ray, maxDistance: maxDistance);
 		
 	}
 }

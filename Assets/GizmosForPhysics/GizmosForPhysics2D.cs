@@ -20,7 +20,7 @@ public static class GizmosForPhysics2D
 
 	#endregion
 
-	#region OVERLAPING
+	#region OVERLAPING QUERIES
 
 
 	#region Overlap Circle done
@@ -269,7 +269,7 @@ public static class GizmosForPhysics2D
 
 	#endregion
 
-	#region RAYCASTING
+	#region RAYCASTING  QUERIES
 
 	#region RayIntersection
 
@@ -404,6 +404,10 @@ public static class GizmosForPhysics2D
 
 	#endregion
 
+	#endregion
+
+	#region SWEEP  QUERIES
+
 	#region Box casting
 
 	public static void DrawBoxCastAll (RaycastHit2D[] hitInfos, Vector3 origin, Vector3 size, float angle, Vector3 direction, float distance = Mathf.Infinity)
@@ -523,6 +527,7 @@ public static class GizmosForPhysics2D
 			Mathf.Cos (Mathf.Deg2Rad * (angle - 315)) * halfOfDiagonalLenght).normalized;
 		Debug.Log (directionToCorner1);
 	}
+
 
 	#endregion
 
@@ -649,7 +654,7 @@ public static class GizmosForPhysics2D
 		float delta = GetDeltaForLoop (radius, isDotted);
 		float x = radius * Mathf.Cos (0f);
 		float y = radius * Mathf.Sin (0f);
-	
+
 		Vector3 beginPosition = origin + (new Vector3 (radius * Mathf.Cos (alfhaOffsetInRadians), radius * Mathf.Sin (alfhaOffsetInRadians), 0));
 		Vector3 endPosition = beginPosition;
 		Vector3 lastPosition = origin + (new Vector3 (radius * Mathf.Cos (Mathf.PI + alfhaOffsetInRadians), radius * Mathf.Sin (Mathf.PI + alfhaOffsetInRadians), 0));
@@ -778,7 +783,6 @@ public static class GizmosForPhysics2D
 
 	#endregion
 
-	#endregion
 
 	#region Collider  Casting
 
@@ -832,7 +836,7 @@ public static class GizmosForPhysics2D
 		Quaternion rotation, rotationI;
 		DataForCasting data = new DataForCasting (collider, direction, distance);
 		data.GetDataForCasting (out originOfCC, out  endOfCC, out  direction, out  rotation, out scale);
-//		originOfCC = rotation * originOfCC;
+		//		originOfCC = rotation * originOfCC;
 		rotationI = Quaternion.Inverse (rotation);
 		originOfCC += rotation * Vector3.Scale ((Vector3)compositeCollider.offset, new Vector3 (scale.x, scale.y));
 		endOfCC += rotation * Vector3.Scale ((Vector3)compositeCollider.offset, new Vector3 (scale.x, scale.y));
@@ -841,9 +845,9 @@ public static class GizmosForPhysics2D
 			Vector2[] points = new Vector2[compositeCollider.GetPathPointCount (k)];
 			compositeCollider.GetPath (k, points);
 			for (int i = 0; i < points.Length; i++) {
-//				points [i] = Vector2.Scale (rotation * points [i], new Vector3 (scale.x, scale.y));
+				//				points [i] = Vector2.Scale (rotation * points [i], new Vector3 (scale.x, scale.y));
 				points [i] = rotation * points [i];
-//				points [i] = (Vector3)Vector2.Scale (points [i], rotationI * scale);
+				//				points [i] = (Vector3)Vector2.Scale (points [i], rotationI * scale);
 			}
 			Gizmos.color = (isHit) ? hitColorR : nonHitColorG;
 			DrawPolygonOrCompositeCollider (points, originOfCC);
@@ -1084,11 +1088,11 @@ public static class GizmosForPhysics2D
 			Vector3.OrthoNormalize (ref directionFromPoints, ref start);
 
 			Gizmos.DrawLine ((Vector3)points [k] + start * radius + origin, (Vector3)points [m] + start * radius + origin);
-//			Gizmos.color = Color.yellow;
+			//			Gizmos.color = Color.yellow;
 
 			Gizmos.DrawLine ((Vector3)points [k] - start * radius + origin, (Vector3)points [m] - start * radius + origin);
 			float angle = SignedAngle (direction, directionFromPoints, Vector3.forward) * Mathf.Deg2Rad;
-//			Gizmos.color = Color.magenta;
+			//			Gizmos.color = Color.magenta;
 			Quaternion rotationOfHS = Quaternion.FromToRotation (direction, directionFromPoints.normalized);
 			Gizmos.matrix = Matrix4x4.TRS ((Vector3)points [k] + origin, rotationOfHS, new Vector3 (1, 1, 1));
 			DrawHalfCircle (Vector3.zero, radius, 0, false);
@@ -1182,7 +1186,7 @@ public static class GizmosForPhysics2D
 
 	#endregion
 
-
+	#endregion
 
 }
 
