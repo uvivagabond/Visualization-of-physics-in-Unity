@@ -11,19 +11,20 @@ public class PhysXBoxCast : MonoBehaviour
 	[SerializeField]Vector3 eulerAngles;
 	Quaternion orientation;
 	[SerializeField]float maxDistance = 1;
+	[Space (55)][Header ("Results:")]
 
-	// hitinfo
-	RaycastHit hittedByBox;
-	RaycastHit[] hittedByBoxCastTab;
+	[SerializeField]bool isSomethingHit;
 
-	void Update ()
+	RaycastHit hitByBox;
+
+	void FixedUpdate ()
 	{
-		bool czyTrafiloWCos = Physics.BoxCast (center: center, halfExtents: halfExtents, direction: direction, hitInfo: out hittedByBox, orientation: orientation, maxDistance: maxDistance);
-			
-		RaycastHit[] infoOWszystkichTrafionychColliderach;
-		
-		hittedByBoxCastTab = Physics.BoxCastAll (center: center, halfExtents: halfExtents, direction: direction, orientation: orientation, maxDistance: maxDistance);
-		int iloscTrafionychColliderow =	Physics.BoxCastNonAlloc (center: center, halfExtents: halfExtents, direction: direction, results: hittedByBoxCastTab, orientation: orientation, maxDistance: maxDistance);
+		orientation = Quaternion.Euler (eulerAngles);
+		isSomethingHit = Physics.BoxCast (center: center, halfExtents: halfExtents, direction: direction, hitInfo: out hitByBox, orientation: orientation, maxDistance: maxDistance);
+	}
 
+	void OnDrawGizmos ()
+	{
+		GizmosForPhysics3D.DrawBoxCast (center: center, halfExtents: halfExtents, direction: direction, orientation: orientation, maxDistance: maxDistance);
 	}
 }

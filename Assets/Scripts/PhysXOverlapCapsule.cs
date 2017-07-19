@@ -10,23 +10,17 @@ public class PhysXOverlapCapsule : MonoBehaviour
 	[SerializeField]float radius;
 	
 	[Space (55)][Header ("Wyniki:")]
-	[SerializeField]	bool czyKapsulaNachodziNaJakiesCollidery;
 	[SerializeField]	Collider[] overlapedColliders;
 
 
 	void Update ()
-	{
-		Collider[] collideryNaKtoreNachodziKapsula;
-		
+	{		
 		overlapedColliders =	Physics.OverlapCapsule (point0: point0, point1: point1, radius: radius);
-		czyKapsulaNachodziNaJakiesCollidery = Physics.CheckCapsule (start: point0, end: point1, radius: radius);
-		
 	}
 
 	void OnDrawGizmos ()
 	{
-		GizmosForPhysics3D.DrawOverlapCapsule (overlapedColliders: overlapedColliders, point0: point0, point1: point1, radius: radius);
-		GizmosForPhysics3D.DrawCheckCapsule (isOverlaped: czyKapsulaNachodziNaJakiesCollidery, start: point0, end: point1, radius: radius);
-
+//		GizmosForPhysics3D.DrawOverlapCapsule (overlapedColliders: overlapedColliders, point0: point0, point1: point1, radius: radius);
+		GizmosForPhysics3D.DrawOverlapCapsule (point0: point0, point1: point1, radius: radius);
 	}
 }

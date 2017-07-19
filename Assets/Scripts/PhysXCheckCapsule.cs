@@ -7,28 +7,22 @@ public class PhysXCheckCapsule : MonoBehaviour
 
 	[SerializeField]Vector3 point0;
 	[SerializeField]Vector3 point1;
-	[SerializeField]float radius;
+	[SerializeField]float radius = 1;
+	[SerializeField]float maxDistance;
 	
-	[Space (55)][Header ("Wyniki:")]
-	[SerializeField]	bool czyKapsulaNachodziNaJakiesCollidery;
-	[SerializeField]	Collider[] overlapedColliders;
+	[Space (55)][Header ("Results:")]
+	[SerializeField]	bool isCapsuleOverlapSomething;
 
 
 	void Update ()
 	{
-//				orientation = Quaternion.Euler (eulerAngles);
-//		bool czyTrafiloWCos = Physics.CapsuleCast (point1: point1, point2: point2, radius: radius, direction: direction, hitInfo: out hittedByCapsule, maxDistance: maxDistance);
-		
-		RaycastHit[] infoOWszystkichTrafionychColliderach;
-		
-//				hittedByCapsuleTab =	Physics.CapsuleCastAll (point1: point1, point2: point2, radius: radius, direction: direction, maxDistance: maxDistance);
-		
+		isCapsuleOverlapSomething =	Physics.CheckCapsule (start: point0, end: point1, radius: radius);
 	}
 
 	void OnDrawGizmos ()
 	{
-		GizmosForPhysics3D.DrawOverlapCapsule (overlapedColliders: overlapedColliders, point0: point0, point1: point1, radius: radius);
-		GizmosForPhysics3D.DrawCheckCapsule (isOverlaped: czyKapsulaNachodziNaJakiesCollidery, start: point0, end: point1, radius: radius);
+//		GizmosForPhysics3D.DrawCheckCapsule (isOverlaped: isCapsuleOverlapSomething, start: point0, end: point1, radius: radius);
+		GizmosForPhysics3D.DrawCheckCapsule (start: point0, end: point1, radius: radius);
 
 	}
 }

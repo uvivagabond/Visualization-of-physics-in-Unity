@@ -11,7 +11,8 @@ public static class GizmosForPhysics3D
 	static Color nonHitColorB2 = new Color (r: 0.129f, g: 0.108f, b: 0.922f, a: 0.25f);
 	static Color nonHitColorB3 = new Color (r: 0.129f, g: 0.108f, b: 0.922f, a: 0.10f);
 
-	static Color nonHitColorBaseG = Color.green;
+	static Color nonHitColorBaseG = new Color (r: 0.18f, g: 0.88f, b: 0.49f, a: 1f);
+	//Color.green;
 	static Color hitColorR = Color.red;
 	static Color hitColorO = new Color (r: 1f, g: 0.341f, b: 0.133f, a: 1f);
 	static Color hitColorR2 = new Color (r: 1f, g: 0.058f, b: 0.01f, a: 0.25f);
@@ -20,7 +21,7 @@ public static class GizmosForPhysics3D
 	static Color overlappedColorR = Color.red;
 	static Color nonOverlappedColorY = Color.yellow;
 	static Color overlappedColorY2 = new Color (r: 1f, g: 0.341f, b: 0.133f, a: 1f);
-
+	static Quaternion identity = Quaternion.identity;
 	const int AdditionalDots = 0;
 	const int DefaultSign = 1;
 	const bool isDotted = false;
@@ -81,7 +82,6 @@ public static class GizmosForPhysics3D
 		DrawRaycast3DRaw (ray.origin, ray.direction, maxDistance, isHit);
 	}
 
-
 	public static void DrawRaycast (bool isHit, Vector3 origin, Vector3 direction, float maxDistance = Mathf.Infinity)
 	{
 		DrawRaycast3DRaw (origin, direction, maxDistance, isHit);
@@ -118,11 +118,14 @@ public static class GizmosForPhysics3D
 
 	static void DrawRaycast3DRaw (Vector3 origin, Vector3 direction, float maxDistance, bool isHit)
 	{		
-		Gizmos.color = (isHit) ? hitColorR : nonHitColorB;
-		direction = direction.normalized;
-		direction = (maxDistance == Mathf.Infinity) ? direction * 100000f : direction;
-		Gizmos.DrawRay (origin, direction * maxDistance);
-		Gizmos.DrawSphere (origin, 0.05f);
+		if (maxDistance > 0f) {
+			Gizmos.color = (isHit) ? hitColorR : nonHitColorB;
+			direction = direction.normalized;
+			maxDistance = (maxDistance == Mathf.Infinity) ? 100000f : maxDistance;
+			Gizmos.DrawRay (origin, direction * maxDistance);	
+		}
+		Gizmos.color = (isHit) ? hitColorR : nonHitColorBaseG;
+		Gizmos.DrawSphere (origin, 0.1f);
 		Gizmos.color = Color.white;	
 	}
 
@@ -154,8 +157,10 @@ public static class GizmosForPhysics3D
 	{
 		Gizmos.color = (isHit) ? hitColorR : nonHitColorB;
 		Gizmos.DrawLine (start, end);
-		Gizmos.DrawSphere (start, 0.05f);
 		Gizmos.DrawSphere (end, 0.05f);
+		Gizmos.color = nonHitColorBaseG;
+		Gizmos.DrawSphere (start, 0.1f);
+		Gizmos.color = Color.white;
 	}
 
 	#endregion
@@ -193,6 +198,8 @@ public static class GizmosForPhysics3D
 
 	static void DrawOverlapBoxRaw3D (Vector3 center, Vector3 halfExtents, Quaternion orientation, bool isOverlaped)
 	{
+		orientation = (orientation.Equals (default(Quaternion))) ? Quaternion.identity : orientation;
+
 		Gizmos.matrix = Matrix4x4.TRS (center, orientation, Vector3.one);
 		Gizmos.color = (isOverlaped) ? overlappedColorR : nonHitColorB;
 		Gizmos.DrawWireCube (Vector3.zero, 2f * halfExtents * 0.95f);
@@ -207,6 +214,7 @@ public static class GizmosForPhysics3D
 		DrawOverlapBoxRaw3D (center, halfExtents, orientation, isOverlaped);
 		Gizmos.color = (isOverlaped) ? overlappedColorY2 : nonOverlappedColorY;
 		DrawOverlapBoxRaw3D (center, halfExtents, orientation, isOverlaped);
+		Gizmos.color = Color.white;
 	}
 
 	#endregion
@@ -223,7 +231,6 @@ public static class GizmosForPhysics3D
 		, int layerMask = Physics.DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal)
 	{
 		bool isOverlaped = Physics.CheckCapsule (start, end, radius, layerMask, queryTriggerInteraction);
-
 		Gizmos.color = (isOverlaped) ? overlappedColorR : nonOverlappedColorY;
 		DrawCapsule3D (start, end, radius);
 	}
@@ -235,7 +242,6 @@ public static class GizmosForPhysics3D
 		DrawCapsule3D (point0, point1, radius);
 	}
 
-
 	public 	static	void DrawCheckCapsule (bool isOverlaped, Vector3 start, Vector3 end, float radius)
 	{
 		Gizmos.color = (isOverlaped) ? overlappedColorR : nonOverlappedColorY;
@@ -245,6 +251,13 @@ public static class GizmosForPhysics3D
 	static void DrawCapsule3D (Vector3 point1, Vector3 point2, float radius)
 	{
 		Vector3 origin = (point1 - point2) / 2 + point1;
+		if (radius == 0) {
+			Gizmos.DrawSphere (origin, 0.01f);
+			return;
+		} else if (radius < 0) {
+			DisplayWarningAboutSize ("CheckCapsule/OverlapCapsule", "radius", "should be greater more then 0. " +
+			"In case of radius smoler then 0, Physics.CheckCapsule/OverlapCapsule will detect colliders if they overlap capsule (Weird behavoiurs) . ", null);
+		}
 		Gizmos.matrix = Matrix4x4.TRS (origin, Quaternion.identity, new Vector3 (radius, radius, radius));
 		DrawHemispheresOfCapsule (point1, point2, radius);
 		Gizmos.matrix = Matrix4x4.identity;
@@ -281,6 +294,13 @@ public static class GizmosForPhysics3D
 
 	static void DrawOverlapSphere3DRaw (Vector3 position, float radius, bool isOverlaped)
 	{
+		if (radius == 0) {
+			Gizmos.color = (isOverlaped) ? overlappedColorR : nonOverlappedColorY;
+			Gizmos.DrawSphere (position, 0.01f);
+			return;
+		} else if (radius < 0) {
+			DisplayWarningAboutSize ("CheckSphere/OverlapSphere", "radius", "should be greater more then 0. ", null);
+		}
 		Gizmos.color = (isOverlaped) ? overlappedColorR : nonOverlappedColorY;
 		Gizmos.matrix = Matrix4x4.TRS (position, Quaternion.identity, new Vector3 (1, 1, 1));
 		DrawHemiSphere (Vector3.zero, radius, Vector3.up);
@@ -293,7 +313,7 @@ public static class GizmosForPhysics3D
 	#endregion
 
 
-	#region SWEEP QUERIES
+	#region SWEEPING QUERIES
 
 	#region BoxCast3D
 
@@ -341,16 +361,19 @@ public static class GizmosForPhysics3D
 
 	static void DrawBoxCast3DRaw (Vector3 center, Vector3 halfExtents, Vector3 direction, Quaternion orientation, float maxDistance, bool isHit)
 	{		
+
+
+		orientation = (orientation.Equals (default(Quaternion))) ? Quaternion.identity : orientation;
 		if (maxDistance < 0) {
 			Debug.LogWarning ("<b><size=13><color=#0392CF> In method </color><color=#CD1426FF> DrawBoxCast3D </color><color=#0392CF> - </color> <color=#CD1426FF>maxdistance</color>  <color=#0392CF>must be greater then 0! </color> </size></b>");
 			return;
 		}
 		if ((halfExtents.x < 0 || halfExtents.y < 0 || halfExtents.z < 0)) {
 			Debug.LogWarning ("<b><size=13> <color=#0392CF>In method</color> <color=#CD1426FF>DrawBoxCast3D</color> <color=#0392CF> components of</color><color=#CD1426FF> halfExtends</color><color=#0392CF> should't be negative! </color> </size></b>");
-			return;
+//			return;
 		}
 		direction = direction.normalized;
-		Vector3 endPositionOfCube = direction.normalized * (maxDistance - 0) + center;
+		Vector3 endPositionOfCube = direction.normalized * maxDistance + center;
 		Vector3[] vertexes = new Vector3[8];
 		Vector3 a1 = new Vector3 (1f * halfExtents.x, 1f * halfExtents.y, 1f * halfExtents.z);
 		Vector3 b1 = new Vector3 (-1f * halfExtents.x, 1f * halfExtents.y, 1f * halfExtents.z);
@@ -495,14 +518,10 @@ public static class GizmosForPhysics3D
 		float numberOfLines = Mathf.Abs ((point1 - point2).magnitude);
 		Vector3 beginOfSideOfCapsule = point1 + binormalToDirectionOfHS * sign * radius;
 		Vector3 endOfSideOfCapsule = point1 + binormalToDirectionOfHS * sign * radius + distanceBetweenHS;
-		//		Gizmos.color = Color.yellow;
+
 		for (float i = 0; i < numberOfLines; i = i + 1f) {	
-			//			Gizmos.color = Color.red;
 			Vector3 offset = -i * directionOfHS / numberOfLines;
 			Gizmos.DrawLine (beginOfSideOfCapsule + offset, endOfSideOfCapsule + offset);
-			//			Gizmos.DrawSphere (beginOfSideOfCapsule + offset, 0.1f);
-			//			Gizmos.color = Color.yellow;
-			//			Gizmos.DrawSphere (endOfSideOfCapsule + offset, 0.1f);
 		}
 	}
 
@@ -732,7 +751,7 @@ public static class GizmosForPhysics3D
 		direction = direction.normalized;
 		FindSphereAndCapsuleMesh ();
 		direction = direction.normalized;
-		Vector3 endPositionOfSphere = direction.normalized * (maxDistance - 0) + origin;
+		Vector3 endPositionOfSphere = direction.normalized * maxDistance + origin;
 		Vector3 tangentToDirection = Vector3.zero;
 		Vector3.OrthoNormalize (ref direction, ref tangentToDirection);
 		Vector3 tangendOffset = tangentToDirection * radius;	
@@ -753,7 +772,7 @@ public static class GizmosForPhysics3D
 		#region Draw sphere connecting lines
 		Gizmos.matrix = Matrix4x4.TRS (origin, Quaternion.identity, Vector3.one);
 		Vector3 basePositionOfLine = tangendOffset;
-		Vector3 endPositionOfLine = direction.normalized * (maxDistance) + tangendOffset;
+		Vector3 endPositionOfLine = direction.normalized * maxDistance + tangendOffset;
 		Quaternion connectingLinesAngularOffset = Quaternion.AngleAxis (18, direction);
 		Gizmos.color = (isHit) ? hitColorR : nonHitColorB;
 		Vector3 beginPosition = basePositionOfLine;

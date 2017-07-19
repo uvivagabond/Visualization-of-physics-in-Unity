@@ -6,11 +6,9 @@ public class PhysXOverlapSphere : MonoBehaviour
 {
 
 	[SerializeField]Vector3 position;
-	[SerializeField]Vector3 direction;
-	[SerializeField]float radius;
+	[SerializeField]float radius = 1;
 
 	[Space (55)][Header ("Wyniki:")]
-	[SerializeField]	bool czySferaNachodziNaJakiesCollidery;
 	[SerializeField]	Collider[] overlapedColliders;
 
 	void Update ()
@@ -18,14 +16,13 @@ public class PhysXOverlapSphere : MonoBehaviour
 		Collider[] collideryNaKtoreNachodziSfera;
 				
 		overlapedColliders =	Physics.OverlapSphere (position: position, radius: radius);
-		czySferaNachodziNaJakiesCollidery = Physics.CheckSphere (position: position, radius: radius);
 			
 	}
 
 	void OnDrawGizmos ()
 	{
-		GizmosForPhysics3D.DrawOverlapSphere (overlapedColliders: overlapedColliders, position: position, radius: radius);
-		GizmosForPhysics3D.DrawCheckSphere (isOverlaped: czySferaNachodziNaJakiesCollidery, position: position, radius: radius);
+//		GizmosForPhysics3D.DrawOverlapSphere (overlapedColliders: overlapedColliders, position: position, radius: radius);
+		GizmosForPhysics3D.DrawOverlapSphere (position: position, radius: radius);
 
 	}
 }

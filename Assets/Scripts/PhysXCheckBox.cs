@@ -8,25 +8,19 @@ public class PhysXCheckBox : MonoBehaviour
 	[SerializeField]Vector3 halfExtents;
 	[SerializeField]Vector3 eulerAngles;
 	Quaternion orientation;
-	[Space (55)][Header ("Wyniki:")]
 
-	[SerializeField]	bool czySzescianNachodziNaJakiesCollidery;
-	[SerializeField]	Collider[] overlapedColliders;
+	[Space (55)][Header ("Results:")]
+	[SerializeField]	bool isBoxOverlapColliders;
 
-	void Update ()
+	void FixedUpdate ()
 	{
 		orientation = Quaternion.Euler (eulerAngles);
-
-		Collider[] collideryNaKtoreNachodziSzescian;
-		
-		overlapedColliders = Physics.OverlapBox (center: center, halfExtents: halfExtents, orientation: orientation);
-			
+		isBoxOverlapColliders = Physics.CheckBox (center: center, halfExtents: halfExtents, orientation: orientation);			
 	}
 
 	void OnDrawGizmos ()
 	{
-		GizmosForPhysics3D.DrawOverlapBox (overlapedColliders: overlapedColliders, center: center, halfExtents: halfExtents, orientation: orientation);
-		GizmosForPhysics3D.DrawCheckBox (isOverlaped: czySzescianNachodziNaJakiesCollidery, center: center, halfExtents: halfExtents, orientation: orientation);
-
+//		GizmosForPhysics3D.DrawCheckBox (isOverlaped: isBoxOverlapColliders, center: center, halfExtents: halfExtents, orientation: orientation);
+		GizmosForPhysics3D.DrawCheckBox (center: center, halfExtents: halfExtents, orientation: orientation);
 	}
 }
