@@ -11,10 +11,9 @@ public class PhysXBoxCast : MonoBehaviour
 	[SerializeField]Vector3 eulerAngles;
 	Quaternion orientation;
 	[SerializeField]float maxDistance = 1;
+
 	[Space (55)][Header ("Results:")]
-
 	[SerializeField]bool isSomethingHit;
-
 	RaycastHit hitByBox;
 
 	void FixedUpdate ()

@@ -19,7 +19,7 @@ public class PhysXLineCast : MonoBehaviour
 
 	void OnDrawGizmos ()
 	{
-		GizmosForPhysics3D.DrawLineCast (hittedByLine: hittedByLineCast, start: start, end: end);
+//		GizmosForPhysics3D.DrawLineCast (hittedByLine: hittedByLineCast, start: start, end: end);
 		GizmosForPhysics3D.DrawLineCast (start: start, end: end);
 	}
 }

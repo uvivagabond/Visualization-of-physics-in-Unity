@@ -9,13 +9,13 @@ public class PhysXOverlapCapsule : MonoBehaviour
 	[SerializeField]Vector3 point1;
 	[SerializeField]float radius;
 	
-	[Space (55)][Header ("Wyniki:")]
+	[Space (55)][Header ("Results:")]
 	[SerializeField]	Collider[] overlapedColliders;
 
 
 	void Update ()
 	{		
-		overlapedColliders =	Physics.OverlapCapsule (point0: point0, point1: point1, radius: radius);
+		overlapedColliders = Physics.OverlapCapsule (point0: point0, point1: point1, radius: radius);
 	}
 
 	void OnDrawGizmos ()

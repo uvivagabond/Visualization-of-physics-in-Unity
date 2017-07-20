@@ -8,31 +8,24 @@ public class PhysXRaycast : MonoBehaviour
 	[SerializeField]Vector3 origin;
 	[SerializeField]Vector3 direction;
 	[SerializeField]Ray ray;
-	// hitinfo
-	RaycastHit hittedByRayCast;
-	RaycastHit[] hittedByRayCastTab;
-	
 	[SerializeField]float maxDistance = 1;
-	[SerializeField]bool czyTrafiloWCos;
 
-	void Update ()
+	RaycastHit hittedByRayCast;
+
+	[Space (55)][Header ("Results:")]
+	[SerializeField]bool isSomethingHit;
+
+	void FixedUpdate ()
 	{
-		czyTrafiloWCos = Physics.Raycast (origin: origin, direction: direction, hitInfo: out hittedByRayCast, maxDistance: maxDistance);
-//		bool czyTrafiloWCos2 = Physics.Raycast (ray: ray, hitInfo: out hittedByRayCast, maxDistance: maxDistance);
+		isSomethingHit = Physics.Raycast (origin: origin, direction: direction, hitInfo: out hittedByRayCast, maxDistance: maxDistance);
+		isSomethingHit = Physics.Raycast (ray: ray, hitInfo: out hittedByRayCast, maxDistance: maxDistance);
 
-//		RaycastHit[] infoOWszystkichTrafionychColliderach;
-
-//		hittedByRayCastTab = Physics.RaycastAll (origin: origin, direction: direction, maxDistance: maxDistance);
-//		hittedByRayCastTab = Physics.RaycastAll (ray: ray, maxDistance: maxDistance);
 	}
 
 	void OnDrawGizmos ()
 	{
-//		GizmosForPhysics3D.DrawRaycast (origin: origin, direction: direction, maxDistance: maxDistance);//
-//		GizmosForPhysics3D.DrawRaycast (hitByRay: hittedByRayCast, origin: origin, direction: direction, maxDistance: maxDistance);
-//		GizmosForPhysics3D.DrawRaycast (hitByRay: hittedByRayCast, ray: ray, maxDistance: maxDistance);
-		GizmosForPhysics3D.DrawRaycastAll (origin: origin, direction: direction, maxDistance: maxDistance);
-//		GizmosForPhysics3D.DrawRaycastAll (hitByRay: hittedByRayCastTab, ray: ray, maxDistance: maxDistance);
-		
+		GizmosForPhysics3D.DrawRaycast (origin: origin, direction: direction, maxDistance: maxDistance);
+		GizmosForPhysics3D.DrawRaycast (ray: ray, maxDistance: maxDistance);
+
 	}
 }

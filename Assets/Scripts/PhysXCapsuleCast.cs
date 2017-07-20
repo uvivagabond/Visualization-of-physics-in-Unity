@@ -10,6 +10,8 @@ public class PhysXCapsuleCast : MonoBehaviour
 	[SerializeField]float radius;
 	[SerializeField]Vector3 direction;
 	[SerializeField]float maxDistance;
+
+	[Space (55)][Header ("Results:")]
 	[SerializeField]bool isHitSomething;
 	RaycastHit hitByCapsule;
 

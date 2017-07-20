@@ -255,8 +255,7 @@ public static class GizmosForPhysics3D
 			Gizmos.DrawSphere (origin, 0.01f);
 			return;
 		} else if (radius < 0) {
-			DisplayWarningAboutSize ("CheckCapsule/OverlapCapsule", "radius", "should be greater more then 0. " +
-			"In case of radius smoler then 0, Physics.CheckCapsule/OverlapCapsule will detect colliders if they overlap capsule (Weird behavoiurs) . ", null);
+			DisplayWarningAboutSize ("CheckCapsule/OverlapCapsule", "radius", "should be greater more then 0. ", null);
 		}
 		Gizmos.matrix = Matrix4x4.TRS (origin, Quaternion.identity, new Vector3 (radius, radius, radius));
 		DrawHemispheresOfCapsule (point1, point2, radius);
@@ -361,7 +360,6 @@ public static class GizmosForPhysics3D
 
 	static void DrawBoxCast3DRaw (Vector3 center, Vector3 halfExtents, Vector3 direction, Quaternion orientation, float maxDistance, bool isHit)
 	{		
-
 
 		orientation = (orientation.Equals (default(Quaternion))) ? Quaternion.identity : orientation;
 		if (maxDistance < 0) {
@@ -805,9 +803,7 @@ public static class GizmosForPhysics3D
 
 	#region RIGIDBODY CASTING
 
-	/// <summary>
-	/// Visualize Rigidbody.SweepTest() - only for colliders of type BoxCollider,SphereCollider,CapsuleCollider and MeshColliders (convex only)
-	/// </summary>
+	/// <summary> /// Visualize Rigidbody.SweepTest() - only for colliders of type BoxCollider,SphereCollider,CapsuleCollider and MeshColliders (convex only) /// </summary>
 	public static void Rigidbody_SweepTestAll (Rigidbody rigidbody, Vector3 direction, float maxDistance = Mathf.Infinity,
 	                                           QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal)
 	{

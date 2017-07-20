@@ -19,7 +19,7 @@ public class PhysXOverlapBox : MonoBehaviour
 
 	void OnDrawGizmos ()
 	{
-		GizmosForPhysics3D.DrawOverlapBox (overlapedColliders: overlapedColliders, center: center, halfExtents: halfExtents, orientation: orientation);
+//		GizmosForPhysics3D.DrawOverlapBox (overlapedColliders: overlapedColliders, center: center, halfExtents: halfExtents, orientation: orientation);
 		GizmosForPhysics3D.DrawOverlapBox (center: center, halfExtents: halfExtents, orientation: orientation);
 
 	}

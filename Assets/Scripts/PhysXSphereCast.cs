@@ -10,26 +10,24 @@ public class PhysXSphereCast : MonoBehaviour
 	[SerializeField]Ray ray;
 	
 	[SerializeField]float maxDistance;
-	RaycastHit hittedBySphere;
-	RaycastHit[] hittedBySphereTab;
+	RaycastHit hitBySphere;
 
-	void Update ()
-	{
-		bool czyTrafiloWCos =	Physics.SphereCast (origin: origin, radius: radius, direction: direction, hitInfo: out hittedBySphere, maxDistance: maxDistance);
-		bool czyTrafiloWCos2 =	Physics.SphereCast (ray: ray, radius: radius, hitInfo: out hittedBySphere, maxDistance: maxDistance);
-		
-		RaycastHit[] infoOWszystkichTrafionychColliderach;
-		hittedBySphereTab =	Physics.SphereCastAll (origin: origin, radius: radius, direction: direction, maxDistance: maxDistance);
-		hittedBySphereTab =	Physics.SphereCastAll (ray: ray, radius: radius, maxDistance: maxDistance);
-		
+	[Space (55)][Header ("Results:")]
+	[SerializeField]	 bool isHitSomething;
+	//	bool isHitSomethingR;
+
+	void FixedUpdate ()
+	{		
+		isHitSomething =	Physics.SphereCast (origin: origin, radius: radius, direction: direction, hitInfo: out hitBySphere, maxDistance: maxDistance);
+//		isHitSomethingR =	Physics.SphereCast (ray: ray, radius: radius, hitInfo: out hittedBySphere, maxDistance: maxDistance);			
 	}
 
 	void OnDrawGizmos ()
 	{
-		GizmosForPhysics3D.DrawSphereCast (hittedBySphere: hittedBySphere, origin: origin, radius: radius, direction: direction, maxDistance: maxDistance);
-		GizmosForPhysics3D.DrawSphereCast (hittedBySphere: hittedBySphere, ray: ray, radius: radius, maxDistance: maxDistance);
-		GizmosForPhysics3D.DrawSphereCastAll (origin: origin, radius: radius, direction: direction, maxDistance: maxDistance);
-		GizmosForPhysics3D.DrawSphereCastAll (hittedBySphere: hittedBySphereTab, ray: ray, radius: radius, maxDistance: maxDistance);
+		GizmosForPhysics3D.DrawSphereCast (origin: origin, radius: radius, direction: direction, maxDistance: maxDistance);
+//		GizmosForPhysics3D.DrawSphereCast (hitBySphere: hittedBySphere, origin: origin, radius: radius, direction: direction, maxDistance: maxDistance);
+//		GizmosForPhysics3D.DrawSphereCast (hitBySphere: hittedBySphere, ray: ray, radius: radius, maxDistance: maxDistance);
+
 
 		
 	}
