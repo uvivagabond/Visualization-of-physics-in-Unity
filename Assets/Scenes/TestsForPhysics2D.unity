@@ -136,7 +136,6 @@ Transform:
   - {fileID: 572322461}
   - {fileID: 1421868612}
   - {fileID: 1656332968}
-  - {fileID: 201909762}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -148,7 +147,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 63106666}
-  - component: {fileID: 63106667}
   m_Layer: 0
   m_Name: OverLapCapsule
   m_TagString: Untagged
@@ -169,21 +167,6 @@ Transform:
   m_Father: {fileID: 401404924}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &63106667
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 63106665}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b45155f5f460ba4e8a0aa0ea66c398d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  point0: {x: 0, y: 0, z: 0}
-  point1: {x: 0, y: 0, z: 0}
-  radius: 0
-  overlapedColliders: []
 --- !u!1 &116602659
 GameObject:
   m_ObjectHideFlags: 0
@@ -233,7 +216,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 142428413}
-  - component: {fileID: 142428414}
   m_Layer: 0
   m_Name: CapsuleCast
   m_TagString: Untagged
@@ -254,122 +236,6 @@ Transform:
   m_Father: {fileID: 1743583136}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &142428414
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 142428412}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1203b70f0ad067348becf36a1fe2ac05, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  point1: {x: 0, y: 0, z: 0}
-  point2: {x: -2, y: 0, z: 0}
-  radius: -0.87
-  direction: {x: 0, y: 1, z: 0}
-  maxDistance: 5
-  isHitSomething: 0
---- !u!1 &201909761
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 201909762}
-  - component: {fileID: 201909765}
-  - component: {fileID: 201909764}
-  - component: {fileID: 201909763}
-  - component: {fileID: 201909766}
-  m_Layer: 0
-  m_Name: Plane
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &201909762
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 201909761}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 40541628}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &201909763
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 201909761}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 1
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
---- !u!64 &201909764
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 201909761}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 0
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!33 &201909765
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 201909761}
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &201909766
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 201909761}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70730b8415dc58f40af5e468b28822bc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  origin: {x: 0, y: 3, z: 0}
-  direction: {x: 0, y: 1, z: 0}
-  end: 0
 --- !u!1 &249343033
 GameObject:
   m_ObjectHideFlags: 0
@@ -455,7 +321,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 572322461}
-  - component: {fileID: 572322462}
   m_Layer: 0
   m_Name: RayCast
   m_TagString: Untagged
@@ -476,21 +341,6 @@ Transform:
   m_Father: {fileID: 40541628}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &572322462
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 572322460}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 240ed4383f6fe7747bbdbf0e34588ff1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  origin: {x: 0, y: 0, z: 0}
-  direction: {x: 0, y: 1, z: 0}
-  maxDistance: 5.83
-  isSomethingHit: 0
 --- !u!1 &607953428
 GameObject:
   m_ObjectHideFlags: 0
@@ -499,7 +349,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 607953429}
-  - component: {fileID: 607953430}
   m_Layer: 0
   m_Name: SphereCast
   m_TagString: Untagged
@@ -520,22 +369,6 @@ Transform:
   m_Father: {fileID: 1743583136}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &607953430
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 607953428}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83f75b5b858c7d043a85baba280ceeb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  origin: {x: 1.36, y: 0, z: 0}
-  direction: {x: 0, y: 1, z: 0}
-  radius: 1.82
-  maxDistance: 0
-  isHitSomething: 0
 --- !u!1 &615792085
 GameObject:
   m_ObjectHideFlags: 0
@@ -544,7 +377,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 615792086}
-  - component: {fileID: 615792087}
   m_Layer: 0
   m_Name: CheckBox
   m_TagString: Untagged
@@ -565,21 +397,6 @@ Transform:
   m_Father: {fileID: 401404924}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &615792087
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 615792085}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 443fa0e5c472b3640aa64401df2cedba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  center: {x: 0, y: 0, z: 0}
-  halfExtents: {x: 2, y: 2, z: 2}
-  eulerAngles: {x: 0, y: 0, z: 0}
-  isBoxOverlapColliders: 0
 --- !u!1 &725954326
 GameObject:
   m_ObjectHideFlags: 0
@@ -713,7 +530,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 838516994}
-  - component: {fileID: 838516995}
   m_Layer: 0
   m_Name: CheckSphere
   m_TagString: Untagged
@@ -734,20 +550,6 @@ Transform:
   m_Father: {fileID: 401404924}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &838516995
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 838516993}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd7f9c2188d5d2a4f802f041eef33d60, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  position: {x: 0, y: 0, z: 0}
-  radius: 0
-  isSphereOverlapColliders: 0
 --- !u!1 &882369962
 GameObject:
   m_ObjectHideFlags: 0
@@ -756,7 +558,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 882369963}
-  - component: {fileID: 882369966}
   - component: {fileID: 882369965}
   m_Layer: 0
   m_Name: RigidbodySweepTest
@@ -797,21 +598,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 14
   m_CollisionDetection: 0
---- !u!114 &882369966
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 882369962}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff204542bab69f047b81b6e073ad27eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  origin: {x: 0, y: 0, z: 0}
-  direction: {x: 0, y: 1, z: 0}
-  maxDistance: 3
-  isSomethingHit: 0
 --- !u!1 &924571396
 GameObject:
   m_ObjectHideFlags: 0
@@ -820,7 +606,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 924571397}
-  - component: {fileID: 924571398}
   m_Layer: 0
   m_Name: CheckCapsule
   m_TagString: Untagged
@@ -841,22 +626,6 @@ Transform:
   m_Father: {fileID: 401404924}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &924571398
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 924571396}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0bf20b43ea9599f4ba1025181fa4f48c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  point0: {x: 0, y: 4, z: 0}
-  point1: {x: 0, y: 2, z: 0}
-  radius: 0.95
-  maxDistance: 0
-  isCapsuleOverlapSomething: 0
 --- !u!1 &1079470050
 GameObject:
   m_ObjectHideFlags: 0
@@ -1036,7 +805,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1421868612}
-  - component: {fileID: 1421868613}
   m_Layer: 0
   m_Name: LineCast
   m_TagString: Untagged
@@ -1057,20 +825,6 @@ Transform:
   m_Father: {fileID: 40541628}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1421868613
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1421868611}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4159949fbe02f740a30e21e6102ea5b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  start: {x: 0, y: 0, z: 0}
-  end: {x: 2.64, y: 2, z: 0}
-  isHitSomething: 0
 --- !u!1 &1428871701
 GameObject:
   m_ObjectHideFlags: 0
@@ -1120,7 +874,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1656332968}
-  - component: {fileID: 1656332969}
   - component: {fileID: 1656332970}
   m_Layer: 0
   m_Name: Collider_Raycast
@@ -1128,7 +881,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1656332968
 Transform:
   m_ObjectHideFlags: 0
@@ -1142,21 +895,6 @@ Transform:
   m_Father: {fileID: 40541628}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1656332969
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1656332967}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e88db40ac354101408fd6eb30a62139d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  origin: {x: 0, y: 0, z: 0}
-  direction: {x: 0, y: 1, z: 0}
-  maxDistance: 1.11
-  isSomethingHit: 0
 --- !u!65 &1656332970
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1177,7 +915,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1691867452}
-  - component: {fileID: 1691867453}
   m_Layer: 0
   m_Name: OverlapSphere
   m_TagString: Untagged
@@ -1198,20 +935,6 @@ Transform:
   m_Father: {fileID: 401404924}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1691867453
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1691867451}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c97f9edcc95902e42974f2f01dee9087, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  position: {x: 0, y: 0, z: 0}
-  radius: -0.89
-  overlapedColliders: []
 --- !u!1 &1743583135
 GameObject:
   m_ObjectHideFlags: 0
@@ -1251,7 +974,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1787341539}
-  - component: {fileID: 1787341540}
   m_Layer: 0
   m_Name: OverlapBox
   m_TagString: Untagged
@@ -1272,21 +994,6 @@ Transform:
   m_Father: {fileID: 401404924}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1787341540
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1787341538}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b4bf8db2ae8e5f49b491e2856ee575a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  center: {x: 0, y: 0, z: 0}
-  halfExtents: {x: 2, y: 2, z: 2}
-  eulerAngles: {x: 0, y: 0, z: 0}
-  overlapedColliders: []
 --- !u!1 &2088803661
 GameObject:
   m_ObjectHideFlags: 0
@@ -1295,7 +1002,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 2088803665}
-  - component: {fileID: 2088803662}
   m_Layer: 0
   m_Name: BoxCast
   m_TagString: Untagged
@@ -1303,23 +1009,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!114 &2088803662
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2088803661}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a26ce0bfab5ae54594942d9a6bf658a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  center: {x: 1.48, y: 0, z: 0}
-  halfExtents: {x: 1, y: 1.1, z: 1.01}
-  direction: {x: 0, y: 1, z: 0}
-  eulerAngles: {x: 0, y: 0, z: 33.27}
-  maxDistance: 5.9
-  isSomethingHit: 0
 --- !u!4 &2088803665
 Transform:
   m_ObjectHideFlags: 0

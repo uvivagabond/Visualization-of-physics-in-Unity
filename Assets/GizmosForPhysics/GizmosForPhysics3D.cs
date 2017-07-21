@@ -116,6 +116,16 @@ public static class GizmosForPhysics3D
 		DrawRaycast3DRaw (origin, direction, maxDistance, isHit);
 	}
 
+	public static void DrawCollider_Raycast (Collider collider, Ray ray, float maxDistance)
+	{
+		RaycastHit hitInfo;
+		if (!collider) {
+			return;
+		}
+		bool isHit = collider.Raycast (ray, out hitInfo, maxDistance);
+		DrawRaycast3DRaw (ray.origin, ray.direction, maxDistance, isHit);
+	}
+
 	static void DrawRaycast3DRaw (Vector3 origin, Vector3 direction, float maxDistance, bool isHit)
 	{		
 		if (maxDistance > 0f) {
@@ -390,7 +400,8 @@ public static class GizmosForPhysics3D
 		vertexes [6] = d;
 		vertexes [7] = b;
 		#region Drawing BoxCast3D
-		List<float> lenghtOProjectedVertexesOnDirection = new List<float> ();
+		List<float> lenghtOProjectedVertexesOnDirection = new List<float> (8);
+
 		for (int i = 0; i < 8; i++) {
 			float lenght = Vector3.Project (orientation * vertexes [i], direction).magnitude;
 			lenghtOProjectedVertexesOnDirection.Add (lenght);
@@ -481,19 +492,22 @@ public static class GizmosForPhysics3D
 		Vector3 capOff = direction * maxDistance;
 		Vector3 directionFromPoints = point1 - point2;
 		#region Drawing Hemispheres and line making from them capsule
+		int sign = (radius < 0) ? -1 : 1;
+
 		Gizmos.color = (isHit) ? hitColorO : nonHitColorB;
 		Gizmos.matrix = Matrix4x4.TRS (endPositionOfCapsule, Quaternion.identity, new Vector3 (1, 1, 1));
-		DrawHemispheresOfCapsule (point1 + capOff, point2 + capOff, radius);
+		DrawHemispheresOfCapsule (point1 + capOff, point2 + capOff, radius * sign);
 		Gizmos.matrix = Matrix4x4.identity;
 		DrawLineConnectingHS (point1 + distanceBetweenHS, point2 + distanceBetweenHS, radius);
 		Gizmos.color = (isHit) ? hitColorR : nonHitColorBaseG;
 		Gizmos.matrix = Matrix4x4.TRS (origin, Quaternion.identity, new Vector3 (1, 1, 1));
-		DrawHemispheresOfCapsule (point1, point2, radius);
+		DrawHemispheresOfCapsule (point1, point2, radius * sign);
 		Gizmos.matrix = Matrix4x4.identity;
 		DrawLineConnectingHS (point1, point2, radius);
 		#endregion
 		#region Draw connecting Lines
 		Gizmos.color = (isHit) ? hitColorR2 : nonHitColorB2;
+
 		DrawLinesConnectingCapsulesHS (point1, radius, direction, origin, capOff, directionFromPoints);
 		DrawLinesConnectingCapsulesHS (point2, radius, direction, origin, capOff, directionFromPoints, -1);
 		DrawLinesConnectingSideOfCapsule (point1, point2, direction, radius, maxDistance);
@@ -513,7 +527,7 @@ public static class GizmosForPhysics3D
 		directionOfHS = (point1 - point2);
 		Vector3 tangendOffset = tangentToDirectionOfHS * (radius) * sign;
 		binormalToDirectionOfHS = (Mathf.Abs (directionOfHS.z) > Mathf.Abs (directionOfHS.y)) ? tangendOffset * sign : binormalToDirectionOfHS;
-		float numberOfLines = Mathf.Abs ((point1 - point2).magnitude);
+		float numberOfLines = Mathf.Abs ((point1 - point2).magnitude) * 2;
 		Vector3 beginOfSideOfCapsule = point1 + binormalToDirectionOfHS * sign * radius;
 		Vector3 endOfSideOfCapsule = point1 + binormalToDirectionOfHS * sign * radius + distanceBetweenHS;
 
@@ -533,12 +547,13 @@ public static class GizmosForPhysics3D
 		float delta = GetDeltaForLoop (radius, isDotted);
 		float anglezRaw = Vector3.Angle (new Vector3 (0, directionFromPoints.y, directionFromPoints.z), Vector3.up);
 		float anglez = (directionFromPoints.z < 0) ? 360 - anglezRaw : anglezRaw;
-		for (int i = -5; i < 6; i++) {
+		for (int i = -5; i < 16; i++) {//6 /*/-*/ for diffrent angles not always work properly
 			Quaternion connectingLinesAngularOffset = Quaternion.AngleAxis (i * 18 + anglez, direction);
 			basePositionOfLine = connectingLinesAngularOffset * tangendOffset + point1;
 			endPositionOfLine = point1 + capOff + connectingLinesAngularOffset * tangendOffset;
 			Gizmos.DrawLine (basePositionOfLine, endPositionOfLine);
 		}
+
 	}
 
 	static void DrawLineConnectingHS (Vector3 point1, Vector3 point2, float radius)
@@ -786,17 +801,8 @@ public static class GizmosForPhysics3D
 			endPositionOfLine = connectingLinesAngularOffset * endPositionOfLine;
 		}
 		#endregion
-	}
+		Gizmos.matrix = Matrix4x4.identity;
 
-	#endregion
-
-	#region COLLIDER CASTING
-
-	public static void DrawRaycast (Collider collider, Ray ray, Vector3 direction, float maxDistance = Mathf.Infinity)
-	{
-		RaycastHit hitInfo;
-		bool isHit = collider.Raycast (ray, out hitInfo, maxDistance);
-		DrawRaycast3DRaw (ray.origin, ray.direction, maxDistance, isHit);
 	}
 
 	#endregion
@@ -921,6 +927,19 @@ public static class GizmosForPhysics3D
 	static	void DisplayWarningAboutMisingComponent (string nameOfMethod, Object obj)
 	{
 		Debug.LogWarning ("<b><size=13><color=#0392CF> In method </color><color=#CD1426FF>" + nameOfMethod + "</color><color=#FF3A08> - none colliders have been attached! </color></size></b>", obj);
+	}
+
+	#endregion
+
+	#region PLANE RAYCAST
+
+	public static void Plane_Raycast (Plane plane, Ray ray)
+	{
+		float end;
+		
+		bool isHit =	plane.Raycast (ray, out end);
+		ray.direction = (!isHit) ? -ray.direction : ray.direction;
+		DrawRaycast3DRaw (ray.origin, ray.direction, Mathf.Abs (end), isHit);
 	}
 
 	#endregion
