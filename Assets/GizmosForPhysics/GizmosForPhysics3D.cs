@@ -945,5 +945,22 @@ public static class GizmosForPhysics3D
 	#endregion
 
 	#endregion
+
+	#region OTHER
+
+	public static void VisualizeCenterOfMass (Rigidbody rigidbody)
+	{
+		if (rigidbody) {
+			Color temp = Gizmos.color;
+			Gizmos.color = hitColorO;
+			Gizmos.DrawWireSphere (rigidbody.worldCenterOfMass, 0.2f);
+			Gizmos.color = Color.red;
+			Gizmos.DrawSphere (rigidbody.worldCenterOfMass, 0.1f);
+			Gizmos.color = temp;
+		}
+	}
+
+	#endregion
+
 }
 

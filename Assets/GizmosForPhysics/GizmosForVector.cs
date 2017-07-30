@@ -1,0 +1,284 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public static class GizmosForVector
+{
+	#region Variables
+
+	static Color nonHitColorB2 = new Color (r: 0.129f, g: 0.108f, b: 0.922f, a: 0.25f);
+
+	#endregion
+
+	/// <summary>
+	/// Visualizes the cross.
+	/// </summary>
+	/// <param name="origin">Start position of vectors</param>
+	/// <param name="lhs">First Vector</param>
+	/// <param name="rhs">Second Vector</param>
+	/// <param name="realScale">If set to true vector will have true lenght otherwise 5 units</param>
+	public static void VisualizeCross (Vector3 origin, Vector3 lhs, Vector3 rhs, bool realScale = default(bool))
+	{
+		System.Text.StringBuilder sb = new System.Text.StringBuilder ();
+		Vector3 result = Vector3.Cross (lhs, rhs);
+
+		float lhsLenght = (realScale) ? lhs.magnitude : 5f;
+		float rhsLenght = (realScale) ? rhs.magnitude : 5f;
+		float resultLenght = (realScale) ? result.magnitude : 5f;
+
+		sb.AppendFormat ("lhs ({0}, {1}, {2})", System.Math.Round (lhs.x, 2), System.Math.Round (lhs.y, 2), System.Math.Round (lhs.z, 2));
+		DrawVector (origin, lhs, lhsLenght, Color.red, sb.ToString ());
+		sb.Remove (0, sb.Length);
+
+		sb.AppendFormat ("rhs ({0}, {1}, {2})", System.Math.Round (rhs.x, 2), System.Math.Round (rhs.y, 2), System.Math.Round (rhs.z, 2));
+		DrawVector (origin, rhs, rhsLenght, Color.green, sb.ToString ());
+		sb.Remove (0, sb.Length);
+
+		sb.AppendFormat ("result ({0}, {1}, {2})", System.Math.Round (result.x, 2), System.Math.Round (result.y, 2), System.Math.Round (result.z, 2));
+		DrawVector (origin, result, resultLenght, Color.blue, sb.ToString ());
+	}
+
+	/// <summary>
+	/// Visualizes the orthonormalize of vector.
+	/// </summary>
+	/// <param name="origin">Start position of vectors</param>
+	/// <param name="normal">Normal vector.</param>
+	/// <param name="lenght">Lenght of vectors</param>
+	public static void VisualizeOrthonormalize (Vector3 origin, Vector3 normal, float lenght = 5)
+	{		
+		Vector3 tangent = new Vector3 (0, 0, 0), binormal = new Vector3 (0, 0, 0);
+		Vector3.OrthoNormalize (ref normal, ref  tangent, ref binormal);
+		System.Text.StringBuilder sb = new System.Text.StringBuilder ();
+		lenght = Mathf.Clamp (lenght, 1, 20);
+		sb.AppendFormat ("normal ({0}, {1}, {2})", System.Math.Round (normal.x, 2), System.Math.Round (normal.y, 2), System.Math.Round (normal.z, 2));
+		DrawVector (origin, normal, lenght, Color.red, sb.ToString ());
+		sb.Remove (0, sb.Length);
+
+		sb.AppendFormat ("tangent ({0}, {1}, {2})", System.Math.Round (tangent.x, 2), System.Math.Round (tangent.y, 2), System.Math.Round (tangent.z, 2));
+		DrawVector (origin, tangent, lenght, Color.green, sb.ToString ());
+		sb.Remove (0, sb.Length);
+
+		sb.AppendFormat ("binormal ({0}, {1}, {2})", System.Math.Round (binormal.x, 2), System.Math.Round (binormal.y, 2), System.Math.Round (binormal.z, 2));
+		DrawVector (origin, binormal, lenght, Color.blue, sb.ToString ());
+	}
+
+	/// <summary>
+	/// /*Visualizes the project on plane.*/
+	/// </summary>
+	/// <param name="origin">Start position of lines</param>
+	/// <param name="vector">Vector to project</param>
+	/// <param name="planeNormal">Normal to plane</param>
+	/// <param name="realScale">If set to true vectors will have true lenght otherwise 5 units</param>
+	public static void VisualizeProjectOnPlane (Vector3 origin, Vector3 vector, Vector3 planeNormal, bool realScale = default(bool))
+	{
+		Color temp = Gizmos.color;					
+		Vector3 projected = Vector3.ProjectOnPlane (vector, planeNormal);
+		float vectorLenght = (realScale) ? vector.magnitude : 5f;
+		float projectedLenght = (realScale) ? projected.magnitude : projected.magnitude / vector.magnitude * 5f;
+		float planetNormalL = Vector3.Project (vector, planeNormal).magnitude;
+		float planeNormalLenght = (realScale) ? ((planetNormalL > 1) ? planetNormalL : 1)
+			: (planetNormalL > 1) ? Vector3.Project (vector.normalized * 5, planeNormal).magnitude : 5;
+
+		DrawVector (origin, vector, vectorLenght, Color.red, "vector");
+		DrawVector (origin, projected, projectedLenght, Color.yellow, "result");
+		DrawVector (origin, planeNormal, planeNormalLenght, nonHitColorB2, "planeNormal");
+		DrawPlane (origin, planeNormal, vectorLenght);
+		Gizmos.color = temp;
+	}
+
+	/// <summary>
+	/// Visualizes the reflected vector.
+	/// </summary>
+	/// <param name="originOfInDirection">Begin position of inDirection vector.</param>
+	/// <param name="inDirection">Vector to reflect.</param>
+	/// <param name="inNormal">Normal to plane (Vector3.Reflect() and this method need normalized value of inNormal).</param>
+	/// <param name="realScale">If set to true vectors will have true lenght otherwise 5 units</param>
+	public static void VisualizeReflect (Vector3 originOfInDirection, Vector3 inDirection, Vector3 inNormal, bool realScale = default(bool))
+	{
+		Vector3 enter = inDirection;
+		inDirection.Normalize ();
+		Color temp = Gizmos.color;					
+		Vector3 reflected = Vector3.Reflect (inDirection, inNormal);
+		float inDirectLenght = (realScale) ? inDirection.magnitude : 5f;
+
+		float projectedLenght = (realScale) ? reflected.magnitude : reflected.magnitude / inDirection.magnitude * 5f;
+
+		float planetNormalL = Vector3.Project (inDirection, inNormal).magnitude;
+		float inNormalLenght = (realScale) ? ((planetNormalL > 1) ? planetNormalL : 1)
+			: (planetNormalL > 1) ? Vector3.Project (inDirection.normalized * 5, inNormal).magnitude : 5;
+
+		DrawVector (originOfInDirection, inDirection, inDirectLenght, Color.red, "inDirection");
+		DrawVector (originOfInDirection + inDirection * inDirectLenght, reflected, projectedLenght, Color.green, "reflected");
+		DrawVector (originOfInDirection + inDirection * inDirectLenght, inNormal, inNormalLenght, nonHitColorB2, "inNormal");
+
+		DrawPlane (originOfInDirection + inDirection * inDirectLenght, inNormal, inDirectLenght);
+		Gizmos.color = temp;
+		#if UNITY_EDITOR
+		UnityEditor.Handles.Label (originOfInDirection, "origin");	
+
+		#endif
+	}
+
+	static void DrawPlane (Vector3 origin, Vector3 planeNormal, float vectorLenght)
+	{
+		Vector3 tangent = new Vector3 (0, 0, 0), binormal = new Vector3 (0, 0, 0);
+		Vector3.OrthoNormalize (ref planeNormal, ref tangent, ref binormal);
+		for (float i = 0.1f; i < 1.1f; i = i + 0.1f) {
+			Vector3 bt = origin + (tangent + binormal) * vectorLenght * i;
+			Vector3 bmt = origin + (-tangent + binormal) * vectorLenght * i;
+			Vector3 mbmt = origin + (-tangent - binormal) * vectorLenght * i;
+			Vector3 mbt = origin + (tangent - binormal) * vectorLenght * i;
+			Gizmos.color = nonHitColorB2;
+			Gizmos.DrawLine (bt, bmt);
+			Gizmos.DrawLine (bmt, mbmt);
+			Gizmos.DrawLine (mbmt, mbt);
+			Gizmos.DrawLine (mbt, bt);
+		}
+	}
+
+
+	public static void DrawVector (Vector3 origin, Vector3 direction, float vectorLenght, Color vectorColor, string name)
+	{
+		Color temp = Gizmos.color;
+		#if UNITY_EDITOR
+		direction.Normalize ();
+		GUIStyle g = new GUIStyle ();	
+		vectorColor.a = 1;
+		g.normal.textColor = vectorColor;
+		vectorColor.a = 0.5f;
+		Gizmos.color = vectorColor;
+		UnityEditor.Handles.color = vectorColor;
+		if (vectorLenght > 1) {
+			UnityEditor.Handles.ArrowHandleCap (0, origin + direction * (vectorLenght - 1), Quaternion.LookRotation (direction), 0.88f, EventType.Repaint);
+			Gizmos.DrawRay (origin, direction * (vectorLenght - 1));
+		} else {
+			UnityEditor.Handles.ArrowHandleCap (0, origin, Quaternion.LookRotation (direction), vectorLenght - 0.11f, EventType.Repaint);
+		}
+		UnityEditor.Handles.Label (origin + direction * (vectorLenght + 0.3f), name, g);	
+		Gizmos.color = temp;
+		#endif
+	}
+
+
+	public static void VisualizeSlerp (Vector3 startPosition, Vector3 endPosition)
+	{	
+
+		List<Vector3> points = new List<Vector3> ();
+		for (int i = 0; i < 100; i++) {
+			float t = i / 100f;
+			points.Add (Vector3.Slerp (startPosition, endPosition, t));
+		}
+		for (int i = 0; i < 99; i++) {	
+			if (i % 2 == 0)
+				Gizmos.DrawLine (points [i], points [i + 1]);			
+		}
+	}
+
+	public static void VisualizeSlerpUnclamped (Vector3 startPosition, Vector3 endPosition)
+	{	
+
+		List<Vector3> points = new List<Vector3> ();
+		for (int i = 0; i < 100; i++) {
+			float t = i / 100f;
+			points.Add (Vector3.SlerpUnclamped (startPosition, endPosition, t));
+		}
+		for (int i = 0; i < 99; i++) {	
+			if (i % 2 == 0)
+				Gizmos.DrawLine (points [i], points [i + 1]);			
+		}
+	}
+
+	/// <summary>
+	/// /*Visualizes trajectory of smooth damp - (we CAN'T set parameters when application is playing)*/
+	/// </summary>
+	/// <param name="current">Start position </param>
+	/// <param name="target">Target position.</param>
+	/// <param name="currentVelocity">Start velocity.</param>
+	/// <param name="smoothTime">We can't get values greater then 60s - or not full trajectory will be drawn</param>
+	/// <param name="maxSpeed">Max speed.</param>
+	public static void VisualizeSmoothDampPath (Vector3 current, Vector3 target, Vector3 currentVelocity, float smoothTime, 
+	                                            float maxSpeed = Mathf.Infinity)
+	{
+		Vector3 currentVelocityHardCoded = new Vector3 (0, 0, 0), currentPositionHardCoded;
+		#if UNITY_EDITOR
+		if (!UnityEditor.EditorApplication.isPlaying) {
+			currentVelocityHardCoded = currentVelocity;
+			currentPositionHardCoded = current;
+			EditorPrefsTagsForSmoothDamp.SaveVector (current, "current");
+			EditorPrefsTagsForSmoothDamp.SaveVector (currentVelocity, "currentVelocity");
+		} else {
+			currentPositionHardCoded = EditorPrefsTagsForSmoothDamp.LoadVector ("current");
+			currentVelocityHardCoded = EditorPrefsTagsForSmoothDamp.LoadVector ("currentVelocity");
+		}
+		#endif
+		int capacity = 148;
+		int iterations = 2000;
+		Vector3 temp;
+		Vector3 last = currentPositionHardCoded;
+		if (!UnityEditor.EditorApplication.isPlaying || !arePointsCached) {
+			for (int i = 0; i < iterations; i++) {
+				float t = i / (float)iterations;
+				temp = (Vector3.SmoothDamp ((i > 0) ? last : currentPositionHardCoded, target, ref currentVelocityHardCoded, smoothTime, maxSpeed, 0.1f));
+				last = temp;
+
+				if (i > 50 && i % 20 == 0) {
+					points [i / 20 + 46] = temp;
+				} else if (i < 50) {
+					points [i] = temp;
+				}
+			}
+			arePointsCached = true;
+		}
+		for (int i = 0; i < points.Length - 3; i++) {	
+			if (points [i] != null) {
+				Gizmos.DrawLine (points [i], points [i + 1]);//								
+			}
+		}
+		Gizmos.DrawLine (points [capacity - 3], target);	
+		Gizmos.DrawSphere (target, 0.5f);
+		#if UNITY_EDITOR
+		UnityEditor.Handles.Label (currentPositionHardCoded, "start Position");	
+		UnityEditor.Handles.Label (target, "target Position");	
+		#endif
+	}
+
+	static bool arePointsCached = false;
+	static Vector3[] points = new Vector3[148];
+	static Vector3 currentS, currentVelocityS;
+
+	public static class EditorPrefsTagsForSmoothDamp
+	{
+		#if UNITY_EDITOR
+		public static void SaveVector (Vector3 actualValue, string vectorName)
+		{	
+			System.Text.StringBuilder sb = new System.Text.StringBuilder ();
+			sb.AppendFormat ("{0}X", vectorName);
+			UnityEditor.EditorPrefs.SetFloat (sb.ToString (), actualValue.x);
+			sb.Remove (0, sb.Length);
+			sb.AppendFormat ("{0}Y", vectorName);
+			UnityEditor.EditorPrefs.SetFloat (sb.ToString (), actualValue.y);
+			sb.Remove (0, sb.Length);
+			sb.AppendFormat ("{0}Z", vectorName);
+			UnityEditor.EditorPrefs.SetFloat (sb.ToString (), actualValue.z);
+		}
+
+		public static Vector3 LoadVector (string vectorName)
+		{
+			System.Text.StringBuilder sb = new System.Text.StringBuilder ();
+			sb.AppendFormat ("{0}X", vectorName);
+			float x = UnityEditor.EditorPrefs.GetFloat (sb.ToString ());
+			sb.Remove (0, sb.Length);
+			sb.AppendFormat ("{0}Y", vectorName);
+			float y = UnityEditor.EditorPrefs.GetFloat (sb.ToString ());
+			sb.Remove (0, sb.Length);
+			sb.AppendFormat ("{0}Y", vectorName);
+			float z =	UnityEditor.EditorPrefs.GetFloat (sb.ToString ());
+			return new Vector3 (x, y, z);
+		}
+		#endif
+
+	}
+
+
+
+}
