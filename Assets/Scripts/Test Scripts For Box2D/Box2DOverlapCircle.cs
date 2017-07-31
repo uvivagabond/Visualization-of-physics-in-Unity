@@ -2,15 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Box2DOverlapCircle : MonoBehaviour {
+public class Box2DOverlapCircle : MonoBehaviour
+{
+	[SerializeField]Vector3 point;
+	[SerializeField]float radius;
+	RaycastHit2D hitByRayCast;
 
-	// Use this for initialization
-	void Start () {
-		
+	[Space (55)][Header ("Results:")]
+	[SerializeField]bool isSomethingHit;
+
+	void Update ()
+	{		
+		isSomethingHit = Physics2D.OverlapCircle (point: point, radius: radius);
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+
+	void OnDrawGizmos ()
+	{
+		GizmosForPhysics2D.DrawOverlapCircle (point: point, radius: radius);
 	}
 }

@@ -2,15 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Box2DOverlapBOx : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-		
-	}
+public class Box2DOverlapBOx : MonoBehaviour
+{
 	
-	// Update is called once per frame
-	void Update () {
-		
+	[SerializeField]Vector3 point;
+	[SerializeField]Vector3 size;
+	[SerializeField]float angle;
+	RaycastHit2D hitByRayCast;
+
+	[Space (55)][Header ("Results:")]
+	[SerializeField]bool isSomethingHit;
+
+	void Update ()
+	{		
+		isSomethingHit = Physics2D.OverlapBox (point: point, size: size, angle: angle);
+	}
+
+	void OnDrawGizmos ()
+	{
+		GizmosForPhysics2D.DrawOverlapBox (point: point, size: size, angle: angle);
 	}
 }

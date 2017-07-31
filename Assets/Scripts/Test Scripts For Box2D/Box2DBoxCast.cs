@@ -2,15 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Box2DBoxCast : MonoBehaviour {
+public class Box2DBoxCast : MonoBehaviour
+{
+	[SerializeField]Vector3 origin;
+	[SerializeField]Vector3 size;
+	[SerializeField]Vector3 direction;
+	[SerializeField]float angle = 0;
+	[SerializeField]float distance = 1;
 
-	// Use this for initialization
-	void Start () {
-		
+	RaycastHit2D hitByRayCast;
+
+	[Space (55)][Header ("Results:")]
+	[SerializeField]bool isSomethingHit;
+
+	void Update ()
+	{		
+		isSomethingHit = Physics2D.BoxCast (origin: origin, size: size, angle: angle, direction: direction, distance: distance);
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+
+	void OnDrawGizmos ()
+	{
+		GizmosForPhysics2D.DrawBoxCast (origin: origin, size: size, angle: angle, direction: direction, distance: distance);
 	}
 }

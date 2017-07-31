@@ -122,7 +122,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &153195219
 Transform:
   m_ObjectHideFlags: 0
@@ -217,7 +217,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 305535433}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.49, y: 4.91, z: -9.72}
+  m_LocalPosition: {x: -7.54, y: 4.91, z: -9.72}
   m_LocalScale: {x: 6.07, y: 4.05, z: 6.06}
   m_Children: []
   m_Father: {fileID: 0}
@@ -232,13 +232,15 @@ GameObject:
   m_Component:
   - component: {fileID: 372625152}
   - component: {fileID: 372625153}
+  - component: {fileID: 372625155}
+  - component: {fileID: 372625154}
   m_Layer: 0
   m_Name: RigidbodyCasting
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &372625152
 Transform:
   m_ObjectHideFlags: 0
@@ -246,7 +248,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 372625151}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 1.87, y: -0.53, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1478474100}
@@ -263,6 +265,59 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f79925698d7bae49850e9f354b193fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myRigidbody2D: {fileID: 372625155}
+  direction: {x: 0, y: 2.51, z: 0}
+  distance: 1
+  hitColliderCount: 0
+--- !u!60 &372625154
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 372625151}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0, y: 1}
+      - {x: -0.95105654, y: 0.30901697}
+      - {x: -0.5877852, y: -0.80901706}
+      - {x: 0.58778536, y: -0.80901694}
+      - {x: 0.9510565, y: 0.30901712}
+--- !u!50 &372625155
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 372625151}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &459679454
 GameObject:
   m_ObjectHideFlags: 0
@@ -272,13 +327,14 @@ GameObject:
   m_Component:
   - component: {fileID: 459679455}
   - component: {fileID: 459679456}
+  - component: {fileID: 459679457}
   m_Layer: 0
   m_Name: ColliderCasting
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &459679455
 Transform:
   m_ObjectHideFlags: 0
@@ -286,7 +342,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 459679454}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -1.24, y: -0.9, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1478474100}
@@ -303,6 +359,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba842c3c7d936c74594f2cd6d1e419ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myCollider2D: {fileID: 459679457}
+  direction: {x: 0, y: 1, z: 0}
+  distance: 2.92
+  ignoreSiblingsColliders: 0
+  hitColliderCount: 0
+--- !u!58 &459679457
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 459679454}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!1 &607001943
 GameObject:
   m_ObjectHideFlags: 0
@@ -318,7 +394,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &607001944
 Transform:
   m_ObjectHideFlags: 0
@@ -343,6 +419,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61d0d864f32fcf44ba4d4b517d7cd26a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  point: {x: -3.3, y: -1.52, z: 0}
+  radius: -0.05
+  isSomethingHit: 0
 --- !u!1 &1005864603
 GameObject:
   m_ObjectHideFlags: 0
@@ -357,7 +436,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1005864604
 Transform:
   m_ObjectHideFlags: 0
@@ -414,7 +493,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23df3f7eb63fc07439e9c0b87d952c17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  origin: {x: 0, y: 0, z: 0}
+  origin: {x: -2.94, y: 0, z: 0}
   direction: {x: 0, y: 1, z: 0}
   distance: 4
   isSomethingHit: 0
@@ -522,7 +601,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1198622615
 Transform:
   m_ObjectHideFlags: 0
@@ -547,6 +626,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1321f4141663e2541868868b38098bf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  point: {x: 1.83, y: -4.45, z: 0}
+  isSomethingHit: 0
 --- !u!1 &1214086676
 GameObject:
   m_ObjectHideFlags: 0
@@ -562,7 +643,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1214086677
 Transform:
   m_ObjectHideFlags: 0
@@ -587,6 +668,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0ae2f10a002d9a45a53637ff2413b55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  origin: {x: 3.57, y: 5.72, z: 0}
+  size: {x: 2.66, y: 1.24, z: 0}
+  capsuleDirection: 1
+  direction: {x: 0, y: 1, z: 0}
+  angle: 50.22
+  distance: 3.54
+  isSomethingHit: 0
 --- !u!1 &1278753987
 GameObject:
   m_ObjectHideFlags: 0
@@ -646,7 +734,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1292750423
 Transform:
   m_ObjectHideFlags: 0
@@ -671,6 +759,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81a7bc2dc8439e2439cc870547ba0b61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  point: {x: 3.78, y: 0, z: 0}
+  size: {x: 5.81, y: 0.79, z: 0}
+  capsuleDirection: 1
+  angle: 0
+  isSomethingHit: 0
 --- !u!1 &1478474099
 GameObject:
   m_ObjectHideFlags: 0
@@ -719,7 +812,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1559896356
 Transform:
   m_ObjectHideFlags: 0
@@ -744,6 +837,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0cf5214fd674f049869b4dbc0136333, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  point: {x: 5.15, y: 6.94, z: 0}
+  size: {x: 1, y: 1, z: 0}
+  angle: 0
+  isSomethingHit: 0
 --- !u!1 &1697329835
 GameObject:
   m_ObjectHideFlags: 0
@@ -759,7 +856,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1697329836
 Transform:
   m_ObjectHideFlags: 0
@@ -784,6 +881,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fb59c8d0734eb245a31319d295d253f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pointA: {x: -5.67, y: 10.08, z: 0}
+  pointB: {x: 0, y: 0, z: 0}
+  isSomethingHit: 0
 --- !u!1 &1831638755
 GameObject:
   m_ObjectHideFlags: 0
@@ -799,7 +899,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1831638756
 Transform:
   m_ObjectHideFlags: 0
@@ -824,6 +924,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c635b6c097206bb44a21d525413bb690, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  origin: {x: -2.08, y: 5.57, z: 0}
+  direction: {x: -0.59, y: 1, z: 0}
+  radius: 0.51
+  distance: 2.99
+  isSomethingHit: 0
 --- !u!1 &1877221399
 GameObject:
   m_ObjectHideFlags: 0
@@ -883,7 +988,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1881605079
 Transform:
   m_ObjectHideFlags: 0
@@ -908,3 +1013,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc6835d77ac9a51478a8adceaf20eea7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  origin: {x: 0, y: 5.27, z: 0}
+  size: {x: 1, y: 1, z: 0}
+  direction: {x: 0, y: 1, z: 0}
+  angle: 44.56
+  distance: 4.46
+  isSomethingHit: 0

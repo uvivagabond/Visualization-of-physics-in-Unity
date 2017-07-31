@@ -2,15 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Box2DOverlapArea : MonoBehaviour {
+public class Box2DOverlapArea : MonoBehaviour
+{
 
-	// Use this for initialization
-	void Start () {
-		
+	[SerializeField]Vector3 pointA;
+	[SerializeField]Vector3 pointB;
+
+	RaycastHit2D hitByRayCast;
+
+	[Space (55)][Header ("Results:")]
+	[SerializeField]bool isSomethingHit;
+
+	void Update ()
+	{		
+		isSomethingHit = Physics2D.OverlapArea (pointA: pointA, pointB: pointB);
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+
+	void OnDrawGizmos ()
+	{
+		GizmosForPhysics2D.DrawOverlapArea (pointA: pointA, pointB: pointB);
 	}
 }

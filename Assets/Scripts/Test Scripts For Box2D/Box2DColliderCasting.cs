@@ -2,15 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Box2DColliderCasting : MonoBehaviour {
+[ExecuteInEditMode]
+public class Box2DColliderCasting : MonoBehaviour
+{
 
-	// Use this for initialization
-	void Start () {
-		
+	[SerializeField]Collider2D myCollider2D;
+	[SerializeField]Vector3 direction;
+	[SerializeField]float distance = 1;
+	[SerializeField]bool ignoreSiblingsColliders = false;
+	RaycastHit2D[] hitByRayCast;
+	[Space (55)][Header ("Results:")]
+	[SerializeField]int hitColliderCount;
+
+	[SerializeField]
+
+	void Update ()
+	{		
+		hitColliderCount = myCollider2D.Cast (direction: direction, results: hitByRayCast, distance: distance, ignoreSiblingColliders: ignoreSiblingsColliders);
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+
+	void OnDrawGizmos ()
+	{
+		GizmosForPhysics2D.DrawCollider2D_Cast (collider: myCollider2D, direction: direction, distance: distance, ignoreSiblingColliders: ignoreSiblingsColliders);
 	}
 }

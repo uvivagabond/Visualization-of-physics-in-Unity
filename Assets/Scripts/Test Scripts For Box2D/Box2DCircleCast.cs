@@ -2,15 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Box2DCircleCast : MonoBehaviour {
+public class Box2DCircleCast : MonoBehaviour
+{
+	[SerializeField]Vector3 origin;
+	[SerializeField]Vector3 direction;
+	[SerializeField]float radius = 1;
+	[SerializeField]float distance = 1;
 
-	// Use this for initialization
-	void Start () {
-		
+	RaycastHit2D hitByRayCast;
+
+	[Space (55)][Header ("Results:")]
+	[SerializeField]bool isSomethingHit;
+
+	void Update ()
+	{		
+		isSomethingHit = Physics2D.CircleCast (origin: origin, radius: radius, direction: direction, distance: distance);
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+
+	void OnDrawGizmos ()
+	{
+		GizmosForPhysics2D.DrawCircleCast (origin: origin, radius: radius, direction: direction, distance: distance);
 	}
 }

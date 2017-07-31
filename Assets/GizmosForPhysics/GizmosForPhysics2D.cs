@@ -14,6 +14,8 @@ public static class GizmosForPhysics2D
 	static Color hitColorR2 = new Color (r: 1f, g: 0.058f, b: 0.11f, a: 0.15f);
 	static Color overlappedColorR = Color.red;
 	static Color nonOverlappedColorY = Color.yellow;
+	static Color fireBrick = new Color32 (178, 34, 34, 255);
+	static Color funkyBlue = new Color32 (30, 144, 255, 255);
 	const int AdditionalDots = 0;
 	const bool isDotted = false;
 	const float SmallInfinity = 100000f;
@@ -24,6 +26,32 @@ public static class GizmosForPhysics2D
 
 
 	#region Overlap Circle done
+
+	public static void  DrawOverlapCircle (Vector2 point, float radius,
+	                                       int layerMask = Physics2D.DefaultRaycastLayers, float minDepth = -Mathf.Infinity, float maxDepth = Mathf.Infinity)
+	{
+		Collider2D overlapedCollider2D = Physics2D.OverlapCircle (point, radius, layerMask, minDepth, maxDepth);
+		bool isOverlaped = (overlapedCollider2D != null);
+		DrawOverlapCircleFull (point, radius, isOverlaped);
+	}
+
+	public static void  DrawOverlapCircle (Collider2D overlapedCollider2D, Vector2 point, float radius)
+	{
+		bool isOverlaped = (overlapedCollider2D != null);
+		DrawOverlapCircleFull (point, radius, isOverlaped);
+	}
+
+	public static void  DrawOverlapCircle (Collider2D[] overlapedColliders2D, Vector2 point, float radius)
+	{
+		bool isOverlaped = (overlapedColliders2D != null && overlapedColliders2D.Length > 0);
+		DrawOverlapCircleFull (point, radius, isOverlaped);
+	}
+
+	public static void  DrawOverlapCircleAll (Collider2D[] overlapedColliders2D, Vector2 point, float radius)
+	{
+		bool isOverlaped = (overlapedColliders2D != null && overlapedColliders2D.Length > 0);
+		DrawOverlapCircleFull (point, radius, isOverlaped);
+	}
 
 	static void DrawOverlapCircleRaw (Vector2 point, float radius, bool isOverlaped)
 	{
@@ -45,45 +73,22 @@ public static class GizmosForPhysics2D
 		if (radius < 0) {
 			Gizmos.color = (isOverlaped) ? overlappedColorR : nonOverlappedColorY;
 			Gizmos.DrawSphere (point, 0.06f);
+			WriteStartEndLabels (point, "CircleCenter", Color.yellow);
 		} else {
 			DrawOverlapCircleRaw (point, radius, isOverlaped);
 		}
-	}
-
-	public static void  DrawOverlapCircle (Collider2D overlapedCollider2D, Vector2 point, float radius)
-	{
-		bool isOverlaped = (overlapedCollider2D != null);
-		DrawOverlapCircleFull (point, radius, isOverlaped);
-
-	}
-
-	public static void  DrawOverlapCircle (Collider2D[] overlapedColliders2D, Vector2 point, float radius)
-	{
-		bool isOverlaped = (overlapedColliders2D != null && overlapedColliders2D.Length > 0);
-		DrawOverlapCircleFull (point, radius, isOverlaped);
-	}
-
-	public static void  DrawOverlapCircleAll (Collider2D[] overlapedColliders2D, Vector2 point, float radius)
-	{
-		bool isOverlaped = (overlapedColliders2D != null && overlapedColliders2D.Length > 0);
-		DrawOverlapCircleFull (point, radius, isOverlaped);
 	}
 
 	#endregion
 
 	#region Overlap Capsule
 
-	static void DrawOverlapCapsuleRaw (Vector2 point, Vector2 size, CapsuleDirection2D direction, float angle, bool isOverlaped)
+	public static void  DrawOverlapCapsule (Vector2 point, Vector2 size, CapsuleDirection2D direction, float angle,
+	                                        int layerMask = Physics2D.DefaultRaycastLayers, float minDepth = -Mathf.Infinity, float maxDepth = Mathf.Infinity)
 	{
-		Gizmos.color = (isOverlaped) ? overlappedColorR : nonOverlappedColorY;
-		Vector3 sizeChanged = (direction == CapsuleDirection2D.Horizontal) ? new Vector3 (size.y, size.x) : (Vector3)size;
-		if (size.x > 0.1f && size.y > 0.01f) {
-			DrawCapsule (point, sizeChanged, direction, angle, true);
-		}
-		Gizmos.color = (isOverlaped) ? overlappedColorR : nonHitColorB;
-		Vector3 offset = new Vector3 (0.1f, 0.1f);
-		if (size.x > 0.1f && size.y > 0.1f)
-			DrawCapsule (point, sizeChanged - offset, direction, angle, true);
+		Collider2D overlapedCollider2D = Physics2D.OverlapCapsule (point, size, direction, angle, layerMask, minDepth, maxDepth);
+		bool isOverlaped = (overlapedCollider2D != null);
+		DrawOverlapCapsuleRaw (point, size, direction, angle, isOverlaped);		
 	}
 
 	public static void  DrawOverlapCapsule (Collider2D overlapedCollider2D, Vector2 point, Vector2 size, CapsuleDirection2D direction, float angle)
@@ -104,15 +109,31 @@ public static class GizmosForPhysics2D
 		DrawOverlapCapsuleRaw (point, size, direction, angle, isOverlaped);		
 	}
 
+	static void DrawOverlapCapsuleRaw (Vector2 point, Vector2 size, CapsuleDirection2D direction, float angle, bool isOverlaped)
+	{
+		Gizmos.color = (isOverlaped) ? overlappedColorR : nonOverlappedColorY;
+		Vector3 sizeChanged = (direction == CapsuleDirection2D.Horizontal) ? new Vector3 (size.y, size.x) : (Vector3)size;
+		if (size.x > 0.1f && size.y > 0.01f) {
+			DrawCapsule (point, sizeChanged, direction, angle, true);
+		}
+		Gizmos.color = (isOverlaped) ? overlappedColorR : nonHitColorB;
+		Vector3 offset = new Vector3 (0.1f, 0.1f);
+		if (size.x > 0.1f && size.y > 0.1f)
+			DrawCapsule (point, sizeChanged - offset, direction, angle, true);
+	}
+
 	#endregion
 
 	#region Overlap Point done
 
-	static void DrawOverlapPointRaw (Vector2 point, bool isOverlaped)
+	public static void  DrawOverlapPoint (Vector2 point,
+	                                      int layerMask = Physics2D.DefaultRaycastLayers, float minDepth = -Mathf.Infinity, float maxDepth = Mathf.Infinity)
 	{
-		Gizmos.color = (isOverlaped) ? overlappedColorR : nonOverlappedColorY;
-		Gizmos.DrawSphere (point, 0.08f);
+		Collider2D overlapedCollider2D = Physics2D.OverlapPoint (point, layerMask, minDepth, maxDepth);
+		bool isOverlaped = (overlapedCollider2D != null);
+		DrawOverlapPointRaw (point, isOverlaped);
 	}
+
 
 	public static void  DrawOverlapPoint (Collider2D overlapedCollider2D, Vector2 point)
 	{
@@ -132,20 +153,24 @@ public static class GizmosForPhysics2D
 		DrawOverlapPointRaw (point, isOverlaped);
 	}
 
+	static void DrawOverlapPointRaw (Vector2 point, bool isOverlaped)
+	{
+		Gizmos.color = (isOverlaped) ? overlappedColorR : nonOverlappedColorY;
+		Gizmos.DrawSphere (point, 0.08f);
+		WriteStartEndLabels (point, "point", Color.yellow);
+	}
+
 	#endregion
 
 	#region Overlap Box
 
-	static void DrawOverlapBoxFull (Vector3 point, Vector3 size, float angle, bool isOverlaped)
+	public static void DrawOverlapBox (Vector3 point, Vector3 size, float angle,
+	                                   int layerMask = Physics2D.DefaultRaycastLayers, float minDepth = -Mathf.Infinity, float maxDepth = Mathf.Infinity)
 	{
-		if (size.x < 0 || size.y < 0) {
-			Gizmos.color = (isOverlaped) ? overlappedColorR : nonOverlappedColorY;
-			Gizmos.DrawSphere (point, 0.06f);
-		} else {
-			DrawOverlapBoxRaw (point, size, angle, isOverlaped, true);
-		}
+		Collider2D overlapedCollider2D = Physics2D.OverlapBox (point, size, angle, layerMask, minDepth, maxDepth);
+		bool isOverlaped = (overlapedCollider2D != null);
+		DrawOverlapBoxFull (point, size, angle, isOverlaped);
 	}
-
 
 	public static void DrawOverlapBox (Collider2D overlapedCollider2D, Vector3 point, Vector3 size, float angle)
 	{
@@ -236,15 +261,28 @@ public static class GizmosForPhysics2D
 		}
 	}
 
+	static void DrawOverlapBoxFull (Vector3 point, Vector3 size, float angle, bool isOverlaped)
+	{
+		if (size.x < 0 || size.y < 0) {
+			Gizmos.color = (isOverlaped) ? overlappedColorR : nonOverlappedColorY;
+			Gizmos.DrawSphere (point, 0.06f);
+		} else {
+			DrawOverlapBoxRaw (point, size, angle, isOverlaped, true);
+		}
+	}
+
+
+
 	#endregion
 
 	#region Overlap Area done
 
-	static void DrawOverlapAreaRaw (Vector2 pointA, Vector2 pointB, bool isOverlaped)
+	public static void DrawOverlapArea (Vector2 pointA, Vector2 pointB,
+	                                    int layerMask = Physics2D.DefaultRaycastLayers, float minDepth = -Mathf.Infinity, float maxDepth = Mathf.Infinity)
 	{
-		Vector3 size = -pointA + pointB;
-		Vector3 center = (Vector3)pointA + size * 0.5f;
-		DrawOverlapBoxRaw (center, size, 0, isOverlaped, true);
+		Collider2D overlapedCollider2D = Physics2D.OverlapArea (pointA, pointB, layerMask, minDepth, maxDepth);
+		bool isOverlaped = (overlapedCollider2D != null);
+		DrawOverlapAreaRaw (pointA, pointB, isOverlaped);
 	}
 
 	public static void DrawOverlapArea (Collider2D overlapedCollider2D, Vector2 pointA, Vector2 pointB)
@@ -265,6 +303,14 @@ public static class GizmosForPhysics2D
 		DrawOverlapAreaRaw (pointA, pointB, isOverlaped);
 	}
 
+	static void DrawOverlapAreaRaw (Vector2 pointA, Vector2 pointB, bool isOverlaped)
+	{
+		Vector3 size = -pointA + pointB;
+		Vector3 center = (Vector3)pointA + size * 0.5f;
+		DrawOverlapBoxRaw (center, size, 0, isOverlaped, true);
+		WriteStartEndLabels (pointA, "pointA", pointB, "pointB");
+	}
+
 	#endregion
 
 	#endregion
@@ -273,9 +319,10 @@ public static class GizmosForPhysics2D
 
 	#region RayIntersection
 
-	public static void DrawGetRayIntersection (Ray ray, float distance = Mathf.Infinity)
+	public static void DrawGetRayIntersection (Ray ray, float distance = Mathf.Infinity,
+	                                           int layerMask = Physics2D.DefaultRaycastLayers)
 	{
-		RaycastHit2D hitInfo =	Physics2D.GetRayIntersection (ray, distance);
+		RaycastHit2D hitInfo =	Physics2D.GetRayIntersection (ray, distance, layerMask);
 		bool isHit = hitInfo.collider != null;
 		DrawRaycastRaw3D (ray.origin, ray.direction, distance, isHit);
 	}
@@ -313,9 +360,10 @@ public static class GizmosForPhysics2D
 
 	#region Ray casting
 
-	public static void DrawRayCast (Vector2 origin, Vector2 direction, float distance = Mathf.Infinity)
+	public static void DrawRayCast (Vector2 origin, Vector2 direction, float distance = Mathf.Infinity,
+	                                int layerMask = Physics2D.DefaultRaycastLayers, float minDepth = -Mathf.Infinity, float maxDepth = Mathf.Infinity)
 	{
-		RaycastHit2D hitInfo =	Physics2D.Raycast (origin, direction, distance);
+		RaycastHit2D hitInfo =	Physics2D.Raycast (origin, direction, distance, layerMask, minDepth, maxDepth);
 		bool isHit = hitInfo.collider != null;
 		DrawRaycastRaw (origin, direction, distance, isHit);
 	}
@@ -354,10 +402,11 @@ public static class GizmosForPhysics2D
 		Gizmos.color = (isHit) ? hitColorR : nonHitColorB;
 		direction = direction.normalized;
 		distance = (distance == Mathf.Infinity) ? 1000000f : distance;
-
 		Gizmos.DrawRay (origin, direction * distance);
-		Gizmos.DrawSphere (origin, 0.05f);
+		DrawStartSphere (origin);
 		Gizmos.color = Color.white;
+		WriteStartEndLabels (origin, "RayOrigin", funkyBlue);
+
 	}
 
 	static void DrawRaycastRaw (Vector2 origin, Vector2 direction, float distance, bool isHit)
@@ -366,17 +415,19 @@ public static class GizmosForPhysics2D
 		direction = direction.normalized;
 		distance = (distance == Mathf.Infinity) ? 1000000f : distance;
 		Gizmos.DrawRay (origin, direction * distance);
-		Gizmos.DrawSphere (origin, 0.05f);
+		DrawStartSphere (origin);
 		Gizmos.color = Color.white;
+		WriteStartEndLabels (origin, "origin", funkyBlue);
 	}
 
 	#endregion
 
 	#region Line casting
 
-	public static  void DrawLinecast (Vector3 start, Vector3 end)
+	public static  void DrawLinecast (Vector3 start, Vector3 end,
+	                                  int layerMask = Physics2D.DefaultRaycastLayers, float minDepth = -Mathf.Infinity, float maxDepth = Mathf.Infinity)
 	{
-		RaycastHit2D hitInfo =	Physics2D.Linecast (start, end);
+		RaycastHit2D hitInfo =	Physics2D.Linecast (start, end, layerMask, minDepth, maxDepth);
 		bool isHit = hitInfo.collider != null;
 		DrawLineCastRaw (start, end, isHit);
 	}
@@ -416,8 +467,9 @@ public static class GizmosForPhysics2D
 		end = new Vector3 (end.x, end.y);
 		Gizmos.color = (isHit) ? hitColorR : nonHitColorB;
 		Gizmos.DrawLine (start, end);
-		Gizmos.DrawSphere (start, 0.05f);
 		Gizmos.DrawSphere (end, 0.05f);
+		DrawStartSphere (start);
+		WriteStartEndLabels (start, "start", end, "end");
 	}
 
 	#endregion
@@ -428,11 +480,14 @@ public static class GizmosForPhysics2D
 
 	#region Box casting
 
-	public static void DrawBoxCastAll (RaycastHit2D[] hitInfos, Vector3 origin, Vector3 size, float angle, Vector3 direction, float distance = Mathf.Infinity)
+	public static void DrawBoxCast (Vector3 origin, Vector3 size, float angle, Vector3 direction, float distance = Mathf.Infinity,
+	                                int layerMask = Physics2D.DefaultRaycastLayers, float minDepth = -Mathf.Infinity, float maxDepth = Mathf.Infinity)
 	{
-		bool isHit = (hitInfos != null && hitInfos.Length > 0 && hitInfos [0].collider != null);
-		DrawBoxCastRaw (origin, size, angle, direction, distance, isHit);
+		RaycastHit2D hitInfo = Physics2D.BoxCast (origin, size, angle, direction, distance, layerMask, minDepth, maxDepth);
+		bool isHit = hitInfo.collider != null;
+		DrawBoxCastRaw (origin, size, angle, direction, distance, isHit);	
 	}
+
 
 	public static void DrawBoxCast (RaycastHit2D hitInfo, Vector3 origin, Vector3 size, float angle, Vector3 direction, float distance = Mathf.Infinity)
 	{
@@ -449,6 +504,12 @@ public static class GizmosForPhysics2D
 	{
 		bool isHit = (hitColliderCount > 0);		
 		DrawBoxCastRaw (origin, size, angle, direction, distance, isHit);	
+	}
+
+	public static void DrawBoxCastAll (RaycastHit2D[] hitInfos, Vector3 origin, Vector3 size, float angle, Vector3 direction, float distance = Mathf.Infinity)
+	{
+		bool isHit = (hitInfos != null && hitInfos.Length > 0 && hitInfos [0].collider != null);
+		DrawBoxCastRaw (origin, size, angle, direction, distance, isHit);
 	}
 
 	public static void DrawBoxCastNonAlloc (int hitColliderCount, Vector3 origin, Vector3 size, float angle, Vector3 direction, float distance = Mathf.Infinity)
@@ -551,6 +612,13 @@ public static class GizmosForPhysics2D
 
 	#region Capsule Casting
 
+	public static	void DrawCapsuleCast (Vector3 origin, Vector3 size, CapsuleDirection2D capsuleDirection, float angle, Vector3 direction, float distance = Mathf.Infinity,
+	                                    int layerMask = Physics2D.DefaultRaycastLayers, float minDepth = -Mathf.Infinity, float maxDepth = Mathf.Infinity)
+	{
+		RaycastHit2D hitInfo = Physics2D.CapsuleCast (origin, size, capsuleDirection, angle, direction, distance, layerMask, minDepth, maxDepth);
+		bool isHit = hitInfo.collider != null;
+		DrawCapsuleCastRaw (origin, size, capsuleDirection, angle, direction, distance, isHit);
+	}
 
 	public static	void DrawCapsuleCast (RaycastHit2D hitInfo, Vector3 origin, Vector3 size, CapsuleDirection2D capsuleDirection, float angle, Vector3 direction, float distance = Mathf.Infinity)
 	{
@@ -563,7 +631,7 @@ public static class GizmosForPhysics2D
 		DrawCapsuleCastRaw (origin, size, capsuleDirection, angle, direction, distance, hitInfo);
 	}
 
-	public static	void DrawCapsuleCast (int hitColliderCount, Vector3 origin, Vector3 size, CapsuleDirection2D capsuleDirection, float angle, Vector3 direction, float distance = Mathf.Infinity)
+	public static void DrawCapsuleCast (int hitColliderCount, Vector3 origin, Vector3 size, CapsuleDirection2D capsuleDirection, float angle, Vector3 direction, float distance = Mathf.Infinity)
 	{
 		bool isHit = (hitColliderCount > 0);
 		DrawCapsuleCastRaw (origin, size, capsuleDirection, angle, direction, distance, isHit);
@@ -713,15 +781,24 @@ public static class GizmosForPhysics2D
 
 	#region Circle Casting
 
-	public static  	void DrawCircleCastAll (RaycastHit2D[] hitInfos, Vector3 origin, float radius, Vector3 direction, float distance = Mathf.Infinity)
+	public static  void DrawCircleCast (Vector3 origin, float radius, Vector3 direction, float distance = Mathf.Infinity,
+	                                    int layerMask = Physics2D.DefaultRaycastLayers, float minDepth = -Mathf.Infinity, float maxDepth = Mathf.Infinity)
 	{			
-		bool isHit = (hitInfos != null && hitInfos.Length > 0);
+		RaycastHit2D hitInfo = Physics2D.CircleCast (origin, radius, direction, distance, layerMask, minDepth, maxDepth);
+		bool isHit = hitInfo.collider != null;
 		DrawCircleCastRaw (origin, radius, direction, distance, isHit);
 	}
+
 
 	public static  void DrawCircleCast (RaycastHit2D hitInfo, Vector3 origin, float radius, Vector3 direction, float distance = Mathf.Infinity)
 	{			
 		bool isHit = hitInfo.collider != null;
+		DrawCircleCastRaw (origin, radius, direction, distance, isHit);
+	}
+
+	public static  	void DrawCircleCastAll (RaycastHit2D[] hitInfos, Vector3 origin, float radius, Vector3 direction, float distance = Mathf.Infinity)
+	{			
+		bool isHit = (hitInfos != null && hitInfos.Length > 0);
 		DrawCircleCastRaw (origin, radius, direction, distance, isHit);
 	}
 
@@ -890,6 +967,7 @@ public static class GizmosForPhysics2D
 		data.GetDataForCasting (out originOfEC, out  endOfEC, out  direction, out  rotation, out scale);
 		originOfEC += rotation * Vector3.Scale ((Vector3)edgeColider.offset, new Vector3 (scale.x, scale.y));
 		endOfEC += rotation * Vector3.Scale ((Vector3)edgeColider.offset, new Vector3 (scale.x, scale.y));
+
 		float edgeRadius = edgeColider.edgeRadius;
 		Vector3 tangentToDirection = Vector3.zero;
 		Vector2[] points = edgeColider.points;
@@ -908,7 +986,7 @@ public static class GizmosForPhysics2D
 		DrawCapsulesForEdgeOrCompositeCast (points, originOfEC, direction, edgeRadius);
 		Gizmos.color = (isHit) ? hitColorO : nonHitColorB;
 
-		DrawCapsulesForEdgeOrCompositeCast (points, endOfEC, direction, edgeRadius);
+		DrawCapsulesForEdgeOrCompositeCast (points, endOfEC, direction, edgeRadius); 
 		#endregion
 
 		#region Drawing Points of EdgeCollider
@@ -1206,5 +1284,25 @@ public static class GizmosForPhysics2D
 
 	#endregion
 
+	static void WriteStartEndLabels (Vector3 pos1, string name1, Vector3 pos2, string name2)
+	{
+		WriteStartEndLabels (pos1, name1, funkyBlue);
+		WriteStartEndLabels (pos2, name2, fireBrick);
+	}
+
+	static void WriteStartEndLabels (Vector3 startPosition, string name1, Color color)
+	{
+		#if UNITY_EDITOR
+		GUIStyle g = new GUIStyle ();
+		g.normal.textColor = color;
+		UnityEditor.Handles.Label (startPosition, name1, g);
+		#endif
+	}
+
+	static void DrawStartSphere (Vector3 origin)
+	{
+		Gizmos.color = (Physics2D.queriesStartInColliders) ? funkyBlue : Color.green;
+		Gizmos.DrawSphere (origin, 0.05f);
+	}
 }
 
