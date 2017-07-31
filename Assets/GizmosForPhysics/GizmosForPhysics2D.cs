@@ -273,6 +273,13 @@ public static class GizmosForPhysics2D
 
 	#region RayIntersection
 
+	public static void DrawGetRayIntersection (Ray ray, float distance = Mathf.Infinity)
+	{
+		RaycastHit2D hitInfo =	Physics2D.GetRayIntersection (ray, distance);
+		bool isHit = hitInfo.collider != null;
+		DrawRaycastRaw3D (ray.origin, ray.direction, distance, isHit);
+	}
+
 	public static void DrawGetRayIntersection (RaycastHit2D hitInfo, Ray ray, float distance = Mathf.Infinity)
 	{
 		bool isHit = hitInfo.collider != null;
@@ -306,7 +313,12 @@ public static class GizmosForPhysics2D
 
 	#region Ray casting
 
-
+	public static void DrawRayCast (Vector2 origin, Vector2 direction, float distance = Mathf.Infinity)
+	{
+		RaycastHit2D hitInfo =	Physics2D.Raycast (origin, direction, distance);
+		bool isHit = hitInfo.collider != null;
+		DrawRaycastRaw (origin, direction, distance, isHit);
+	}
 
 	public static void DrawRayCast (RaycastHit2D hitInfo, Vector2 origin, Vector2 direction, float distance = Mathf.Infinity)
 	{
@@ -362,31 +374,37 @@ public static class GizmosForPhysics2D
 
 	#region Line casting
 
+	public static  void DrawLinecast (Vector3 start, Vector3 end)
+	{
+		RaycastHit2D hitInfo =	Physics2D.Linecast (start, end);
+		bool isHit = hitInfo.collider != null;
+		DrawLineCastRaw (start, end, isHit);
+	}
 
-	public static  void DrawLineCast (RaycastHit2D hitInfo, Vector3 start, Vector3 end)
+	public static  void DrawLinecast (RaycastHit2D hitInfo, Vector3 start, Vector3 end)
 	{
 		bool isHit = hitInfo.collider != null;
 		DrawLineCastRaw (start, end, isHit);
 	}
 
-	public static  void DrawLineCast (bool hitInfo, Vector3 start, Vector3 end)
+	public static  void DrawLinecast (bool hitInfo, Vector3 start, Vector3 end)
 	{
 		DrawLineCastRaw (start, end, hitInfo);
 	}
 
-	public  static void DrawLineCast (int hitColliderCount, Vector3 start, Vector3 end)
+	public  static void DrawLinecast (int hitColliderCount, Vector3 start, Vector3 end)
 	{
 		bool isHit = (hitColliderCount > 0);
 		DrawLineCastRaw (start, end, isHit);
 	}
 
-	public static  void DrawLineCastAll (RaycastHit2D[] hitInfos, Vector3 start, Vector3 end)
+	public static  void DrawLinecastAll (RaycastHit2D[] hitInfos, Vector3 start, Vector3 end)
 	{
 		bool isHit = (hitInfos != null && hitInfos.Length > 0);
 		DrawLineCastRaw (start, end, isHit);
 	}
 
-	public static  void DrawLineCastNonAlloc (int hitColliderCount, Vector3 start, Vector3 end)
+	public static  void DrawLinecastNonAlloc (int hitColliderCount, Vector3 start, Vector3 end)
 	{
 		bool isHit = (hitColliderCount > 0);
 		DrawLineCastRaw (start, end, isHit);
