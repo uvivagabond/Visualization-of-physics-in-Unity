@@ -10,15 +10,13 @@ public class Box2DColliderCasting : MonoBehaviour
 	[SerializeField]Vector3 direction;
 	[SerializeField]float distance = 1;
 	[SerializeField]bool ignoreSiblingsColliders = false;
-	RaycastHit2D[] hitByRayCast;
+	RaycastHit2D[] hitByCollider2DCast;
 	[Space (55)][Header ("Results:")]
 	[SerializeField]int hitColliderCount;
 
-	[SerializeField]
-
 	void Update ()
 	{		
-		hitColliderCount = myCollider2D.Cast (direction: direction, results: hitByRayCast, distance: distance, ignoreSiblingColliders: ignoreSiblingsColliders);
+		hitColliderCount = myCollider2D.Cast (direction: direction, results: hitByCollider2DCast, distance: distance, ignoreSiblingColliders: ignoreSiblingsColliders);
 	}
 
 	void OnDrawGizmos ()

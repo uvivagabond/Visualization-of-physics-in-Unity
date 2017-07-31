@@ -8,7 +8,7 @@ public static class GizmosForPhysics2D
 
 	static Color nonHitColorB = Color.blue;
 	static Color nonHitColorB2 = new Color (r: 0.129f, g: 0.108f, b: 0.922f, a: 0.25f);
-	static Color nonHitColorG = Color.green;
+	static Color nonHitColorG = new Color (0.2f, 1f, 0.2f);
 	static Color hitColorR = Color.red;
 	static Color hitColorO = new Color (r: 1f, g: 0.341f, b: 0.133f, a: 1f);
 	static Color hitColorR2 = new Color (r: 1f, g: 0.058f, b: 0.11f, a: 0.15f);
@@ -25,7 +25,7 @@ public static class GizmosForPhysics2D
 	#region OVERLAPING QUERIES
 
 
-	#region Overlap Circle done
+	#region Overlap Circle
 
 	public static void  DrawOverlapCircle (Vector2 point, float radius,
 	                                       int layerMask = Physics2D.DefaultRaycastLayers, float minDepth = -Mathf.Infinity, float maxDepth = Mathf.Infinity)
@@ -59,12 +59,12 @@ public static class GizmosForPhysics2D
 		bool isExisting = (radius > 0) ? true : false;
 		if (isExisting) {
 			Gizmos.color = (isOverlaped) ? overlappedColorR : nonOverlappedColorY;
-			DrawCircleRaw (point, radius, true);
+			VisualizeCircle (point, radius, true);
 		}
 		isExisting = (radius - offset > 0) ? true : false;
 		if (isExisting) {
 			Gizmos.color = (isOverlaped) ? overlappedColorR : nonHitColorB;
-			DrawCircleRaw (point, radius - offset, true);
+			VisualizeCircle (point, radius - offset, true);
 		}
 	}
 
@@ -114,12 +114,12 @@ public static class GizmosForPhysics2D
 		Gizmos.color = (isOverlaped) ? overlappedColorR : nonOverlappedColorY;
 		Vector3 sizeChanged = (direction == CapsuleDirection2D.Horizontal) ? new Vector3 (size.y, size.x) : (Vector3)size;
 		if (size.x > 0.1f && size.y > 0.01f) {
-			DrawCapsule (point, sizeChanged, direction, angle, true);
+			VisualizeCapsule (point, sizeChanged, direction, angle, true);
 		}
 		Gizmos.color = (isOverlaped) ? overlappedColorR : nonHitColorB;
 		Vector3 offset = new Vector3 (0.1f, 0.1f);
 		if (size.x > 0.1f && size.y > 0.1f)
-			DrawCapsule (point, sizeChanged - offset, direction, angle, true);
+			VisualizeCapsule (point, sizeChanged - offset, direction, angle, true);
 	}
 
 	#endregion
@@ -403,7 +403,7 @@ public static class GizmosForPhysics2D
 		direction = direction.normalized;
 		distance = (distance == Mathf.Infinity) ? 1000000f : distance;
 		Gizmos.DrawRay (origin, direction * distance);
-		DrawStartSphere (origin);
+		DrawStartSphere (origin, isHit);
 		Gizmos.color = Color.white;
 		WriteStartEndLabels (origin, "RayOrigin", funkyBlue);
 
@@ -415,7 +415,7 @@ public static class GizmosForPhysics2D
 		direction = direction.normalized;
 		distance = (distance == Mathf.Infinity) ? 1000000f : distance;
 		Gizmos.DrawRay (origin, direction * distance);
-		DrawStartSphere (origin);
+		DrawStartSphere (origin, isHit);
 		Gizmos.color = Color.white;
 		WriteStartEndLabels (origin, "origin", funkyBlue);
 	}
@@ -468,7 +468,7 @@ public static class GizmosForPhysics2D
 		Gizmos.color = (isHit) ? hitColorR : nonHitColorB;
 		Gizmos.DrawLine (start, end);
 		Gizmos.DrawSphere (end, 0.05f);
-		DrawStartSphere (start);
+		DrawStartSphere (start, isHit);
 		WriteStartEndLabels (start, "start", end, "end");
 	}
 
@@ -548,7 +548,7 @@ public static class GizmosForPhysics2D
 		}
 		#region Drawing Cubes and Lines
 		Gizmos.matrix = Matrix4x4.TRS (origin, Quaternion.AngleAxis (angle, Vector3.forward), Vector3.one);
-		Gizmos.color = (isHit) ? hitColorR : nonHitColorG;
+		ChangeColorIfStartInCollider (isHit);
 		Gizmos.DrawWireCube (Vector3.zero, size);
 		Gizmos.matrix = Matrix4x4.TRS (endPositionOfBox, Quaternion.AngleAxis (angle, Vector3.forward), Vector3.one);
 		Gizmos.color = (isHit) ? hitColorR : nonHitColorB;
@@ -604,7 +604,6 @@ public static class GizmosForPhysics2D
 
 		directionToCorner4 = new Vector3 (-Mathf.Sin (Mathf.Deg2Rad * (angle - 315)) * halfOfDiagonalLenght,
 			Mathf.Cos (Mathf.Deg2Rad * (angle - 315)) * halfOfDiagonalLenght).normalized;
-		Debug.Log (directionToCorner1);
 	}
 
 
@@ -681,17 +680,17 @@ public static class GizmosForPhysics2D
 			//connecting capsules
 			#endregion
 			#region Drawing Capsules
-			Gizmos.color = (isHit) ? hitColorR : nonHitColorG;
+			ChangeColorIfStartInCollider (isHit);
 			//draw first capsule
-			DrawCapsule (origin, size, capsuleDirection, angle, false);
+			VisualizeCapsule (origin, size, capsuleDirection, angle, false);
 			Gizmos.color = (isHit) ? hitColorO : nonHitColorB;
 			//draw second capsule
-			DrawCapsule (endPositionOfCapsule, size, capsuleDirection, angle, false);
+			VisualizeCapsule (endPositionOfCapsule, size, capsuleDirection, angle, false);
 			#endregion
 		}
 	}
 
-	static void DrawCapsule (Vector3 origin, Vector3 size, CapsuleDirection2D capsuleDirection, float angle, bool isDotted = isDotted)
+	public static void VisualizeCapsule (Vector3 origin, Vector3 size, CapsuleDirection2D capsuleDirection, float angle, bool isDotted = isDotted)
 	{		
 		float alphaOffset = 0f; 	
 		float radius = (size.x < 0) ? 0f : size.x * 0.5f;
@@ -829,12 +828,12 @@ public static class GizmosForPhysics2D
 		Gizmos.color = (isHit) ? hitColorR2 : nonHitColorB2;
 		Gizmos.DrawLine (origin + tangent * radius, endPositionOfCircle + tangent * radius);
 		Gizmos.DrawLine (origin - tangent * radius, endPositionOfCircle - tangent * radius);
-		Gizmos.color = (isHit) ? hitColorR : nonHitColorG;
+		ChangeColorIfStartInCollider (isHit);
 		//draw first circle
-		DrawCircleRaw (origin, radius);
+		VisualizeCircle (origin, radius);
 		Gizmos.color = (isHit) ? hitColorO : nonHitColorB;
 		//draw second circle
-		DrawCircleRaw (endPositionOfCircle, radius);
+		VisualizeCircle (endPositionOfCircle, radius);
 
 		#region Visualization of tangents of direction
 		//		Gizmos.DrawLine (endPositionOfCircle, endPositionOfCircle + tangent * radius);
@@ -848,7 +847,7 @@ public static class GizmosForPhysics2D
 	}
 
 
-	static void DrawCircleRaw (Vector3 origin, float radius, bool isDotted = isDotted)
+	public static void VisualizeCircle (Vector3 origin, float radius, bool isDotted = isDotted)
 	{	
 		float delta = 0.1f;
 		if (isDotted && radius > 0.2f) {
@@ -944,12 +943,12 @@ public static class GizmosForPhysics2D
 				points [i] = rotation * points [i];
 				//				points [i] = (Vector3)Vector2.Scale (points [i], rotationI * scale);
 			}
-			Gizmos.color = (isHit) ? hitColorR : nonHitColorG;
+			ChangeColorIfStartInCollider (isHit);
 			DrawPolygonOrCompositeCollider (points, originOfCC);
 			Gizmos.color = (isHit) ? hitColorO : nonHitColorB;
 			DrawPolygonOrCompositeCollider (points, endOfCC);
 			DrawLinesConnectingEdgePolygonCompositeCast (direction, tangentToDirection, points, isHit, originOfCC, endOfCC, edgeRadius);
-			Gizmos.color = (isHit) ? hitColorR : nonHitColorG;
+			ChangeColorIfStartInCollider (isHit);
 
 			DrawCapsulesForEdgeOrCompositeCast (points, originOfCC, direction, edgeRadius, true);
 			Gizmos.color = (isHit) ? hitColorO : nonHitColorB;
@@ -965,8 +964,10 @@ public static class GizmosForPhysics2D
 		Quaternion rotation;
 		DataForCasting data = new DataForCasting (collider, direction, distance);
 		data.GetDataForCasting (out originOfEC, out  endOfEC, out  direction, out  rotation, out scale);
+
 		originOfEC += rotation * Vector3.Scale ((Vector3)edgeColider.offset, new Vector3 (scale.x, scale.y));
 		endOfEC += rotation * Vector3.Scale ((Vector3)edgeColider.offset, new Vector3 (scale.x, scale.y));
+//		endOfEC = new Vector3 (0, 1, 0);
 
 		float edgeRadius = edgeColider.edgeRadius;
 		Vector3 tangentToDirection = Vector3.zero;
@@ -981,7 +982,7 @@ public static class GizmosForPhysics2D
 
 		#region Draw Lines connecting egdes
 		DrawLinesConnectingEdgePolygonCompositeCast (direction, tangentToDirection, points, isHit, originOfEC, endOfEC, edgeRadius);
-		Gizmos.color = (isHit) ? hitColorR : nonHitColorG;
+		ChangeColorIfStartInCollider (isHit);
 
 		DrawCapsulesForEdgeOrCompositeCast (points, originOfEC, direction, edgeRadius);
 		Gizmos.color = (isHit) ? hitColorO : nonHitColorB;
@@ -990,10 +991,10 @@ public static class GizmosForPhysics2D
 		#endregion
 
 		#region Drawing Points of EdgeCollider
-		Gizmos.color = (isHit) ? hitColorR : nonHitColorG;
-		DrawEdgeCollider (points, originOfEC, rotation);
+		ChangeColorIfStartInCollider (isHit);
+		VisualizeEdgeLine (points, originOfEC, rotation);
 		Gizmos.color = (isHit) ? hitColorO : nonHitColorB;
-		DrawEdgeCollider (points, endOfEC, rotation);
+		VisualizeEdgeLine (points, endOfEC, rotation);
 		#endregion
 		Gizmos.matrix = Matrix4x4.identity;
 
@@ -1012,7 +1013,7 @@ public static class GizmosForPhysics2D
 			for (int i = 0; i < points.Length; i++) {
 				points [i] = rotation * Vector2.Scale (points [i], new Vector3 (scale.x, scale.y));
 			}
-			Gizmos.color = (isHit) ? hitColorR : nonHitColorG;
+			ChangeColorIfStartInCollider (isHit);
 			DrawPolygonOrCompositeCollider (points, originOfPC);
 			Gizmos.color = (isHit) ? hitColorO : nonHitColorB;
 			DrawPolygonOrCompositeCollider (points, endOfPC);
@@ -1071,7 +1072,7 @@ public static class GizmosForPhysics2D
 		} 
 		#endregion
 		#region Drawing BoxColliders
-		Gizmos.color = (isHit) ? hitColorR : nonHitColorG;
+		ChangeColorIfStartInCollider (isHit);
 		DrawBoxCollider (originOfBC, size, edgeRadius, rotation);
 		Gizmos.color = (isHit) ? hitColorO : nonHitColorB;
 		DrawBoxCollider (endOfBC, size, edgeRadius, rotation);
@@ -1139,7 +1140,7 @@ public static class GizmosForPhysics2D
 
 	}
 
-	static void DrawEdgeCollider (Vector2[] points, Vector3 origin, Quaternion rotation)
+	public static void VisualizeEdgeLine (Vector2[] points, Vector3 origin, Quaternion rotation)
 	{		
 		for (int i = 0; i < points.Length - 1; i++) {
 			Gizmos.DrawLine (origin + (Vector3)points [i], origin + (Vector3)points [i + 1]);
@@ -1168,6 +1169,10 @@ public static class GizmosForPhysics2D
 		Gizmos.DrawLine (originOfEC + allPointAndMagnitudes [numberOfPoints - 1].point - edgeVector, endOfEC + allPointAndMagnitudes [numberOfPoints - 1].point - edgeVector);
 
 	}
+
+	/// <summary>
+	/// Used to draw lines around colliders in case of edgeRadius greater then 0
+	/// </summary>
 
 	static void DrawCapsulesForEdgeOrCompositeCast (Vector2[] points, Vector3 origin, Vector3 direction, float radius, bool isItCompositeCollider = default(bool))
 	{
@@ -1284,6 +1289,8 @@ public static class GizmosForPhysics2D
 
 	#endregion
 
+	#region Colors and Labels
+
 	static void WriteStartEndLabels (Vector3 pos1, string name1, Vector3 pos2, string name2)
 	{
 		WriteStartEndLabels (pos1, name1, funkyBlue);
@@ -1299,10 +1306,28 @@ public static class GizmosForPhysics2D
 		#endif
 	}
 
-	static void DrawStartSphere (Vector3 origin)
+	static void DrawStartSphere (Vector3 origin, bool isHit)
 	{
-		Gizmos.color = (Physics2D.queriesStartInColliders) ? funkyBlue : Color.green;
+		ChangeColorIfStartInCollider (isHit);	
 		Gizmos.DrawSphere (origin, 0.05f);
+	}
+
+	static void ChangeColorIfStartInCollider (bool isHit)
+	{
+		Color qsic = (Physics2D.queriesStartInColliders) ? funkyBlue : nonHitColorG;
+		Gizmos.color = (isHit) ? hitColorR : qsic;
+	}
+
+	#endregion
+
+	public static void VisualizePolygonShape (Vector2[] points, Vector3 origin)
+	{
+		DrawPolygonOrCompositeCollider (points, origin);
+	}
+
+	public static void VisualizeRectangle (Vector2 center, Vector2 size)
+	{
+		Gizmos.DrawCube (center, size);
 	}
 }
 
