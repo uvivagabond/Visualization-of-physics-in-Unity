@@ -7,6 +7,10 @@ public static class GizmosForVector
 	#region Variables
 
 	static Color nonHitColorB2 = new Color (r: 0.129f, g: 0.108f, b: 0.922f, a: 0.25f);
+	static Color hitColorO = new Color (r: 0.18f, g: 0.88f, b: 0.49f, a: 1f);
+	static Color hitColorR2 = new Color (r: 1f, g: 0.058f, b: 0.01f, a: 0.25f);
+	static Color fireBrick = new Color32 (178, 34, 34, 255);
+	static Color funkyBlue = new Color32 (30, 144, 255, 255);
 
 	#endregion
 
@@ -159,33 +163,74 @@ public static class GizmosForVector
 		#endif
 	}
 
+	public static void VisualizeLerp (Vector3 startPosition, Vector3 endPosition)
+	{	
+		GetPointAndDrawInterpolation (Vector3.Lerp, startPosition, endPosition);
+		WriteStartEndLabels (startPosition, endPosition);
+	}
 
 	public static void VisualizeSlerp (Vector3 startPosition, Vector3 endPosition)
 	{	
-
-		List<Vector3> points = new List<Vector3> ();
-		for (int i = 0; i < 100; i++) {
-			float t = i / 100f;
-			points.Add (Vector3.Slerp (startPosition, endPosition, t));
-		}
-		for (int i = 0; i < 99; i++) {	
-			if (i % 2 == 0)
-				Gizmos.DrawLine (points [i], points [i + 1]);			
-		}
+		GetPointAndDrawInterpolation (Vector3.Slerp, startPosition, endPosition);
+		WriteStartEndLabels (startPosition, endPosition);
 	}
 
-	public static void VisualizeSlerpUnclamped (Vector3 startPosition, Vector3 endPosition)
+	public static void VisualizeSlerpUnclamped (Vector3 startPosition, Vector3 endPosition, int howFutherDrawLine = 1)
 	{	
+		GetPointAndDrawInterpolation (Vector3.SlerpUnclamped, startPosition, endPosition, howFutherDrawLine);
+		WriteStartEndLabels (startPosition, endPosition);
+	}
 
-		List<Vector3> points = new List<Vector3> ();
-		for (int i = 0; i < 100; i++) {
-			float t = i / 100f;
-			points.Add (Vector3.SlerpUnclamped (startPosition, endPosition, t));
+	public static void VisualizeLerpUnclamped (Vector3 startPosition, Vector3 endPosition, int howFutherDrawLine = 1)
+	{	
+		GetPointAndDrawInterpolation (Vector3.LerpUnclamped, startPosition, endPosition, howFutherDrawLine);
+		WriteStartEndLabels (startPosition, endPosition);
+	}
+
+	static void WriteStartEndLabels (Vector3 startPosition, Vector3 endPosition)
+	{
+		#if UNITY_EDITOR
+		GUIStyle g = new GUIStyle ();
+		g.normal.textColor = Color.blue;
+		UnityEditor.Handles.Label (startPosition, "startPosition", g);
+		g.normal.textColor = Color.red;
+		UnityEditor.Handles.Label (endPosition, "endPosition", g);
+		#endif
+	}
+
+
+	static void GetPointAndDrawInterpolation (System.Func<Vector3,Vector3,float,Vector3> func, Vector3 startPosition, Vector3 endPosition, int howMuchFuther = 1)
+	{
+		Color temp = Gizmos.color;
+		Gizmos.color = funkyBlue;
+		howMuchFuther = Mathf.Clamp (howMuchFuther, 1, 10);
+		int iterations = 100 * howMuchFuther;
+		List<Vector3> points = new List<Vector3> (100 * iterations);
+		for (int i = 0; i < iterations; i++) {
+			float t = i * howMuchFuther / (float)iterations;
+			points.Add (func (startPosition, endPosition, t));
+
 		}
-		for (int i = 0; i < 99; i++) {	
-			if (i % 2 == 0)
-				Gizmos.DrawLine (points [i], points [i + 1]);			
+		for (int i = 0; i < iterations - 1; i++) {
+			if (i % 2 == 0) {
+				Gizmos.DrawLine (points [i], points [i + 1]);
+			}
 		}
+		for (int i = 0; i < iterations - 1; i++) {
+			if (i % 100 == 0 && i > 100) {
+				Gizmos.color = hitColorO;
+				Gizmos.DrawSphere (points [i], 0.3f);
+			}
+		}
+		if (howMuchFuther > 1) {
+			Gizmos.DrawSphere (points [points.Count - 1], 0.3f);
+		}
+
+		Gizmos.color = Color.blue;
+		Gizmos.DrawSphere (startPosition, 0.3f);
+		Gizmos.color = Color.red;
+		Gizmos.DrawSphere (endPosition, 0.3f);
+		Gizmos.color = temp;
 	}
 
 	/// <summary>
@@ -199,6 +244,8 @@ public static class GizmosForVector
 	public static void VisualizeSmoothDampPath (Vector3 current, Vector3 target, Vector3 currentVelocity, float smoothTime, 
 	                                            float maxSpeed = Mathf.Infinity)
 	{
+		Color tempColor = Gizmos.color;
+		Gizmos.color = fireBrick;
 		Vector3 currentVelocityHardCoded = new Vector3 (0, 0, 0), currentPositionHardCoded;
 		#if UNITY_EDITOR
 		if (!UnityEditor.EditorApplication.isPlaying) {
@@ -235,10 +282,19 @@ public static class GizmosForVector
 			}
 		}
 		Gizmos.DrawLine (points [capacity - 3], target);	
-		Gizmos.DrawSphere (target, 0.5f);
+		Gizmos.DrawLine (points [0], currentPositionHardCoded);	
+		Gizmos.color = Color.red;
+		Gizmos.DrawSphere (target, 0.3f);
+		Gizmos.color = Color.blue;
+		Gizmos.DrawSphere (currentPositionHardCoded, 0.3f);
+
 		#if UNITY_EDITOR
+		GUIStyle g = new GUIStyle ();
+		g.normal.textColor = Color.blue;
 		UnityEditor.Handles.Label (currentPositionHardCoded, "start Position");	
+		g.normal.textColor = Color.red;
 		UnityEditor.Handles.Label (target, "target Position");	
+		Gizmos.color = tempColor;
 		#endif
 	}
 
@@ -246,7 +302,7 @@ public static class GizmosForVector
 	static Vector3[] points = new Vector3[148];
 	static Vector3 currentS, currentVelocityS;
 
-	public static class EditorPrefsTagsForSmoothDamp
+	static class EditorPrefsTagsForSmoothDamp
 	{
 		#if UNITY_EDITOR
 		public static void SaveVector (Vector3 actualValue, string vectorName)
