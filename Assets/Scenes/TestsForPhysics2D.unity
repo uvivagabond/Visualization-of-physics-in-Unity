@@ -212,7 +212,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!23 &305535434
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -330,7 +330,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myRigidbody2D: {fileID: 372625155}
   direction: {x: 0, y: 2, z: 0}
-  distance: 2
+  distance: 2.29
   hitColliderCount: 0
 --- !u!66 &372625154
 CompositeCollider2D:
@@ -348,7 +348,17 @@ CompositeCollider2D:
   m_GeometryType: 0
   m_GenerationType: 0
   m_EdgeRadius: 0
-  m_ColliderPaths: []
+  m_ColliderPaths:
+  - m_Collider: {fileID: 911072377}
+    m_ColliderPaths:
+    - - X: 130000000
+        Y: 10000000
+      - X: 110000000
+        Y: 10000000
+      - X: 110000000
+        Y: -10000000
+      - X: 130000000
+        Y: -10000000
   m_CompositePaths:
     m_Paths:
     - - {x: 13, y: 1}
@@ -525,7 +535,17 @@ CompositeCollider2D:
   m_GeometryType: 0
   m_GenerationType: 0
   m_EdgeRadius: 0.36
-  m_ColliderPaths: []
+  m_ColliderPaths:
+  - m_Collider: {fileID: 459679458}
+    m_ColliderPaths:
+    - - X: 5000000
+        Y: 5000000
+      - X: -5000000
+        Y: 5000000
+      - X: -5000000
+        Y: -5000000
+      - X: 5000000
+        Y: -5000000
   m_CompositePaths:
     m_Paths:
     - - {x: 0.5, y: 0.5}
@@ -1213,7 +1233,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1478474100
 Transform:
   m_ObjectHideFlags: 0

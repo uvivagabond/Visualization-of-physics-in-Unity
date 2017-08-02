@@ -23,23 +23,15 @@ public static class GizmosForVector
 	/// <param name="realScale">If set to true vector will have true lenght otherwise 5 units</param>
 	public static void VisualizeCross (Vector3 origin, Vector3 lhs, Vector3 rhs, bool realScale = default(bool))
 	{
-		System.Text.StringBuilder sb = new System.Text.StringBuilder ();
 		Vector3 result = Vector3.Cross (lhs, rhs);
 
 		float lhsLenght = (realScale) ? lhs.magnitude : 5f;
 		float rhsLenght = (realScale) ? rhs.magnitude : 5f;
 		float resultLenght = (realScale) ? result.magnitude : 5f;
 
-		sb.AppendFormat ("lhs ({0}, {1}, {2})", System.Math.Round (lhs.x, 2), System.Math.Round (lhs.y, 2), System.Math.Round (lhs.z, 2));
-		DrawVector (origin, lhs, lhsLenght, Color.red, sb.ToString ());
-		sb.Remove (0, sb.Length);
-
-		sb.AppendFormat ("rhs ({0}, {1}, {2})", System.Math.Round (rhs.x, 2), System.Math.Round (rhs.y, 2), System.Math.Round (rhs.z, 2));
-		DrawVector (origin, rhs, rhsLenght, Color.green, sb.ToString ());
-		sb.Remove (0, sb.Length);
-
-		sb.AppendFormat ("result ({0}, {1}, {2})", System.Math.Round (result.x, 2), System.Math.Round (result.y, 2), System.Math.Round (result.z, 2));
-		DrawVector (origin, result, resultLenght, Color.blue, sb.ToString ());
+		DrawVector (origin, lhs, lhsLenght, Color.red, "lhs");
+		DrawVector (origin, rhs, rhsLenght, Color.green, "rhs");
+		DrawVector (origin, result, resultLenght, Color.blue, "result");
 	}
 
 	/// <summary>
@@ -52,18 +44,10 @@ public static class GizmosForVector
 	{		
 		Vector3 tangent = new Vector3 (0, 0, 0), binormal = new Vector3 (0, 0, 0);
 		Vector3.OrthoNormalize (ref normal, ref  tangent, ref binormal);
-		System.Text.StringBuilder sb = new System.Text.StringBuilder ();
 		lenght = Mathf.Clamp (lenght, 1, 20);
-		sb.AppendFormat ("normal ({0}, {1}, {2})", System.Math.Round (normal.x, 2), System.Math.Round (normal.y, 2), System.Math.Round (normal.z, 2));
-		DrawVector (origin, normal, lenght, Color.red, sb.ToString ());
-		sb.Remove (0, sb.Length);
-
-		sb.AppendFormat ("tangent ({0}, {1}, {2})", System.Math.Round (tangent.x, 2), System.Math.Round (tangent.y, 2), System.Math.Round (tangent.z, 2));
-		DrawVector (origin, tangent, lenght, Color.green, sb.ToString ());
-		sb.Remove (0, sb.Length);
-
-		sb.AppendFormat ("binormal ({0}, {1}, {2})", System.Math.Round (binormal.x, 2), System.Math.Round (binormal.y, 2), System.Math.Round (binormal.z, 2));
-		DrawVector (origin, binormal, lenght, Color.blue, sb.ToString ());
+		DrawVector (origin, normal, lenght, Color.red, "normal");
+		DrawVector (origin, tangent, lenght, Color.green, "tangent");
+		DrawVector (origin, binormal, lenght, Color.blue, "binormal");
 	}
 
 	/// <summary>
@@ -143,8 +127,9 @@ public static class GizmosForVector
 
 	public static void DrawVector (Vector3 origin, Vector3 direction, float vectorLenght, Color vectorColor, string name)
 	{
-		Color temp = Gizmos.color;
 		#if UNITY_EDITOR
+		Color temp = Gizmos.color;
+		Color temp2 = UnityEditor.Handles.color;
 		direction.Normalize ();
 		GUIStyle g = new GUIStyle ();	
 		vectorColor.a = 1;
@@ -158,7 +143,10 @@ public static class GizmosForVector
 		} else {
 			UnityEditor.Handles.ArrowHandleCap (0, origin, Quaternion.LookRotation (direction), vectorLenght - 0.11f, EventType.Repaint);
 		}
-		UnityEditor.Handles.Label (origin + direction * (vectorLenght + 0.3f), name, g);	
+		System.Text.StringBuilder sb = new System.Text.StringBuilder ();
+		sb.AppendFormat (name + " ({0}, {1}, {2})", System.Math.Round (direction.x, 2), System.Math.Round (direction.y, 2), System.Math.Round (direction.z, 2));
+		UnityEditor.Handles.Label (origin + direction * (vectorLenght + 0.3f), sb.ToString (), g);
+		UnityEditor.Handles.color = temp2;
 		Gizmos.color = temp;
 		#endif
 	}
@@ -300,7 +288,6 @@ public static class GizmosForVector
 
 	static bool arePointsCached = false;
 	static Vector3[] points = new Vector3[148];
-	static Vector3 currentS, currentVelocityS;
 
 	static class EditorPrefsTagsForSmoothDamp
 	{
@@ -336,5 +323,36 @@ public static class GizmosForVector
 	}
 
 
+	static  void VisualizeAngle (Vector3 origin, Vector2 from, Vector2 to, float lenght = 5, bool realScale = default(bool))
+	{
+		float angle = Vector3.Angle (from, to);
+		Vector3 normal = Vector3.Cross (from, to).normalized;
+		DrawAngles (origin, normal, from, to, angle, "Angle");
+	}
 
+	public static  void VisualizeSignedAngle2D (Vector3 origin, Vector3 from, Vector3 to, bool realScale = default(bool))
+	{
+		float signedAngle = Vector2.SignedAngle (from, to);
+		Vector3 normal = Vector3.Cross (from, to).normalized;
+		DrawAngles (origin, normal, from, to, signedAngle, "SignedAngle");
+	}
+
+	public static  void VisualizeSignedAngle3D (Vector3 origin, Vector3 from, Vector3 to, Vector3 axis, bool realScale = default(bool))
+	{
+		Vector3 f = Vector3.ProjectOnPlane (from, axis);
+		Vector3 t = Vector3.ProjectOnPlane (to, axis);
+		float signedAngle = Vector3.SignedAngle (f, t, axis);
+		DrawAngles (origin, axis, f, t, signedAngle, "SignedAngle");
+	}
+
+	static void DrawAngles (Vector3 origin, Vector3 axis, Vector3 f, Vector3 t, float angle, string nameOfAngle)
+	{
+		DrawVector (origin, f, 5, Color.red, "from");
+		DrawVector (origin, t, 5, Color.blue, "to");
+		#if UNITY_EDITOR
+		UnityEditor.Handles.color = new Color32 (255, 0, 0, 25);
+		UnityEditor.Handles.Label (origin, nameOfAngle + "(deg): " + angle);
+		UnityEditor.Handles.DrawSolidArc (origin, axis, f, angle, 4);
+		#endif
+	}
 }

@@ -8,7 +8,7 @@ public static class GizmosForPhysics2D
 
 	static Color nonHitColorB = Color.blue;
 	static Color nonHitColorB2 = new Color (r: 0.129f, g: 0.108f, b: 0.922f, a: 0.25f);
-	static Color nonHitColorG = new Color (0.2f, 1f, 0.2f);
+	static Color nonHitColorG = new Color (r: 0.18f, g: 0.88f, b: 0.49f, a: 1f);
 	static Color hitColorR = Color.red;
 	static Color hitColorO = new Color (r: 1f, g: 0.341f, b: 0.133f, a: 1f);
 	static Color hitColorR2 = new Color (r: 1f, g: 0.058f, b: 0.11f, a: 0.15f);
@@ -1328,6 +1328,18 @@ public static class GizmosForPhysics2D
 	public static void VisualizeRectangle (Vector2 center, Vector2 size)
 	{
 		Gizmos.DrawCube (center, size);
+	}
+
+	public static void VisualizeCenterOfMass (Rigidbody2D rigidbody)
+	{
+		if (rigidbody) {
+			Color temp = Gizmos.color;
+			Gizmos.color = hitColorO;
+			Gizmos.DrawWireSphere (rigidbody.worldCenterOfMass, 0.2f);
+			Gizmos.color = Color.red;
+			Gizmos.DrawSphere (rigidbody.worldCenterOfMass, 0.1f);
+			Gizmos.color = temp;
+		}
 	}
 }
 

@@ -21,7 +21,7 @@ Physics2DSettings:
   m_DefaultContactOffset: 0.01
   m_AutoSimulation: 1
   m_QueriesHitTriggers: 1
-  m_QueriesStartInColliders: 1
+  m_QueriesStartInColliders: 0
   m_ChangeStopsCallbacks: 0
   m_CallbacksOnDisable: 1
   m_AlwaysShowColliders: 0
