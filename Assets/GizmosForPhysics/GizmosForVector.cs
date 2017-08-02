@@ -71,6 +71,8 @@ public static class GizmosForVector
 		DrawVector (origin, projected, projectedLenght, Color.yellow, "result");
 		DrawVector (origin, planeNormal, planeNormalLenght, nonHitColorB2, "planeNormal");
 		DrawPlane (origin, planeNormal, vectorLenght);
+		DrawDottedLine (vector.normalized * vectorLenght, projected.normalized * projectedLenght, 3, Color.green);
+
 		Gizmos.color = temp;
 	}
 
@@ -125,11 +127,12 @@ public static class GizmosForVector
 	}
 
 
-	public static void DrawVector (Vector3 origin, Vector3 direction, float vectorLenght, Color vectorColor, string name)
+	public static void DrawVector (Vector3 origin, Vector3 direction, float vectorLenght, Color vectorColor, string name, Vector3 labelOffset = default(Vector3))
 	{
 		#if UNITY_EDITOR
 		Color temp = Gizmos.color;
 		Color temp2 = UnityEditor.Handles.color;
+		Vector3 tempPosition = direction;
 		direction.Normalize ();
 		GUIStyle g = new GUIStyle ();	
 		vectorColor.a = 1;
@@ -141,11 +144,11 @@ public static class GizmosForVector
 			UnityEditor.Handles.ArrowHandleCap (0, origin + direction * (vectorLenght - 1), Quaternion.LookRotation (direction), 0.88f, EventType.Repaint);
 			Gizmos.DrawRay (origin, direction * (vectorLenght - 1));
 		} else {
-			UnityEditor.Handles.ArrowHandleCap (0, origin, Quaternion.LookRotation (direction), vectorLenght - 0.11f, EventType.Repaint);
+			UnityEditor.Handles.ArrowHandleCap (0, origin, Quaternion.LookRotation (direction), vectorLenght - 0.11f * vectorLenght, EventType.Repaint);
 		}
 		System.Text.StringBuilder sb = new System.Text.StringBuilder ();
-		sb.AppendFormat (name + " ({0}, {1}, {2})", System.Math.Round (direction.x, 2), System.Math.Round (direction.y, 2), System.Math.Round (direction.z, 2));
-		UnityEditor.Handles.Label (origin + direction * (vectorLenght + 0.3f), sb.ToString (), g);
+		sb.AppendFormat (name + " ({0}, {1}, {2})", System.Math.Round (tempPosition.x, 2), System.Math.Round (tempPosition.y, 2), System.Math.Round (tempPosition.z, 2));
+		UnityEditor.Handles.Label (origin + labelOffset + direction * (vectorLenght + 0.3f), sb.ToString (), g);
 		UnityEditor.Handles.color = temp2;
 		Gizmos.color = temp;
 		#endif
@@ -339,7 +342,7 @@ public static class GizmosForVector
 		DrawVector (origin, from, lenght, Color.red, "from");
 		DrawVector (origin, to, lenght, Color.blue, "to");
 		UnityEditor.Handles.color = new Color32 (255, 0, 0, 25);
-		UnityEditor.Handles.Label (origin, "SignedAngle2D(deg): " + signedAngle);
+		UnityEditor.Handles.Label (origin, "SignedAngle2D(deg): " + System.Math.Round (signedAngle, 0) + "\xB0");
 		UnityEditor.Handles.DrawSolidArc (origin, normal, from, angle, lenght * 0.8f);
 		#endif	
 	}
@@ -358,8 +361,34 @@ public static class GizmosForVector
 		DrawVector (origin, f, lenght, Color.red, "from");
 		DrawVector (origin, t, lenght, Color.blue, "to");
 		UnityEditor.Handles.color = new Color32 (255, 0, 0, 25);
-		UnityEditor.Handles.Label (origin, nameOfAngle + "(deg): " + angle);
+		UnityEditor.Handles.Label (origin, nameOfAngle + "(deg): " + System.Math.Round (angle, 0) + "\xB0");
 		UnityEditor.Handles.DrawSolidArc (origin, axis, f, angle, lenght * 0.8f);
+		#endif
+	}
+
+	public static void VisualizeProject (Vector3 origin, Vector3 vector, Vector3 onNormal, float lenght = 5, bool realScale = default(bool))
+	{
+		Vector3 result = Vector3.Project (vector, onNormal);
+
+		float vectorLenght = (realScale) ? vector.magnitude : lenght;
+		float onNormalLenght = 1;// (realScale) ? onNormal.magnitude : onNormal.magnitude / vector.magnitude * 5f;
+		float projectedLenght = (realScale) ? Vector3.Project (vector, result).magnitude : Vector3.Project (vector, result).magnitude * lenght / vector.magnitude;
+//		
+		DrawDottedLine (vector.normalized * vectorLenght, result.normalized * projectedLenght, 3, funkyBlue);
+
+		DrawVector (origin, vector, vectorLenght, Color.green, "vector");
+		DrawVector (origin, result, projectedLenght, Color.red, "result", new Vector3 (0, 0.5f));
+		DrawVector (origin, onNormal, onNormalLenght, funkyBlue, "onNormal");
+
+	}
+
+	static void DrawDottedLine (Vector3 p2, Vector3 p1, float screenSpaceSize, Color color)
+	{
+		#if UNITY_EDITOR
+		Color temp = UnityEditor.Handles.color;
+		UnityEditor.Handles.color = color;
+		UnityEditor.Handles.DrawDottedLine (p1, p2, screenSpaceSize);
+		UnityEditor.Handles.color = temp;
 		#endif
 	}
 }
