@@ -323,36 +323,43 @@ public static class GizmosForVector
 	}
 
 
-	static  void VisualizeAngle (Vector3 origin, Vector2 from, Vector2 to, float lenght = 5, bool realScale = default(bool))
+	public	static  void VisualizeAngle (Vector3 origin, Vector3 from, Vector3 to, float lenght = 5, bool realScale = default(bool))
 	{
 		float angle = Vector3.Angle (from, to);
 		Vector3 normal = Vector3.Cross (from, to).normalized;
-		DrawAngles (origin, normal, from, to, angle, "Angle");
+		DrawAngles (origin, normal, from, to, angle, "Angle", lenght);
 	}
 
-	public static  void VisualizeSignedAngle2D (Vector3 origin, Vector3 from, Vector3 to, bool realScale = default(bool))
+	public static  void VisualizeSignedAngle2D (Vector3 origin, Vector2 from, Vector2 to, float lenght = 5, bool realScale = default(bool))
 	{
 		float signedAngle = Vector2.SignedAngle (from, to);
+		float angle = Vector3.Angle (from, to);
 		Vector3 normal = Vector3.Cross (from, to).normalized;
-		DrawAngles (origin, normal, from, to, signedAngle, "SignedAngle");
+		#if UNITY_EDITOR
+		DrawVector (origin, from, lenght, Color.red, "from");
+		DrawVector (origin, to, lenght, Color.blue, "to");
+		UnityEditor.Handles.color = new Color32 (255, 0, 0, 25);
+		UnityEditor.Handles.Label (origin, "SignedAngle2D(deg): " + signedAngle);
+		UnityEditor.Handles.DrawSolidArc (origin, normal, from, angle, lenght * 0.8f);
+		#endif	
 	}
 
-	public static  void VisualizeSignedAngle3D (Vector3 origin, Vector3 from, Vector3 to, Vector3 axis, bool realScale = default(bool))
+	public static  void VisualizeSignedAngle3D (Vector3 origin, Vector3 from, Vector3 to, Vector3 axis, float lenght = 5, bool realScale = default(bool))
 	{
 		Vector3 f = Vector3.ProjectOnPlane (from, axis);
 		Vector3 t = Vector3.ProjectOnPlane (to, axis);
 		float signedAngle = Vector3.SignedAngle (f, t, axis);
-		DrawAngles (origin, axis, f, t, signedAngle, "SignedAngle");
+		DrawAngles (origin, axis, f, t, signedAngle, "SignedAngle3D", lenght);
 	}
 
-	static void DrawAngles (Vector3 origin, Vector3 axis, Vector3 f, Vector3 t, float angle, string nameOfAngle)
+	static void DrawAngles (Vector3 origin, Vector3 axis, Vector3 f, Vector3 t, float angle, string nameOfAngle, float lenght = 5)
 	{
-		DrawVector (origin, f, 5, Color.red, "from");
-		DrawVector (origin, t, 5, Color.blue, "to");
 		#if UNITY_EDITOR
+		DrawVector (origin, f, lenght, Color.red, "from");
+		DrawVector (origin, t, lenght, Color.blue, "to");
 		UnityEditor.Handles.color = new Color32 (255, 0, 0, 25);
 		UnityEditor.Handles.Label (origin, nameOfAngle + "(deg): " + angle);
-		UnityEditor.Handles.DrawSolidArc (origin, axis, f, angle, 4);
+		UnityEditor.Handles.DrawSolidArc (origin, axis, f, angle, lenght * 0.8f);
 		#endif
 	}
 }

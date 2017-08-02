@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Angle : MonoBehaviour
+public class SignedAngle3D : MonoBehaviour
 {
+
 	[SerializeField]	Vector3 originOfVectors;
 	[Space (50)]
 
@@ -18,11 +19,11 @@ public class Angle : MonoBehaviour
 
 	void Update ()
 	{
-		angle = Vector3.Angle (from: from, to: to);
+		angle = Vector3.SignedAngle (from: from, to: to, axis: axis);
 	}
 
 	void OnDrawGizmos ()
 	{
-		GizmosForVector.VisualizeAngle (origin: originOfVectors, from: from, to: to, realScale: useRealScale);
+		GizmosForVector.VisualizeSignedAngle3D (origin: originOfVectors, from: from, to: to, axis: axis, realScale: useRealScale);
 	}
 }
