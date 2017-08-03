@@ -21,10 +21,19 @@ public class Orthonormalize : MonoBehaviour
 	void Update ()
 	{
 		Vector3.OrthoNormalize (normal: ref normal, tangent: ref tangent, binormal: ref binormal);
+		ShowMoreReadableResults ();
 	}
 
 	void OnDrawGizmos ()
 	{
-		GizmosForVector.VisualizeOrthonormalize (origin: originOfVectors, normal: normal, lenght: lenght);
+		GizmosForVector.VisualizeOrthonormalize (origin: originOfVectors, normal: normal, tangent: tangent, lenght: lenght);
+//		GizmosForVector.VisualizeOrthonormalize (origin: originOfVectors, normal: normal, lenght: lenght);
+	}
+
+	void ShowMoreReadableResults ()
+	{
+		normal = normal.Round (2);
+		tangent = tangent.Round (2);
+		binormal = binormal.Round (2);
 	}
 }

@@ -39,11 +39,20 @@ public static class GizmosForVector
 	/// </summary>
 	/// <param name="origin">Start position of vectors</param>
 	/// <param name="normal">Normal vector.</param>
+	/// <param name="tangent">Tangent vector</param>
+	/// <param name="binormal">Binormal vector</param>
 	/// <param name="lenght">Lenght of vectors</param>
-	public static void VisualizeOrthonormalize (Vector3 origin, Vector3 normal, float lenght = 5)
-	{		
-		Vector3 tangent = new Vector3 (0, 0, 0), binormal = new Vector3 (0, 0, 0);
-		Vector3.OrthoNormalize (ref normal, ref  tangent, ref binormal);
+	public static void VisualizeOrthonormalize (Vector3 origin, Vector3 normal,	Vector3 tangent, float lenght = 5)
+	{
+		lenght = Mathf.Clamp (lenght, 1, 20);
+		Vector3 binormal = Vector3.Cross (normal, tangent);
+		DrawVector (origin, normal, lenght, Color.red, "normal");
+		DrawVector (origin, tangent, lenght, Color.green, "tangent");
+		DrawVector (origin, binormal, lenght, Color.blue, "binormal");
+	}
+
+	public static void VisualizeOrthonormalize (Vector3 origin, Vector3 normal,	Vector3 tangent, Vector3 binormal, float lenght = 5)
+	{
 		lenght = Mathf.Clamp (lenght, 1, 20);
 		DrawVector (origin, normal, lenght, Color.red, "normal");
 		DrawVector (origin, tangent, lenght, Color.green, "tangent");
@@ -86,8 +95,9 @@ public static class GizmosForVector
 	public static void VisualizeReflect (Vector3 originOfInDirection, Vector3 inDirection, Vector3 inNormal, bool realScale = default(bool))
 	{
 		Vector3 enter = inDirection;
+		Vector3 tempInDirection = inDirection;
 		inDirection.Normalize ();
-		Color temp = Gizmos.color;					
+		Color temp = Gizmos.color;		
 		Vector3 reflected = Vector3.Reflect (inDirection, inNormal);
 		float inDirectLenght = (realScale) ? inDirection.magnitude : 5f;
 
@@ -97,8 +107,8 @@ public static class GizmosForVector
 		float inNormalLenght = (realScale) ? ((planetNormalL > 1) ? planetNormalL : 1)
 			: (planetNormalL > 1) ? Vector3.Project (inDirection.normalized * 5, inNormal).magnitude : 5;
 
-		DrawVector (originOfInDirection, inDirection, inDirectLenght, Color.red, "inDirection");
-		DrawVector (originOfInDirection + inDirection * inDirectLenght, reflected, projectedLenght, Color.green, "reflected");
+		DrawVector (originOfInDirection, tempInDirection, inDirectLenght, Color.red, "inDirection");
+		DrawVector (originOfInDirection + inDirection * inDirectLenght, reflected * tempInDirection.magnitude, projectedLenght, Color.green, "reflected");
 		DrawVector (originOfInDirection + inDirection * inDirectLenght, inNormal, inNormalLenght, nonHitColorB2, "inNormal");
 
 		DrawPlane (originOfInDirection + inDirection * inDirectLenght, inNormal, inDirectLenght);
@@ -325,7 +335,14 @@ public static class GizmosForVector
 
 	}
 
-
+	/// <summary>
+	/// Visualizes the angle.
+	/// </summary>
+	/// <param name="origin">Start position of vectors</param>
+	/// <param name="from">Vector FROM which we measure angle.</param>
+	/// <param name="to">Vector TO which we measure angle.</param>
+	/// <param name="lenght">Lenght of drawed vectors.</param>
+	/// <param name="realScale">If set to true vector have original lenght</param>
 	public	static  void VisualizeAngle (Vector3 origin, Vector3 from, Vector3 to, float lenght = 5, bool realScale = default(bool))
 	{
 		float angle = Vector3.Angle (from, to);
@@ -333,6 +350,14 @@ public static class GizmosForVector
 		DrawAngles (origin, normal, from, to, angle, "Angle", lenght);
 	}
 
+	/// <summary>
+	/// Visualizes the signed angle 2D.
+	/// </summary>
+	/// <param name="origin">Start position of vectors</param>
+	/// <param name="from">Vector FROM which we measure angle.</param>
+	/// <param name="to">Vector TO which we measure angle.</param>
+	/// <param name="lenght">Lenght of drawed vectors.</param>
+	/// <param name="realScale">If set to true vector have original lenght</param>
 	public static  void VisualizeSignedAngle2D (Vector3 origin, Vector2 from, Vector2 to, float lenght = 5, bool realScale = default(bool))
 	{
 		float signedAngle = Vector2.SignedAngle (from, to);
@@ -347,12 +372,22 @@ public static class GizmosForVector
 		#endif	
 	}
 
+	/// <summary>
+	/// Visualizes the signed angle 3D.
+	/// </summary>
+	/// <param name="origin">Start position of vectors</param>
+	/// <param name="from">Vector FROM which we measure angle.</param>
+	/// <param name="to">Vector TO which we measure angle.</param>
+	/// <param name="axis">Normal to plane on which angle is measured and vector are cast</param>
+	/// <param name="lenght">Lenght of drawed vectors.</param>
+	/// <param name="realScale">If set to true vector have original lenght</param>
 	public static  void VisualizeSignedAngle3D (Vector3 origin, Vector3 from, Vector3 to, Vector3 axis, float lenght = 5, bool realScale = default(bool))
 	{
 		Vector3 f = Vector3.ProjectOnPlane (from, axis);
 		Vector3 t = Vector3.ProjectOnPlane (to, axis);
 		float signedAngle = Vector3.SignedAngle (f, t, axis);
 		DrawAngles (origin, axis, f, t, signedAngle, "SignedAngle3D", lenght);
+		DrawVector (origin, axis, lenght / 2f, Color.green, "axis");
 	}
 
 	static void DrawAngles (Vector3 origin, Vector3 axis, Vector3 f, Vector3 t, float angle, string nameOfAngle, float lenght = 5)
@@ -390,5 +425,13 @@ public static class GizmosForVector
 		UnityEditor.Handles.DrawDottedLine (p1, p2, screenSpaceSize);
 		UnityEditor.Handles.color = temp;
 		#endif
+	}
+
+	public static Vector3 Round (this Vector3 v, int digits)
+	{
+		v.x = (float)System.Math.Round (v.x, digits);
+		v.y = (float)System.Math.Round (v.y, digits);
+		v.z = (float)System.Math.Round (v.z, digits); 
+		return v;
 	}
 }
