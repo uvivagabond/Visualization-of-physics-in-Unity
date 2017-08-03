@@ -268,10 +268,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   originOfVectors: {x: 0, y: 0, z: 0}
-  vector: {x: 5, y: 5, z: 0}
-  planeNormal: {x: 0, y: 10.56, z: 0}
-  useRealScale: 0
-  result: {x: 5, y: 0, z: 0}
+  vector: {x: 5.58, y: 5, z: 2}
+  planeNormal: {x: 0, y: 11.24, z: 0}
+  useRealScale: 1
+  result: {x: 5.58, y: 0, z: 2}
 --- !u!4 &998328118
 Transform:
   m_ObjectHideFlags: 0
@@ -561,7 +561,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1389486297
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -574,9 +574,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   originOfVectors: {x: 0, y: 0, z: 0}
-  normal: {x: -0.18, y: 0.98, z: 0}
-  tangent: {x: 0.03, y: 0.01, z: -1}
-  binormal: {x: 0.98, y: 0.18, z: 0.03}
+  normal: {x: 1, y: 0, z: 0}
+  tangent: {x: -0, y: 1, z: 0}
+  binormal: {x: 0, y: -0, z: 1}
   lenght: 5
 --- !u!4 &1389486298
 Transform:
@@ -956,7 +956,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1995711971
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -969,10 +969,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   originOfVectors: {x: 0, y: 0, z: 0}
-  lhs: {x: 5.05, y: 1.49, z: 0}
-  rhs: {x: 2.57, y: 0, z: 0}
+  lhs: {x: 3.02, y: 0.13, z: 0}
+  rhs: {x: 0, y: 1.94, z: 0}
   useRealScale: 1
-  result: {x: 0, y: 0, z: 0}
+  result: {x: 0, y: 0, z: 5.8588}
 --- !u!4 &1995711972
 Transform:
   m_ObjectHideFlags: 0

@@ -12,7 +12,7 @@ public class Orthonormalize : MonoBehaviour
 	[SerializeField]	Vector3 normal = new Vector3 (0f, 0f, 0f);
 	[Space (50)]
 	[SerializeField]	Vector3 tangent = new Vector3 (0f, 0f, 0f);
-	[SerializeField]	Vector3 binormal = new Vector3 (0f, 0f, 0f);
+	[SerializeField]	Vector3 binormal = new Vector3 (0f, 1f, 0f);
 
 
 	[Space (50)]
