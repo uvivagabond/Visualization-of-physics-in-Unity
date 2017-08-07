@@ -383,21 +383,20 @@ public static class GizmosForVector
 	/// <param name="realScale">If set to true vector have original lenght</param>
 	public static  void VisualizeSignedAngle3D (Vector3 origin, Vector3 from, Vector3 to, Vector3 axis, float lenght = 5, bool realScale = default(bool))
 	{
-		Vector3 f = Vector3.ProjectOnPlane (from, axis);
-		Vector3 t = Vector3.ProjectOnPlane (to, axis);
-		float signedAngle = Vector3.SignedAngle (f, t, axis);
-		DrawAngles (origin, axis, f, t, signedAngle, "SignedAngle3D", lenght);
-		DrawVector (origin, axis, lenght / 2f, Color.green, "axis");
+		float signedAngle = Vector3.SignedAngle (from, to, axis);
+		float sign = Vector3.Dot (axis, Vector3.Cross (from.normalized, to.normalized));
+		DrawAngles (origin, -sign * Vector3.Cross (to, from), from, to, signedAngle, "SignedAngle3D", lenght);
+		DrawVector (origin, axis, lenght / 2f, Color.blue, "axis");
 	}
 
-	static void DrawAngles (Vector3 origin, Vector3 axis, Vector3 f, Vector3 t, float angle, string nameOfAngle, float lenght = 5)
+	static void DrawAngles (Vector3 origin, Vector3 axis, Vector3 from, Vector3 to, float angle, string nameOfAngle, float lenght = 5)
 	{
 		#if UNITY_EDITOR
-		DrawVector (origin, f, lenght, Color.red, "from");
-		DrawVector (origin, t, lenght, Color.blue, "to");
+		DrawVector (origin, from, lenght, Color.red, "from");
+		DrawVector (origin, to, lenght, Color.green, "to");
 		UnityEditor.Handles.color = new Color32 (255, 0, 0, 25);
 		UnityEditor.Handles.Label (origin, nameOfAngle + "(deg): " + System.Math.Round (angle, 0) + "\xB0");
-		UnityEditor.Handles.DrawSolidArc (origin, axis, f, angle, lenght * 0.8f);
+		UnityEditor.Handles.DrawSolidArc (origin, axis, from, angle, lenght * 0.8f);
 		#endif
 	}
 

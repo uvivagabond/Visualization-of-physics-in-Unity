@@ -27,7 +27,6 @@ public class Orthonormalize : MonoBehaviour
 	void OnDrawGizmos ()
 	{
 		GizmosForVector.VisualizeOrthonormalize (origin: originOfVectors, normal: normal, tangent: tangent, lenght: lenght);
-//		GizmosForVector.VisualizeOrthonormalize (origin: originOfVectors, normal: normal, lenght: lenght);
 	}
 
 	void ShowMoreReadableResults ()

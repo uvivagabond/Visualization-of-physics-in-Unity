@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class SignedAngle3D : MonoBehaviour
 {
 
@@ -12,8 +13,6 @@ public class SignedAngle3D : MonoBehaviour
 	[SerializeField]	Vector3 to = new Vector3 (0f, 0f, 0f);
 	[SerializeField]	Vector3 axis = new Vector3 (0f, 1f, 0f);
 
-	[Space (50)]
-	[SerializeField]bool useRealScale;
 	[Space (20)]
 	[SerializeField]	float angle;
 
@@ -24,6 +23,6 @@ public class SignedAngle3D : MonoBehaviour
 
 	void OnDrawGizmos ()
 	{
-		GizmosForVector.VisualizeSignedAngle3D (origin: originOfVectors, from: from, to: to, axis: axis, realScale: useRealScale);
+		GizmosForVector.VisualizeSignedAngle3D (origin: originOfVectors, from: from, to: to, axis: axis, lenght: 5);
 	}
 }
