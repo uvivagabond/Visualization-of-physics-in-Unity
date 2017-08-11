@@ -249,6 +249,7 @@ GameObject:
   m_Component:
   - component: {fileID: 297122389}
   - component: {fileID: 297122390}
+  - component: {fileID: 297122391}
   m_Layer: 0
   m_Name: Dot
   m_TagString: Untagged
@@ -281,10 +282,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   originOfVectors: {x: 0, y: 0, z: 0}
-  lhs: {x: 0, y: 3.97, z: 0}
-  rhs: {x: -1.03, y: 3.39, z: 0}
+  lhs: {x: -1.7, y: 8, z: 0}
+  rhs: {x: 4.96, y: 11.18, z: 0}
   useRealScale: 1
-  dotProduct: 13.458301
+  dotProduct: 81.008
+--- !u!70 &297122391
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 297122388}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 0.0001, y: 1.9}
+  m_Direction: 1
 --- !u!1 &998328116
 GameObject:
   m_ObjectHideFlags: 0

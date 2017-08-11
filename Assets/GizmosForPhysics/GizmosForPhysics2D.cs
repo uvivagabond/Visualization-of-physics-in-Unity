@@ -117,12 +117,12 @@ namespace UnityBerserkersGizmos
 			Gizmos.color = (isOverlaped) ? overlappedColorR : nonOverlappedColorY;
 			Vector3 sizeChanged = (direction == CapsuleDirection2D.Horizontal) ? new Vector3 (size.y, size.x) : (Vector3)size;
 			if (size.x > 0.1f && size.y > 0.01f) {
-				VisualizeCapsule (point, sizeChanged, direction, angle, true);
+				ShowCapsuleWithoutDirectionControl (point, sizeChanged, angle, true);
 			}
 			Gizmos.color = (isOverlaped) ? overlappedColorR : nonHitColorB;
 			Vector3 offset = new Vector3 (0.1f, 0.1f);
 			if (size.x > 0.1f && size.y > 0.1f)
-				VisualizeCapsule (point, sizeChanged - offset, direction, angle, true);
+				ShowCapsuleWithoutDirectionControl (point, sizeChanged - offset, angle, true);
 		}
 
 		#endregion
@@ -658,6 +658,9 @@ namespace UnityBerserkersGizmos
 
 			size = capsuleDirection == CapsuleDirection2D.Vertical ? new Vector3 (size.x, size.y) : new Vector3 (size.y, size.x);
 			Gizmos.matrix = Matrix4x4.identity;
+			if (size.y < 0) {
+				return;
+			}
 			float radius = size.x * 0.5f;
 			Vector3 endPositionOfCapsule = origin + direction.normalized * distance;
 			Vector3 offsetFromOrigin = GetArcOffsetFromOrigin (size, radius);//, capsuleDirection
@@ -685,15 +688,24 @@ namespace UnityBerserkersGizmos
 				#region Drawing Capsules
 				ChangeColorIfStartInCollider (isHit);
 				//draw first capsule
-				VisualizeCapsule (origin, size, capsuleDirection, angle, false);
+				ShowCapsuleWithoutDirectionControl (origin, size, angle, false);
 				Gizmos.color = (isHit) ? hitColorO : nonHitColorB;
 				//draw second capsule
-				VisualizeCapsule (endPositionOfCapsule, size, capsuleDirection, angle, false);
+				ShowCapsuleWithoutDirectionControl (endPositionOfCapsule, size, angle, false);
 				#endregion
 			}
 		}
 
 		public static void VisualizeCapsule (Vector3 origin, Vector3 size, CapsuleDirection2D capsuleDirection, float angle, bool isDotted = isDotted)
+		{
+			size = capsuleDirection == CapsuleDirection2D.Vertical ? new Vector3 (size.x, size.y) : new Vector3 (size.y, size.x);
+			if (size.y < 0) {
+				return;
+			}
+			ShowCapsuleWithoutDirectionControl (origin, size, angle, isDotted);
+		}
+
+		public static void ShowCapsuleWithoutDirectionControl (Vector3 origin, Vector3 size, float angle, bool isDotted = isDotted)
 		{		
 			float alphaOffset = 0f; 	
 			float radius = (size.x < 0) ? 0f : size.x * 0.5f;

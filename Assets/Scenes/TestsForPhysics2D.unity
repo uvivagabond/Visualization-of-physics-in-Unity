@@ -212,7 +212,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!23 &305535434
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -274,7 +274,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 305535433}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.23, y: -1.64, z: 0.02}
+  m_LocalPosition: {x: 5.84, y: 7.64, z: 0.02}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1123,9 +1123,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0ae2f10a002d9a45a53637ff2413b55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  origin: {x: 3.57, y: 5.72, z: 0}
-  size: {x: 2.66, y: 1.24, z: 0}
-  capsuleDirection: 1
+  origin: {x: 3.79, y: 5.21, z: 0}
+  size: {x: 2.12, y: 0.53, z: 0}
+  capsuleDirection: 0
   direction: {x: 0, y: 1, z: 0}
   angle: 50.22
   distance: 3.54
@@ -1424,8 +1424,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88a3dc924956560408683e526a82d85d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  start: {x: 2, y: -1.71, z: 0}
-  end: {x: -3.99, y: -4.46, z: 0}
+  start: {x: 10.34, y: 10.12, z: 0}
+  end: {x: 9.53, y: 6.11, z: 0}
   distance: 1
   isSomethingHit: 0
 --- !u!1 &1881605078
