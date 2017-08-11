@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityBerserkersGizmos;
 
 public class Box2DRayIntersection : MonoBehaviour
 {
@@ -22,6 +23,7 @@ public class Box2DRayIntersection : MonoBehaviour
 
 	void OnDrawGizmos ()
 	{
+
 		GizmosForPhysics2D.DrawGetRayIntersection (ray: new Ray (origin: origin, direction: direction), distance: distance);
 	}
 }

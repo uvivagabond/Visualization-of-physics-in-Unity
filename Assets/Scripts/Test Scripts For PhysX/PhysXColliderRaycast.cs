@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityBerserkersGizmos;
 
+[ExecuteInEditMode]
 public class PhysXColliderRaycast : MonoBehaviour
 {
 	[SerializeField]Vector3 origin;
@@ -21,12 +23,12 @@ public class PhysXColliderRaycast : MonoBehaviour
 		}		
 	}
 
-	void FixedUpdate ()
+	void Update ()
 	{
 		if (my_collider) {
 			ray = new Ray (origin, direction);
 
-			isSomethingHit =	my_collider.Raycast (ray: ray, hitInfo: out hitByRayCast, maxDistance: maxDistance);
+			isSomethingHit = my_collider.Raycast (ray: ray, hitInfo: out hitByRayCast, maxDistance: maxDistance);
 		}
 	}
 

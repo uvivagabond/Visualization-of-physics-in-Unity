@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityBerserkersGizmos;
 
 public class SmoothDamp : MonoBehaviour
 {
@@ -20,6 +21,5 @@ public class SmoothDamp : MonoBehaviour
 	{
 		GizmosForVector.VisualizeSmoothDampPath (current: transform.position, target: targetPosition, currentVelocity: velocity,
 			smoothTime: smoothTime, maxSpeed: maxSpeed);
-
 	}
 }

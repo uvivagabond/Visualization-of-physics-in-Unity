@@ -222,10 +222,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   originOfVectors: {x: 0, y: 0, z: 0}
-  vector: {x: 4.09, y: 2.21, z: 0}
+  vector: {x: 9.41, y: 2.21, z: 0}
   onNormal: {x: 1, y: 0, z: 0}
-  result: {x: 4.09, y: 0, z: 0}
-  useRealScale: 0
+  result: {x: 9.41, y: 0, z: 0}
+  useRealScale: 1
   angle: 0
 --- !u!4 &39786528
 Transform:
@@ -240,6 +240,51 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &297122388
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 297122389}
+  - component: {fileID: 297122390}
+  m_Layer: 0
+  m_Name: Dot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &297122389
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 297122388}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -4.6234617, y: 2.199931, z: 6.212759}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 14
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &297122390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 297122388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 113ad058df6ed6c42a015a93e24055a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  originOfVectors: {x: 0, y: 0, z: 0}
+  lhs: {x: 0, y: 3.97, z: 0}
+  rhs: {x: -1.03, y: 3.39, z: 0}
+  useRealScale: 1
+  dotProduct: 13.458301
 --- !u!1 &998328116
 GameObject:
   m_ObjectHideFlags: 0
@@ -952,7 +997,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1995711971
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -965,10 +1010,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   originOfVectors: {x: 0, y: 0, z: 0}
-  lhs: {x: 10.92, y: -0.93, z: 0}
+  lhs: {x: 1.18, y: -0.93, z: 0}
   rhs: {x: 1.07, y: 1, z: 0}
-  useRealScale: 1
-  result: {x: -0, y: 0, z: 11.9151}
+  useRealScale: 0
+  result: {x: -0, y: 0, z: 2.1751}
 --- !u!4 &1995711972
 Transform:
   m_ObjectHideFlags: 0

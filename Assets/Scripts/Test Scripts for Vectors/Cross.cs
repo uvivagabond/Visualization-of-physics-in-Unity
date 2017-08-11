@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityBerserkersGizmos;
 
 [ExecuteInEditMode]
 public class Cross : MonoBehaviour
@@ -11,7 +12,6 @@ public class Cross : MonoBehaviour
 
 	[SerializeField]	Vector3 lhs = new Vector3 (0f, 0f, 0f);
 	[SerializeField]	Vector3 rhs = new Vector3 (0f, 0f, 0f);
-
 
 	[Space (50)]
 	[SerializeField]bool useRealScale;
