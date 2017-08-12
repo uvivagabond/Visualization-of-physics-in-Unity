@@ -32,8 +32,6 @@ namespace UnityBerserkersGizmos
 			this.originOfCastShape = t.position + t.TransformDirection (ofset);
 			this.endOfCastShape = originOfCastShape + this.direction * distance;
 			this.rotation = t.rotation;
-			Debug.Log (t.name + " " + endOfCastShape.y);
-
 		}
 
 		internal void GetDataForCasting (out Vector3 origin, out  Vector3 endOfBC, out  Vector3 direction, out  Quaternion rotation, out  Vector3 scale)
