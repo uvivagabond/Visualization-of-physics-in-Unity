@@ -18,7 +18,8 @@ public class Box2DRayCast : MonoBehaviour
 
 	void Update ()
 	{		
-		isSomethingHit = Physics2D.Raycast (origin: origin, direction: direction, distance: distance);
+		isSomethingHit = Physics2D.Raycast (origin: origin, direction: direction, distance: distance,			
+			layerMask: Physics2D.DefaultRaycastLayers, minDepth: -Mathf.Infinity, maxDepth: Mathf.Infinity);
 	}
 
 	void OnDrawGizmos ()

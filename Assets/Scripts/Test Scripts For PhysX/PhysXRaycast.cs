@@ -12,14 +12,14 @@ public class PhysXRaycast : MonoBehaviour
 
 	RaycastHit hitByRayCast;
 
+	RaycastHit coTrafilismy;
+
 	[Space (55)][Header ("Results:")]
 	[SerializeField]bool isSomethingHit;
 
 	void FixedUpdate ()
 	{
 		isSomethingHit = Physics.Raycast (origin: origin, direction: direction, hitInfo: out hitByRayCast, maxDistance: maxDistance);
-//		Ray ray = new Ray (origin, direction);
-//		isSomethingHit = Physics.Raycast (ray: ray, hitInfo: out hitByRayCast, maxDistance: maxDistance);
 	}
 
 	void OnDrawGizmos ()
