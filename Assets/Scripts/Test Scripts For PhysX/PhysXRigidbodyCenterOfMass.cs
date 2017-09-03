@@ -16,6 +16,6 @@ public class PhysXRigidbodyCenterOfMass : MonoBehaviour
 
 	void OnDrawGizmos ()
 	{
-		GizmosForPhysics3D.VisualizeCenterOfMass (myRigidbody);
+		GizmosForPhysics3D.VisualizeWorldCenterOfMass (myRigidbody);
 	}
 }

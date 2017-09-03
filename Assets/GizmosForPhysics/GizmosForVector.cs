@@ -158,7 +158,7 @@ namespace UnityBerserkersGizmos
 		}
 
 
-		public static void DrawVector (Vector3 origin, Vector3 direction, float vectorLenght, Color vectorColor, string name, Vector3 labelOffset = default(Vector3))
+		public static void DrawVector (Vector3 origin, Vector3 direction, float vectorLenght, Color vectorColor, string name, Vector3 labelOffset = default(Vector3), bool showLabel = !default(bool))
 		{
 			#if UNITY_EDITOR
 			Color temp = Gizmos.color;
@@ -179,7 +179,9 @@ namespace UnityBerserkersGizmos
 			}
 			System.Text.StringBuilder sb = new System.Text.StringBuilder ();
 			sb.AppendFormat (name + " ({0}, {1}, {2})", System.Math.Round (tempPosition.x, 2), System.Math.Round (tempPosition.y, 2), System.Math.Round (tempPosition.z, 2));
-			UnityEditor.Handles.Label (origin + labelOffset + direction * (vectorLenght + 0.3f), sb.ToString (), g);
+			if (showLabel) {
+				UnityEditor.Handles.Label (origin + labelOffset + direction * (vectorLenght + 0.3f), sb.ToString (), g);
+			}
 			UnityEditor.Handles.color = temp2;
 			Gizmos.color = temp;
 			#endif
@@ -264,7 +266,7 @@ namespace UnityBerserkersGizmos
 		/// <param name="smoothTime">We can't get values greater then 60s - or not full trajectory will be drawn</param>
 		/// <param name="maxSpeed">Max speed.</param>
 		public static void VisualizeSmoothDampPath (Vector3 current, Vector3 target, Vector3 currentVelocity, float smoothTime, 
-		                                           float maxSpeed = Mathf.Infinity)
+		                                            float maxSpeed = Mathf.Infinity)
 		{
 			#if UNITY_EDITOR
 			Color tempColor = Gizmos.color;
@@ -468,7 +470,7 @@ namespace UnityBerserkersGizmos
 			#endif
 		}
 
-		static void ShowLabel (Vector3 origin, string name, Color color = default(Color), Vector3 labelOffset = default(Vector3))
+		public 	static void ShowLabel (Vector3 origin, string name, Color color = default(Color), Vector3 labelOffset = default(Vector3))
 		{
 			#if UNITY_EDITOR
 			Color temp2 = UnityEditor.Handles.color;

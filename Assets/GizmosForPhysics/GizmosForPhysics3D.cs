@@ -37,7 +37,8 @@ namespace UnityBerserkersGizmos
 		public static void DrawRaycast (Vector3 origin, Vector3 direction, float maxDistance = Mathf.Infinity
 		, int layerMask = Physics.DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal)
 		{
-			bool isHit = Physics.Raycast (origin, direction, maxDistance, layerMask, queryTriggerInteraction);
+			RaycastHit hitInfo;
+			bool isHit = Physics.Raycast (origin, direction, out hitInfo, maxDistance, layerMask, queryTriggerInteraction);
 			DrawRaycast3DRaw (origin, direction, maxDistance, isHit);
 		}
 
@@ -438,7 +439,8 @@ namespace UnityBerserkersGizmos
 		public static void DrawCapsuleCast (Vector3 point1, Vector3 point2, float radius, Vector3 direction, float maxDistance = Mathf.Infinity, 
 		                                    int layerMask = Physics.DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal)
 		{
-			bool isHit = Physics.CapsuleCast (point1, point2, radius, direction, maxDistance, layerMask, queryTriggerInteraction);
+			RaycastHit hitInfo;
+			bool isHit = Physics.CapsuleCast (point1, point2, radius, direction, out hitInfo, maxDistance, layerMask, queryTriggerInteraction);
 			DrawCapsuleCast3DRaw (point1, point2, radius, direction, maxDistance, isHit);
 		}
 
@@ -674,14 +676,16 @@ namespace UnityBerserkersGizmos
 		public static void DrawSphereCast (Vector3 origin, float radius, Vector3 direction, float maxDistance = Mathf.Infinity,
 		                                   int layerMask = Physics.DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal)
 		{
-			bool isHit = Physics.SphereCast (new Ray (origin, direction), radius, maxDistance, layerMask, queryTriggerInteraction);
+			RaycastHit hitInfo;
+			bool isHit = Physics.SphereCast (new Ray (origin, direction), radius, out hitInfo, maxDistance, layerMask, queryTriggerInteraction);
 			DrawSphereCast3DRaw (origin, radius, direction, maxDistance, isHit);
 		}
 
 		public static void DrawSphereCast (Ray ray, float radius, float maxDistance = Mathf.Infinity,
 		                                   int layerMask = Physics.DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal)
 		{
-			bool isHit = Physics.SphereCast (ray, radius, maxDistance, layerMask, queryTriggerInteraction);
+			RaycastHit hitInfo;
+			bool isHit = Physics.SphereCast (ray, radius, out hitInfo, maxDistance, layerMask, queryTriggerInteraction);
 			DrawSphereCast3DRaw (ray.origin, radius, ray.direction, maxDistance, isHit);
 		}
 
@@ -950,7 +954,7 @@ namespace UnityBerserkersGizmos
 
 		#region OTHER
 
-		public static void VisualizeCenterOfMass (Rigidbody rigidbody)
+		public static void VisualizeWorldCenterOfMass (Rigidbody rigidbody)
 		{
 			if (rigidbody) {
 				Color temp = Gizmos.color;
@@ -964,6 +968,40 @@ namespace UnityBerserkersGizmos
 			}
 		}
 
+		public static void VizualizeNormalVector (RaycastHit hitInfo, float lenght = 1f)
+		{
+			if (hitInfo.collider == null) {
+				return;
+			}
+			ShowNormalVector (hitInfo.point, hitInfo.normal, lenght);
+		}
+
+		public static void VizualizeNormalVector (ContactPoint contactPoint, float lenght = 1f)
+		{
+			if (!contactPoint.otherCollider) {
+				return;
+			}
+			ShowNormalVector (contactPoint.point, contactPoint.normal, lenght);
+		}
+
+		static void ShowNormalVector (Vector3 origin, Vector3 normal, float lenght = 1f)
+		{
+
+			Color color = new Color32 (102, 255, 0, 255);
+			GUIStyle g = new GUIStyle ();	
+			g.normal.textColor = color;
+
+			GizmosForVector.DrawVector (origin, normal, lenght, color, "normal");	
+			float signedAngle = Vector2.SignedAngle (Vector3.right, normal);
+			float angle = Vector2.Angle (Vector3.right, normal);
+			#if UNITY_EDITOR
+			Color temp2 = UnityEditor.Handles.color;
+			signedAngle = (signedAngle < 0) ? 360 - angle : signedAngle;
+			UnityEditor.Handles.color = color;
+			UnityEditor.Handles.Label (origin + normal * (lenght + 0.3f) - new Vector3 (-1.4f, 0.3f), System.Math.Round (signedAngle, 0) + "\xB0", g);
+			UnityEditor.Handles.color = temp2;
+			#endif
+		}
 
 
 		#endregion

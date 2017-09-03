@@ -12,7 +12,6 @@ public class PhysXRaycast : MonoBehaviour
 
 	RaycastHit hitByRayCast;
 
-	RaycastHit coTrafilismy;
 
 	[Space (55)][Header ("Results:")]
 	[SerializeField]bool isSomethingHit;

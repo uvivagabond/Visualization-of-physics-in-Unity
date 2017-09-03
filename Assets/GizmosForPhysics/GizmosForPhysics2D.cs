@@ -371,6 +371,14 @@ namespace UnityBerserkersGizmos
 			DrawRaycastRaw (origin, direction, distance, isHit);
 		}
 
+		public static void DrawRayCast (Vector2 origin, Vector2 direction, ContactFilter2D contactFilter, float distance = Mathf.Infinity)
+		{			
+			RaycastHit2D[] results = new RaycastHit2D[1];
+			int hitCollidersCount =	Physics2D.Raycast (origin, direction, contactFilter, results);
+			bool isHit = results [0] != null;
+			DrawRaycastRaw (origin, direction, distance, isHit);
+		}
+
 		public static void DrawRayCast (RaycastHit2D hitInfo, Vector2 origin, Vector2 direction, float distance = Mathf.Infinity)
 		{
 			bool isHit = hitInfo.collider != null;
@@ -382,9 +390,9 @@ namespace UnityBerserkersGizmos
 			DrawRaycastRaw (origin, direction, distance, hitInfo);
 		}
 
-		public static  void DrawRayCast (int hitColliderCount, Vector2 origin, Vector2 direction, float distance = Mathf.Infinity)
+		public static  void DrawRayCast (int hitCollidersCount, Vector2 origin, Vector2 direction, float distance = Mathf.Infinity)
 		{
-			bool isHit = (hitColliderCount > 0);
+			bool isHit = (hitCollidersCount > 0);
 			DrawRaycastRaw (origin, direction, distance, isHit);
 		}
 
@@ -394,9 +402,9 @@ namespace UnityBerserkersGizmos
 			DrawRaycastRaw (origin, direction, distance, isHit);
 		}
 
-		public static  void DrawRayCastNonAlloc (int hitColliderCount, Vector2 origin, Vector2 direction, float distance = Mathf.Infinity)
+		public static  void DrawRayCastNonAlloc (int hitCollidersCount, Vector2 origin, Vector2 direction, float distance = Mathf.Infinity)
 		{
-			bool isHit = (hitColliderCount > 0);
+			bool isHit = (hitCollidersCount > 0);
 			DrawRaycastRaw (origin, direction, distance, isHit);
 		}
 
@@ -435,6 +443,14 @@ namespace UnityBerserkersGizmos
 			DrawLineCastRaw (start, end, isHit);
 		}
 
+		public static  void DrawLinecast (Vector3 start, Vector3 end, ContactFilter2D contactFilter)
+		{			
+			RaycastHit2D[] results = new RaycastHit2D[1];
+			int hitCollidersCount =	Physics2D.Linecast (start, end, contactFilter, results);
+			bool isHit = results [0] != null;
+			DrawLineCastRaw (start, end, isHit);
+		}
+
 		public static  void DrawLinecast (RaycastHit2D hitInfo, Vector3 start, Vector3 end)
 		{
 			bool isHit = hitInfo.collider != null;
@@ -446,9 +462,9 @@ namespace UnityBerserkersGizmos
 			DrawLineCastRaw (start, end, hitInfo);
 		}
 
-		public  static void DrawLinecast (int hitColliderCount, Vector3 start, Vector3 end)
+		public  static void DrawLinecast (int hitCollidersCount, Vector3 start, Vector3 end)
 		{
-			bool isHit = (hitColliderCount > 0);
+			bool isHit = (hitCollidersCount > 0);
 			DrawLineCastRaw (start, end, isHit);
 		}
 
@@ -458,9 +474,9 @@ namespace UnityBerserkersGizmos
 			DrawLineCastRaw (start, end, isHit);
 		}
 
-		public static  void DrawLinecastNonAlloc (int hitColliderCount, Vector3 start, Vector3 end)
+		public static  void DrawLinecastNonAlloc (int hitCollidersCount, Vector3 start, Vector3 end)
 		{
-			bool isHit = (hitColliderCount > 0);
+			bool isHit = (hitCollidersCount > 0);
 			DrawLineCastRaw (start, end, isHit);
 		}
 
@@ -488,6 +504,14 @@ namespace UnityBerserkersGizmos
 		{
 			RaycastHit2D hitInfo = Physics2D.BoxCast (origin, size, angle, direction, distance, layerMask, minDepth, maxDepth);
 			bool isHit = hitInfo.collider != null;
+			DrawBoxCastRaw (origin, size, angle, direction, distance, isHit);	
+		}
+
+		public static void DrawBoxCast (Vector3 origin, Vector3 size, float angle, Vector3 direction, ContactFilter2D contactFilter, float distance = Mathf.Infinity)
+		{			
+			RaycastHit2D[] results = new RaycastHit2D[1];
+			int hitCollidersCount = Physics2D.BoxCast (origin, size, angle, direction, contactFilter, results, distance);
+			bool isHit = results [0] != null;
 			DrawBoxCastRaw (origin, size, angle, direction, distance, isHit);	
 		}
 
@@ -619,6 +643,14 @@ namespace UnityBerserkersGizmos
 		{
 			RaycastHit2D hitInfo = Physics2D.CapsuleCast (origin, size, capsuleDirection, angle, direction, distance, layerMask, minDepth, maxDepth);
 			bool isHit = hitInfo.collider != null;
+			DrawCapsuleCastRaw (origin, size, capsuleDirection, angle, direction, distance, isHit);
+		}
+
+		public static void DrawCapsuleCast (Vector3 origin, Vector3 size, CapsuleDirection2D capsuleDirection, float angle, Vector3 direction, ContactFilter2D contactFilter, float distance = Mathf.Infinity)
+		{			
+			RaycastHit2D[] results = new RaycastHit2D[1];
+			int hitCollidersCount = Physics2D.CapsuleCast (origin, size, capsuleDirection, angle, direction, contactFilter, results, distance);
+			bool isHit = results [0] != null;
 			DrawCapsuleCastRaw (origin, size, capsuleDirection, angle, direction, distance, isHit);
 		}
 
@@ -803,6 +835,13 @@ namespace UnityBerserkersGizmos
 			DrawCircleCastRaw (origin, radius, direction, distance, isHit);
 		}
 
+		public static  void DrawCircleCast (Vector3 origin, float radius, Vector3 direction, ContactFilter2D contactFilter, float distance = Mathf.Infinity)
+		{			
+			RaycastHit2D[] results = new RaycastHit2D[1];
+			int hitCollidersCount = Physics2D.CircleCast (origin, radius, direction, contactFilter, results, distance);
+			bool isHit = results [0] != null;
+			DrawCircleCastRaw (origin, radius, direction, distance, isHit);
+		}
 
 		public static  void DrawCircleCast (RaycastHit2D hitInfo, Vector3 origin, float radius, Vector3 direction, float distance = Mathf.Infinity)
 		{			
@@ -821,15 +860,15 @@ namespace UnityBerserkersGizmos
 			DrawCircleCastRaw (origin, radius, direction, distance, hitInfo);
 		}
 
-		public static  void DrawCircleCast (int hitColliderCount, Vector3 origin, float radius, Vector3 direction, float distance = Mathf.Infinity)
+		public static  void DrawCircleCast (int hitCollidersCount, Vector3 origin, float radius, Vector3 direction, float distance = Mathf.Infinity)
 		{
-			bool isHit = (hitColliderCount > 0);		
+			bool isHit = (hitCollidersCount > 0);		
 			DrawCircleCastRaw (origin, radius, direction, distance, isHit);
 		}
 
-		public static  void DrawCircleCastNonAlloc (int hitColliderCount, Vector3 origin, float radius, Vector3 direction, float distance = Mathf.Infinity)
+		public static  void DrawCircleCastNonAlloc (int hitCollidersCount, Vector3 origin, float radius, Vector3 direction, float distance = Mathf.Infinity)
 		{
-			bool isHit = (hitColliderCount > 0);		
+			bool isHit = (hitCollidersCount > 0);		
 			DrawCircleCastRaw (origin, radius, direction, distance, isHit);
 		}
 
@@ -895,10 +934,23 @@ namespace UnityBerserkersGizmos
 
 		#region Collider  Casting
 
-		public static void DrawCollider2D_Raycast (Collider2D collider, Vector2 direction, float distance = Mathf.Infinity)
+		public static void DrawCollider2D_Raycast (Collider2D collider, Vector2 direction, float distance = Mathf.Infinity,
+		                                           int layerMask = Physics2D.AllLayers, float minDepth = -Mathf.Infinity, float maxDepth = Mathf.Infinity)
 		{
 			Vector3 origin = collider.GetComponent<Transform> ().position;
-			bool isHit =	Physics2D.Raycast (origin, direction, distance);
+//			bool isHit =	Physics2D.Raycast (origin, direction, distance);
+			RaycastHit2D[] results = new RaycastHit2D[1];
+			int hitCollidersCount =	collider.Raycast (direction, results, distance, layerMask, minDepth, maxDepth);
+			bool isHit = results [0] != null;
+			DrawRaycastRaw (origin, direction, distance, isHit);
+		}
+
+		public static void DrawCollider2D_Raycast (Collider2D collider, Vector2 direction, ContactFilter2D contactFilter, float distance = Mathf.Infinity)
+		{			
+			RaycastHit2D[] results = new RaycastHit2D[1];
+			Vector3 origin = collider.GetComponent<Transform> ().position;
+			int hitCollidersCount = collider.Raycast (direction, contactFilter, results, distance);
+			bool isHit = results [0] != null;
 			DrawRaycastRaw (origin, direction, distance, isHit);
 		}
 
@@ -907,8 +959,21 @@ namespace UnityBerserkersGizmos
 			if (!collider) {
 				return;
 			}
-			RaycastHit2D[] hitInfos = new RaycastHit2D[1];
-			bool isHit = collider.Cast (direction, hitInfos, distance, ignoreSiblingColliders) > 0;
+			RaycastHit2D[] results = new RaycastHit2D[1];
+			int hitCollidersCount = collider.Cast (direction, results, distance, ignoreSiblingColliders) > 0;
+			bool isHit = results [0] != null;
+			DrawCollider2DShape (collider, direction, distance, isHit);	
+			Gizmos.matrix = Matrix4x4.identity;
+		}
+
+		public static void DrawCollider2D_Cast (Collider2D collider, Vector3 direction, ContactFilter2D contactFilter, float distance = Mathf.Infinity, bool ignoreSiblingColliders = !default(bool))
+		{	
+			if (!collider) {
+				return;
+			}
+			RaycastHit2D[] results = new RaycastHit2D[1];
+			int hitCollidersCount = collider.Cast (direction, contactFilter, results, distance, ignoreSiblingColliders) > 0;
+			bool isHit = results [0] != null;
 			DrawCollider2DShape (collider, direction, distance, isHit);	
 			Gizmos.matrix = Matrix4x4.identity;
 		}
@@ -1353,7 +1418,7 @@ namespace UnityBerserkersGizmos
 			DrawBoxCollider (center, size, edgeRadius, identity);
 		}
 
-		public static void VisualizeCenterOfMass (Rigidbody2D rigidbody)
+		public static void VisualizeWorldCenterOfMass (Rigidbody2D rigidbody)
 		{
 			if (rigidbody) {
 				Color temp = Gizmos.color;
@@ -1366,6 +1431,43 @@ namespace UnityBerserkersGizmos
 
 			}
 		}
+
+	
+		public static void VizualizeNormalVector (RaycastHit2D hitInfo, float lenght = 1f)
+		{
+			if (!hitInfo) {
+				return;
+			}
+			ShowNormalVector (hitInfo.point, hitInfo.normal, lenght);
+		}
+
+		public static void VizualizeNormalVector (ContactPoint2D contactPoint, float lenght = 1f)
+		{
+			if (!contactPoint.otherCollider) {
+				return;
+			}
+			ShowNormalVector (contactPoint.point, contactPoint.normal, lenght);
+		}
+
+		static void ShowNormalVector (Vector3 origin, Vector3 normal, float lenght = 1f)
+		{
+
+			Color color = new Color32 (102, 255, 0, 255);
+			GUIStyle g = new GUIStyle ();	
+			g.normal.textColor = color;
+
+			GizmosForVector.DrawVector (origin, normal, lenght, color, "normal");	
+			float signedAngle = Vector2.SignedAngle (Vector3.right, normal);
+			float angle = Vector2.Angle (Vector3.right, normal);
+			#if UNITY_EDITOR
+			Color temp2 = UnityEditor.Handles.color;
+			signedAngle = (signedAngle < 0) ? 360 - angle : signedAngle;
+			UnityEditor.Handles.color = color;
+			UnityEditor.Handles.Label (origin + normal * (lenght + 0.3f) - new Vector3 (-1.4f, 0.3f), System.Math.Round (signedAngle, 0) + "\xB0", g);
+			UnityEditor.Handles.color = temp2;
+			#endif
+		}
+	
 	}
 }
 
