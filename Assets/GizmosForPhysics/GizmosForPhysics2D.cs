@@ -38,6 +38,14 @@ namespace UnityBerserkersGizmos
 			DrawOverlapCircleFull (point, radius, isOverlaped);
 		}
 
+		public static void  DrawOverlapCircle (Vector2 point, float radius, ContactFilter2D contactFilter)
+		{
+			Collider2D[] results = new Collider2D[1];
+			int hitCollidersCount = Physics2D.OverlapCircle (point, radius, contactFilter, results);
+			bool isOverlaped = results [0] != null;	
+			DrawOverlapCircleFull (point, radius, isOverlaped);
+		}
+
 		public static void  DrawOverlapCircle (Collider2D overlapedCollider2D, Vector2 point, float radius)
 		{
 			bool isOverlaped = (overlapedCollider2D != null);
@@ -94,6 +102,14 @@ namespace UnityBerserkersGizmos
 			DrawOverlapCapsuleRaw (point, size, direction, angle, isOverlaped);		
 		}
 
+		public static void  DrawOverlapCapsule (Vector2 point, Vector2 size, CapsuleDirection2D direction, float angle, ContactFilter2D contactFilter)
+		{
+			Collider2D[] results = new Collider2D[1];
+			int hitCollidersCount = Physics2D.OverlapCapsule (point, size, direction, angle, contactFilter, results);
+			bool isOverlaped = results [0] != null;	
+			DrawOverlapCapsuleRaw (point, size, direction, angle, isOverlaped);	
+		}
+
 		public static void  DrawOverlapCapsule (Collider2D overlapedCollider2D, Vector2 point, Vector2 size, CapsuleDirection2D direction, float angle)
 		{
 			bool isOverlaped = (overlapedCollider2D != null);
@@ -127,13 +143,21 @@ namespace UnityBerserkersGizmos
 
 		#endregion
 
-		#region Overlap Point done
+		#region Overlap Point
 
 		public static void  DrawOverlapPoint (Vector2 point,
 		                                      int layerMask = Physics2D.DefaultRaycastLayers, float minDepth = -Mathf.Infinity, float maxDepth = Mathf.Infinity)
 		{
 			Collider2D overlapedCollider2D = Physics2D.OverlapPoint (point, layerMask, minDepth, maxDepth);
 			bool isOverlaped = (overlapedCollider2D != null);
+			DrawOverlapPointRaw (point, isOverlaped);
+		}
+
+		public static void  DrawOverlapPoint (Vector2 point, ContactFilter2D contactFilter)
+		{
+			Collider2D[] results = new Collider2D[1];
+			int hitCollidersCount = Physics2D.OverlapPoint (point, contactFilter, results);
+			bool isOverlaped = results [0] != null;
 			DrawOverlapPointRaw (point, isOverlaped);
 		}
 
@@ -172,6 +196,14 @@ namespace UnityBerserkersGizmos
 		{
 			Collider2D overlapedCollider2D = Physics2D.OverlapBox (point, size, angle, layerMask, minDepth, maxDepth);
 			bool isOverlaped = (overlapedCollider2D != null);
+			DrawOverlapBoxFull (point, size, angle, isOverlaped);
+		}
+
+		public static void DrawOverlapBox (Vector3 point, Vector3 size, float angle, ContactFilter2D contactFilter)
+		{
+			Collider2D[] results = new Collider2D[1];
+			int hitCollidersCount = Physics2D.OverlapBox (point, size, angle, contactFilter, results);
+			bool isOverlaped = results [0] != null;
 			DrawOverlapBoxFull (point, size, angle, isOverlaped);
 		}
 
@@ -288,6 +320,14 @@ namespace UnityBerserkersGizmos
 			DrawOverlapAreaRaw (pointA, pointB, isOverlaped);
 		}
 
+		public static void DrawOverlapArea (Vector2 pointA, Vector2 pointB, ContactFilter2D contactFilter)
+		{
+			Collider2D[] results = new Collider2D[1];
+			int hitCollidersCount = Physics2D.OverlapArea (pointA, pointB, contactFilter, results);
+			bool isOverlaped = results [0] != null;
+			DrawOverlapAreaRaw (pointA, pointB, isOverlaped);
+		}
+
 		public static void DrawOverlapArea (Collider2D overlapedCollider2D, Vector2 pointA, Vector2 pointB)
 		{
 			bool isOverlaped = (overlapedCollider2D != null);
@@ -318,7 +358,7 @@ namespace UnityBerserkersGizmos
 
 		#endregion
 
-		#region RAYCASTING  QUERIES
+		#region RAYCASTING QUERIES
 
 		#region RayIntersection
 
@@ -375,7 +415,7 @@ namespace UnityBerserkersGizmos
 		{			
 			RaycastHit2D[] results = new RaycastHit2D[1];
 			int hitCollidersCount =	Physics2D.Raycast (origin, direction, contactFilter, results);
-			bool isHit = results [0] != null;
+			bool isHit = results [0].collider != null;
 			DrawRaycastRaw (origin, direction, distance, isHit);
 		}
 
@@ -447,7 +487,7 @@ namespace UnityBerserkersGizmos
 		{			
 			RaycastHit2D[] results = new RaycastHit2D[1];
 			int hitCollidersCount =	Physics2D.Linecast (start, end, contactFilter, results);
-			bool isHit = results [0] != null;
+			bool isHit = results [0].collider != null;
 			DrawLineCastRaw (start, end, isHit);
 		}
 
@@ -511,7 +551,7 @@ namespace UnityBerserkersGizmos
 		{			
 			RaycastHit2D[] results = new RaycastHit2D[1];
 			int hitCollidersCount = Physics2D.BoxCast (origin, size, angle, direction, contactFilter, results, distance);
-			bool isHit = results [0] != null;
+			bool isHit = results [0].collider != null;
 			DrawBoxCastRaw (origin, size, angle, direction, distance, isHit);	
 		}
 
@@ -650,7 +690,7 @@ namespace UnityBerserkersGizmos
 		{			
 			RaycastHit2D[] results = new RaycastHit2D[1];
 			int hitCollidersCount = Physics2D.CapsuleCast (origin, size, capsuleDirection, angle, direction, contactFilter, results, distance);
-			bool isHit = results [0] != null;
+			bool isHit = results [0].collider != null;
 			DrawCapsuleCastRaw (origin, size, capsuleDirection, angle, direction, distance, isHit);
 		}
 
@@ -839,7 +879,7 @@ namespace UnityBerserkersGizmos
 		{			
 			RaycastHit2D[] results = new RaycastHit2D[1];
 			int hitCollidersCount = Physics2D.CircleCast (origin, radius, direction, contactFilter, results, distance);
-			bool isHit = results [0] != null;
+			bool isHit = results [0].collider != null;
 			DrawCircleCastRaw (origin, radius, direction, distance, isHit);
 		}
 
@@ -941,7 +981,7 @@ namespace UnityBerserkersGizmos
 //			bool isHit =	Physics2D.Raycast (origin, direction, distance);
 			RaycastHit2D[] results = new RaycastHit2D[1];
 			int hitCollidersCount =	collider.Raycast (direction, results, distance, layerMask, minDepth, maxDepth);
-			bool isHit = results [0] != null;
+			bool isHit = results [0].collider != null;
 			DrawRaycastRaw (origin, direction, distance, isHit);
 		}
 
@@ -960,7 +1000,7 @@ namespace UnityBerserkersGizmos
 				return;
 			}
 			RaycastHit2D[] results = new RaycastHit2D[1];
-			int hitCollidersCount = collider.Cast (direction, results, distance, ignoreSiblingColliders) > 0;
+			int hitCollidersCount = collider.Cast (direction, results, distance, ignoreSiblingColliders);
 			bool isHit = results [0] != null;
 			DrawCollider2DShape (collider, direction, distance, isHit);	
 			Gizmos.matrix = Matrix4x4.identity;
@@ -972,7 +1012,7 @@ namespace UnityBerserkersGizmos
 				return;
 			}
 			RaycastHit2D[] results = new RaycastHit2D[1];
-			int hitCollidersCount = collider.Cast (direction, contactFilter, results, distance, ignoreSiblingColliders) > 0;
+			int hitCollidersCount = collider.Cast (direction, contactFilter, results, distance, ignoreSiblingColliders);
 			bool isHit = results [0] != null;
 			DrawCollider2DShape (collider, direction, distance, isHit);	
 			Gizmos.matrix = Matrix4x4.identity;
@@ -1357,8 +1397,23 @@ namespace UnityBerserkersGizmos
 			if (!rigidbody2D) {
 				return;
 			}
-			RaycastHit2D[] hitInfos = new RaycastHit2D[1];
-			bool isHit = rigidbody2D.Cast (direction, hitInfos, distance) > 0;
+			RaycastHit2D[] results = new RaycastHit2D[1];
+			bool isHit = rigidbody2D.Cast (direction, results, distance) > 0;
+			Collider2D[] allAttachedColliders = new Collider2D[rigidbody2D.attachedColliderCount];
+			rigidbody2D.GetAttachedColliders (allAttachedColliders);
+			for (int i = 0; i < rigidbody2D.attachedColliderCount; i++) {
+				DrawCollider2DShape (allAttachedColliders [i], direction, distance, isHit);	
+			}
+			Gizmos.matrix = Matrix4x4.identity;
+		}
+
+		public static void DrawRigidbody2D_Cast (Rigidbody2D rigidbody2D, Vector3 direction, ContactFilter2D contactFilter, float distance = Mathf.Infinity)
+		{
+			if (!rigidbody2D) {
+				return;
+			}
+			RaycastHit2D[] results = new RaycastHit2D[1];
+			bool isHit = rigidbody2D.Cast (direction, contactFilter, results, distance) > 0;
 			Collider2D[] allAttachedColliders = new Collider2D[rigidbody2D.attachedColliderCount];
 			rigidbody2D.GetAttachedColliders (allAttachedColliders);
 			for (int i = 0; i < rigidbody2D.attachedColliderCount; i++) {

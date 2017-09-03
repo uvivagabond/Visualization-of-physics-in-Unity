@@ -8,7 +8,8 @@ public class Box2DRigidbodyCasting : MonoBehaviour
 	[SerializeField]Rigidbody2D myRigidbody2D;
 	[SerializeField]Vector3 direction;
 	[SerializeField]float distance = 1;
-	RaycastHit2D[] hitByRigidbody2DCast;
+	// always must be declared table size!
+	RaycastHit2D[] hitByRigidbody2DCast = new RaycastHit2D[5];
 	[Space (55)][Header ("Results:")]
 	[SerializeField]int hitColliderCount;
 
