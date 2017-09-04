@@ -67,6 +67,13 @@ namespace UnityBerserkersGizmos
 			origin = this.originOfCastShape;
 			direction = this.direction;
 		}
+
+		public void GetDataForCasting (out Vector3 origin, out  Quaternion rotation, out  Vector3 scale)
+		{
+			origin = this.originOfCastShape;
+			rotation = this.rotation;
+			scale = this.scale;
+		}
 	}
 }
 
