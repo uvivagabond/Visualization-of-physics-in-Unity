@@ -442,12 +442,16 @@ namespace UnityBerserkersGizmos
 			Collider2D[] results = new Collider2D[1];
 			Physics2D.OverlapCollider (collider: collider, contactFilter: contactFilter, results: results);
 			Gizmos.color = (results [0] != null) ? Color.red : funkyBlue;
+			ChoiceColliderToDrawOverlap (collider);
 
+		}
+
+		static void ChoiceColliderToDrawOverlap (Collider2D collider)
+		{
 			Vector3 origin, scale;
 			Quaternion rotation;
 			DataForCasting data = new DataForCasting (collider, Vector3.zero, 0);
 			data.GetDataForCasting (out origin, out rotation, out scale);
-
 			if (collider is BoxCollider2D) {
 				BoxCollider2D bc = collider as BoxCollider2D;
 				DrawBoxCollider (origin, Vector2.Scale (bc.size, (Vector2)scale), bc.edgeRadius, rotation);
@@ -470,20 +474,28 @@ namespace UnityBerserkersGizmos
 				}
 				VisualizeEdgeLine (points, origin, rotation);
 			} else if (collider is PolygonCollider2D) {
-//				PolygonCollider2D ec = (PolygonCollider2D)collider;
-//
-//				int pathCount = polygonCollider.pathCount;
-//				for (int k = 0; k < pathCount; k++) {
-//					Vector2[] points = polygonCollider.GetPath (k);		
-//					for (int i = 0; i < points.Length; i++) {
-//						points [i] = rotation * Vector2.Scale (points [i], new Vector3 (scale.x, scale.y));
-//					}
-				ChangeColorIfStartInCollider (results [0] != null);
-				DrawPolygonOrCompositeCollider (points, originOfPC);
-			} 
-//				else if (collider is CompositeCollider2D) {
-////				DrawCompositeCastRaw (collider, direction, distance, isHit);
-//			}
+				PolygonCollider2D polygonCollider = (PolygonCollider2D)collider;
+				//
+				int pathCount = polygonCollider.pathCount;
+				for (int k = 0; k < pathCount; k++) {
+					Vector2[] points = polygonCollider.GetPath (k);
+					for (int i = 0; i < points.Length; i++) {
+						points [i] = rotation * Vector2.Scale (points [i], new Vector3 (scale.x, scale.y));
+					}
+					DrawPolygonOrCompositeCollider (points, origin);
+				}
+			} else if (collider is CompositeCollider2D) {
+				CompositeCollider2D compositeCollider = (CompositeCollider2D)collider;
+				int pathCount = compositeCollider.pathCount;
+				for (int k = 0; k < pathCount; k++) {
+					Vector2[] points = new Vector2[compositeCollider.GetPathPointCount (k)];
+					compositeCollider.GetPath (k, points);
+					for (int i = 0; i < points.Length; i++) {
+						points [i] = rotation * points [i];
+					}
+					DrawPolygonOrCompositeCollider (points, origin);
+				}
+			}
 		}
 
 		#endregion
@@ -503,12 +515,8 @@ namespace UnityBerserkersGizmos
 			if (results [0] == null) {
 				return;
 			}
-			DataForCasting data = new DataForCasting (results [0], Vector3.zero, 0);
-			data.GetDataForCasting (out origin, out rotation, out scale);
-			if (rigidbody2D is BoxCollider2D) {
-				BoxCollider2D bc = results [0] as BoxCollider2D;
-				DrawBoxCollider (origin, Vector2.Scale (bc.size, (Vector2)scale), bc.edgeRadius, rotation);
-			}
+			ChoiceColliderToDrawOverlap (results [0]);
+
 		}
 
 		#endregion
