@@ -119,16 +119,6 @@ namespace UnityBerserkersGizmos
 			DrawRaycast3DRaw (origin, direction, maxDistance, isHit);
 		}
 
-		public static void DrawCollider_Raycast (Collider collider, Ray ray, float maxDistance)
-		{
-			RaycastHit hitInfo;
-			if (!collider) {
-				return;
-			}
-			bool isHit = collider.Raycast (ray, out hitInfo, maxDistance);
-			DrawRaycast3DRaw (ray.origin, ray.direction, maxDistance, isHit);
-		}
-
 		static void DrawRaycast3DRaw (Vector3 origin, Vector3 direction, float maxDistance, bool isHit)
 		{		
 			if (maxDistance > 0f) {
@@ -174,6 +164,20 @@ namespace UnityBerserkersGizmos
 			Gizmos.color = nonHitColorBaseG;
 			Gizmos.DrawSphere (start, 0.1f);
 			Gizmos.color = Color.white;
+		}
+
+		#endregion
+
+		#region Class Collider - Raycast
+
+		public static void DrawCollider_Raycast (Collider collider, Ray ray, float maxDistance)
+		{
+			RaycastHit hitInfo;
+			if (!collider) {
+				return;
+			}
+			bool isHit = collider.Raycast (ray, out hitInfo, maxDistance);
+			DrawRaycast3DRaw (ray.origin, ray.direction, maxDistance, isHit);
 		}
 
 		#endregion

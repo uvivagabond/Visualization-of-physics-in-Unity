@@ -480,6 +480,17 @@ namespace UnityBerserkersGizmos
 			UnityEditor.Handles.color = temp2;
 			#endif
 		}
+
+		public 	static void ShowVectorLabel (Vector3 origin, Vector3 valueToDisplay, Color color = default(Color), Vector3 labelOffset = default(Vector3))
+		{
+			#if UNITY_EDITOR
+			Color temp2 = UnityEditor.Handles.color;
+			GUIStyle g = new GUIStyle ();	
+			g.normal.textColor = color;
+			UnityEditor.Handles.Label (origin + labelOffset, "(" + valueToDisplay.x + "," + valueToDisplay.y + "," + valueToDisplay.z + ")", g);
+			UnityEditor.Handles.color = temp2;
+			#endif
+		}
 	}
 }
 

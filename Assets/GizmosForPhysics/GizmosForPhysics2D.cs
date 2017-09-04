@@ -432,7 +432,7 @@ namespace UnityBerserkersGizmos
 
 		#endregion
 
-		#region Overlap Collider
+		#region OverlapCollider
 
 		public static void DrawOverlapCollider (Collider2D collider, ContactFilter2D contactFilter)//OverlapColliderFrom Physics2D class not working! 2017.1
 		{
@@ -443,7 +443,21 @@ namespace UnityBerserkersGizmos
 			Physics2D.OverlapCollider (collider: collider, contactFilter: contactFilter, results: results);
 			Gizmos.color = (results [0] != null) ? Color.red : funkyBlue;
 			ChoiceColliderToDrawOverlap (collider);
+		}
 
+		#endregion
+
+		#region Class Collider2D - Overlap Collider
+
+		public static void DrawCollider2D_OverlapCollider (Collider2D collider, ContactFilter2D contactFilter)//OverlapColliderFrom Physics2D class not working! 2017.1
+		{
+			if (collider == null) {
+				return;
+			}
+			Collider2D[] results = new Collider2D[1];
+			int hitCollidersCount = collider.OverlapCollider (contactFilter, results);
+			Gizmos.color = (results [0] != null) ? Color.red : funkyBlue;
+			DrawOverlapCollider (collider, contactFilter);
 		}
 
 		static void ChoiceColliderToDrawOverlap (Collider2D collider)
@@ -500,9 +514,28 @@ namespace UnityBerserkersGizmos
 
 		#endregion
 
-		#region Rigidbody OverlapCollider
+	
 
-		public static void DrawOverlapCollider (Rigidbody2D rigidbody2D, ContactFilter2D contactFilter)//OverlapColliderFrom Physics2D class not working! 2017.1
+		#region Class Collider2D - OverlapPoint
+
+		public static void DrawCollider2D_OverlapPoint (Collider2D collider, Vector3 point)
+		{
+			if (collider == null) {
+				return;
+			}
+			Collider2D[] results = new Collider2D[1];
+			bool isHit = collider.OverlapPoint (point);
+			Gizmos.color = (results [0] != null) ? Color.red : funkyBlue;
+			ChoiceColliderToDrawOverlap (collider);
+			GizmosForVector.ShowVectorLabel (point, point, Gizmos.color, new Vector3 (0, 0.4f));
+			Gizmos.DrawSphere (point, 0.3f);
+		}
+
+		#endregion
+
+		#region Class Rigidbody2D OverlapCollider
+
+		public static void DrawRigidbody2D_OverlapCollider (Rigidbody2D rigidbody2D, ContactFilter2D contactFilter)
 		{
 			if (rigidbody2D == null) {
 				return;
@@ -510,13 +543,33 @@ namespace UnityBerserkersGizmos
 			Vector3 origin;
 			Quaternion rotation;
 			Vector3 scale;
-			Collider2D[] results = new Collider2D[1];
+			Collider2D[] results = new Collider2D[rigidbody2D.attachedColliderCount];
 			rigidbody2D.GetAttachedColliders (results);
 			if (results [0] == null) {
 				return;
 			}
 			ChoiceColliderToDrawOverlap (results [0]);
 
+		}
+
+		#endregion
+
+		#region Class Rigidbody2D - OverlapPoint
+
+		public static void DrawRigidbody2D_OverlapPoint (Rigidbody2D rigidbody2D, Vector3 point)
+		{
+			if (rigidbody2D == null) {
+				return;
+			}
+			Collider2D[] results = new Collider2D[rigidbody2D.attachedColliderCount];
+			rigidbody2D.GetAttachedColliders (results);
+			bool isHit = rigidbody2D.OverlapPoint (point);
+			Gizmos.color = (results [0] != null) ? Color.red : funkyBlue;
+			for (int i = 0; i < results.Length; i++) {
+				ChoiceColliderToDrawOverlap (results [i]);
+			}
+			GizmosForVector.ShowVectorLabel (point, point, Gizmos.color, new Vector3 (0, 0.4f));
+			Gizmos.DrawSphere (point, 0.3f);
 		}
 
 		#endregion
@@ -1230,8 +1283,7 @@ namespace UnityBerserkersGizmos
 
 		#endregion
 
-
-		#region Collider  Casting
+		#region Class Collider2D  Casting
 
 		public static void DrawCollider2D_Raycast (Collider2D collider, Vector2 direction, float distance = Mathf.Infinity,
 		                                           int layerMask = Physics2D.AllLayers, float minDepth = -Mathf.Infinity, float maxDepth = Mathf.Infinity)
@@ -1649,7 +1701,7 @@ namespace UnityBerserkersGizmos
 
 		#endregion
 
-		#region Rigidbody Casting
+		#region Class Rigidbody2D Casting
 
 		public static void DrawRigidbody2D_Cast (Rigidbody2D rigidbody2D, Vector3 direction, float distance = Mathf.Infinity)
 		{
