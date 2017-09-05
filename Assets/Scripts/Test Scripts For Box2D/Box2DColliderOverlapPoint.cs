@@ -4,21 +4,22 @@ using UnityEngine;
 using UnityBerserkersGizmos;
 
 [ExecuteInEditMode]
-public class Box2DOverlapPoint : MonoBehaviour
+public class Box2DColliderOverlapPoint : MonoBehaviour
 {
+	[SerializeField]Collider2D myCollider2D;
 	[SerializeField]Vector3 point;
 	RaycastHit2D hitByRayCast;
 
 	[Space (55)][Header ("Results:")]
-	[SerializeField]bool isSomethingOverlapingPoint;
+	[SerializeField] bool isColliderOverlapingPoint;
 
 	void Update ()
 	{		
-		isSomethingOverlapingPoint = Physics2D.OverlapPoint (point: point);
+		isColliderOverlapingPoint = myCollider2D.OverlapPoint (point);
 	}
 
 	void OnDrawGizmos ()
 	{
-		GizmosForPhysics2D.DrawOverlapPoint (point: point);
+		GizmosForPhysics2D.DrawCollider2D_OverlapPoint (point: point);
 	}
 }

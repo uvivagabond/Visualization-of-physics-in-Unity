@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityBerserkersGizmos;
 
 [ExecuteInEditMode]
-public class Box2DOverlapCollider : MonoBehaviour
+public class Box2DCollider2DOverlapCollider : MonoBehaviour
 {
 
 	[SerializeField]Collider2D collider2D;
@@ -17,13 +17,14 @@ public class Box2DOverlapCollider : MonoBehaviour
 	void Update ()
 	{		
 		collider2D = GetComponent<Collider2D> ();
-
 		Collider2D[] results = new Collider2D[2];
-		overlappedCollidersCount = Physics2D.OverlapCollider (collider: collider2D, contactFilter: cf, results: results);
+		overlappedCollidersCount = collider2D.OverlapCollider (contactFilter: cf, results: results);
+
 	}
 
 	void OnDrawGizmos ()
 	{
-		GizmosForPhysics2D.DrawOverlapCollider (collider: collider2D, contactFilter: cf);
+		GizmosForPhysics2D.DrawCollider2D_OverlapCollider (collider: collider2D, contactFilter: cf);
+
 	}
 }

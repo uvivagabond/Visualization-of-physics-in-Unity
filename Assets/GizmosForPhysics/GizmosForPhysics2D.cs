@@ -468,25 +468,27 @@ namespace UnityBerserkersGizmos
 			data.GetDataForCasting (out origin, out rotation, out scale);
 			if (collider is BoxCollider2D) {
 				BoxCollider2D bc = collider as BoxCollider2D;
-				DrawBoxCollider (origin, Vector2.Scale (bc.size, (Vector2)scale), bc.edgeRadius, rotation);
+				DrawBoxCollider (origin + (Vector3)Vector2.Scale (bc.offset, (Vector2)scale), Vector2.Scale (bc.size, (Vector2)scale), bc.edgeRadius, rotation);
 			} else if (collider is CircleCollider2D) {
 				CircleCollider2D circleCollider = (CircleCollider2D)collider;
 				float scaleFactor = (scale.x > scale.y) ? scale.x : scale.y;
-				VisualizeCircle (origin, circleCollider.radius * scaleFactor);
+				VisualizeCircle (origin + (Vector3)Vector2.Scale (circleCollider.offset, (Vector2)scale), circleCollider.radius * scaleFactor);
 			} else if (collider is CapsuleCollider2D) {
 				CapsuleCollider2D cc = (CapsuleCollider2D)collider;
 				Vector3 size = Vector3.Scale (cc.size, scale);
 				float angle = (rotation.eulerAngles.z);
 				size = (cc.direction == CapsuleDirection2D.Vertical) ? size : new Vector3 (size.y, size.x);
 				float deltaAngle = ((cc.direction == CapsuleDirection2D.Vertical) ? 0 : 90);
-				ShowCapsuleWithoutDirectionControl (origin, size, angle + deltaAngle, false);
+				ShowCapsuleWithoutDirectionControl (origin + (Vector3)Vector2.Scale (cc.offset, (Vector2)scale), size, angle + deltaAngle, false);
 			} else if (collider is EdgeCollider2D) {
 				EdgeCollider2D ec = (EdgeCollider2D)collider;
 				Vector2[] points = ec.points;
 				for (int i = 0; i < points.Length; i++) {
 					points [i] = rotation * (Vector3)Vector2.Scale (points [i], scale);
 				}
-				VisualizeEdgeLine (points, origin, rotation);
+				VisualizeEdgeLine (points, origin + (Vector3)Vector2.Scale (ec.offset, (Vector2)scale), rotation);
+				DrawCapsulesForEdgeOrCompositeCast (points, origin, Vector3.up, ec.edgeRadius); 
+
 			} else if (collider is PolygonCollider2D) {
 				PolygonCollider2D polygonCollider = (PolygonCollider2D)collider;
 				//
@@ -496,7 +498,7 @@ namespace UnityBerserkersGizmos
 					for (int i = 0; i < points.Length; i++) {
 						points [i] = rotation * Vector2.Scale (points [i], new Vector3 (scale.x, scale.y));
 					}
-					DrawPolygonOrCompositeCollider (points, origin);
+					DrawPolygonOrCompositeCollider (points, origin + (Vector3)Vector2.Scale (polygonCollider.offset, (Vector2)scale));
 				}
 			} else if (collider is CompositeCollider2D) {
 				CompositeCollider2D compositeCollider = (CompositeCollider2D)collider;
@@ -507,14 +509,12 @@ namespace UnityBerserkersGizmos
 					for (int i = 0; i < points.Length; i++) {
 						points [i] = rotation * points [i];
 					}
-					DrawPolygonOrCompositeCollider (points, origin);
+					DrawPolygonOrCompositeCollider (points, origin + (Vector3)Vector2.Scale (compositeCollider.offset, (Vector2)scale));
 				}
 			}
 		}
 
 		#endregion
-
-	
 
 		#region Class Collider2D - OverlapPoint
 
@@ -543,13 +543,14 @@ namespace UnityBerserkersGizmos
 			Vector3 origin;
 			Quaternion rotation;
 			Vector3 scale;
-			Collider2D[] results = new Collider2D[rigidbody2D.attachedColliderCount];
-			rigidbody2D.GetAttachedColliders (results);
-			if (results [0] == null) {
-				return;
+			Collider2D[] attachedColliders = new Collider2D[rigidbody2D.attachedColliderCount];
+			rigidbody2D.GetAttachedColliders (attachedColliders);
+			Collider2D[] results = new Collider2D[1];
+			bool isHit = rigidbody2D.OverlapCollider (contactFilter, results) > 0;		
+			Gizmos.color = (isHit) ? Color.red : funkyBlue;
+			for (int i = 0; i < attachedColliders.Length; i++) {
+				ChoiceColliderToDrawOverlap (attachedColliders [i]);
 			}
-			ChoiceColliderToDrawOverlap (results [0]);
-
 		}
 
 		#endregion
@@ -564,7 +565,7 @@ namespace UnityBerserkersGizmos
 			Collider2D[] results = new Collider2D[rigidbody2D.attachedColliderCount];
 			rigidbody2D.GetAttachedColliders (results);
 			bool isHit = rigidbody2D.OverlapPoint (point);
-			Gizmos.color = (results [0] != null) ? Color.red : funkyBlue;
+			Gizmos.color = (isHit) ? Color.red : funkyBlue;
 			for (int i = 0; i < results.Length; i++) {
 				ChoiceColliderToDrawOverlap (results [i]);
 			}

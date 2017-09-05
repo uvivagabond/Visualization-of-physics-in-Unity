@@ -194,7 +194,11 @@ Transform:
   - {fileID: 1292750423}
   - {fileID: 607001944}
   - {fileID: 1198622615}
+  - {fileID: 1329853392}
+  - {fileID: 1948790787}
   - {fileID: 531966081}
+  - {fileID: 866771107}
+  - {fileID: 715875487}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -331,7 +335,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 305535433}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.81, y: 1.43, z: 0}
+  m_LocalPosition: {x: 0.419, y: 2.07, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -662,11 +666,11 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 531966080}
   m_LocalRotation: {x: 0.000023843553, y: 0.008813783, z: 0.0027051428, w: 0.9999575}
-  m_LocalPosition: {x: 1.549, y: 0.83, z: 0}
+  m_LocalPosition: {x: 1.97, y: 1.57, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 153195219}
-  m_RootOrder: 5
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 1.01, z: 0.31}
 --- !u!114 &531966082
 MonoBehaviour:
@@ -680,7 +684,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider2D: {fileID: 531966083}
-  rigidbody2D: {fileID: 0}
   cf:
     useTriggers: 1
     useLayerMask: 1
@@ -696,7 +699,6 @@ MonoBehaviour:
     minNormalAngle: 0
     maxNormalAngle: 0
   overlappedCollidersCount: 0
-  results: []
   hitCollidersCount2: 0
 --- !u!70 &531966083
 CapsuleCollider2D:
@@ -858,6 +860,120 @@ Transform:
   m_Father: {fileID: 2002630019}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &715875486
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 715875487}
+  - component: {fileID: 715875488}
+  m_Layer: 0
+  m_Name: Collider2DOverlapCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &715875487
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 715875486}
+  m_LocalRotation: {x: 0.000023843553, y: 0.008813783, z: 0.0027051428, w: 0.9999575}
+  m_LocalPosition: {x: 2.144, y: 0.299, z: 0}
+  m_LocalScale: {x: 1, y: 0.9999999, z: 0.9999999}
+  m_Children: []
+  m_Father: {fileID: 153195219}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &715875488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 715875486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d21f8692f20067f4aa1d554b852bbd24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collider2D: {fileID: 0}
+  cf:
+    useTriggers: 0
+    useLayerMask: 0
+    useDepth: 0
+    useOutsideDepth: 0
+    useNormalAngle: 0
+    useOutsideNormalAngle: 0
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 0
+    minDepth: 0
+    maxDepth: 0
+    minNormalAngle: 0
+    maxNormalAngle: 0
+  overlappedCollidersCount: 0
+  hitCollidersCount2: 0
+--- !u!1 &866771106
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 866771107}
+  - component: {fileID: 866771108}
+  m_Layer: 0
+  m_Name: Rigidbody2DOverlapCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &866771107
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 866771106}
+  m_LocalRotation: {x: 0.000023843553, y: 0.008813783, z: 0.0027051428, w: 0.9999575}
+  m_LocalPosition: {x: 2.144, y: 0.299, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 153195219}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &866771108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 866771106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c74c6f5ef262fd54db7772b41d362e2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rigidbody2D: {fileID: 0}
+  cf:
+    useTriggers: 0
+    useLayerMask: 0
+    useDepth: 0
+    useOutsideDepth: 0
+    useNormalAngle: 0
+    useOutsideNormalAngle: 0
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 0
+    minDepth: 0
+    maxDepth: 0
+    minNormalAngle: 0
+    maxNormalAngle: 0
+  overlappedCollidersCount: 0
+  hitCollidersCount2: 0
 --- !u!1 &911072375
 GameObject:
   m_ObjectHideFlags: 0
@@ -1387,6 +1503,46 @@ MonoBehaviour:
   capsuleDirection: 1
   angle: 0
   isSomethingHit: 0
+--- !u!1 &1329853391
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1329853392}
+  - component: {fileID: 1329853393}
+  m_Layer: 0
+  m_Name: Rigidbody2DOverlapPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1329853392
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1329853391}
+  m_LocalRotation: {x: 0.000023843553, y: 0.008813783, z: 0.0027051428, w: 0.9999575}
+  m_LocalPosition: {x: 2.144, y: 0.299, z: 0}
+  m_LocalScale: {x: 1, y: 0.9999999, z: 0.9999999}
+  m_Children: []
+  m_Father: {fileID: 153195219}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1329853393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1329853391}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40005987dbf435d40a6a62a9e2416156, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1478474099
 GameObject:
   m_ObjectHideFlags: 0
@@ -1668,6 +1824,46 @@ MonoBehaviour:
   angle: 44.56
   distance: 4.46
   isSomethingHit: 0
+--- !u!1 &1948790786
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1948790787}
+  - component: {fileID: 1948790788}
+  m_Layer: 0
+  m_Name: Collider2DOverlapPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1948790787
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1948790786}
+  m_LocalRotation: {x: 0.000023843553, y: 0.008813783, z: 0.0027051428, w: 0.9999575}
+  m_LocalPosition: {x: 2.144, y: 0.299, z: 0}
+  m_LocalScale: {x: 1, y: 0.9999999, z: 0.9999999}
+  m_Children: []
+  m_Father: {fileID: 153195219}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1948790788
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1948790786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf47606227d2c4b40bbc17d6a31bbc38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1984065195
 GameObject:
   m_ObjectHideFlags: 0

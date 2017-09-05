@@ -4,10 +4,10 @@ using UnityEngine;
 using UnityBerserkersGizmos;
 
 [ExecuteInEditMode]
-public class Box2DOverlapCollider : MonoBehaviour
+public class Box2DRigidbodyOverlapCollider : MonoBehaviour
 {
 
-	[SerializeField]Collider2D collider2D;
+	[SerializeField]Rigidbody2D rigidbody2D;
 	[SerializeField]ContactFilter2D cf = new ContactFilter2D ();
 
 	[Space (22)][Header ("Results:")]
@@ -16,14 +16,15 @@ public class Box2DOverlapCollider : MonoBehaviour
 
 	void Update ()
 	{		
-		collider2D = GetComponent<Collider2D> ();
-
+		rigidbody2D = GetComponent<Rigidbody2D> ();
 		Collider2D[] results = new Collider2D[2];
-		overlappedCollidersCount = Physics2D.OverlapCollider (collider: collider2D, contactFilter: cf, results: results);
+		overlappedCollidersCount = rigidbody2D.OverlapCollider (contactFilter: cf, results: results);
+
 	}
 
 	void OnDrawGizmos ()
 	{
-		GizmosForPhysics2D.DrawOverlapCollider (collider: collider2D, contactFilter: cf);
+		GizmosForPhysics2D.DrawRigidbody2D_OverlapCollider (rigidbody2D: rigidbody2D, contactFilter: cf);
+
 	}
 }

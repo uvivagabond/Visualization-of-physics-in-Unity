@@ -250,6 +250,12 @@ namespace UnityBerserkersGizmos
 			DrawCheckCapsule (point0, point1, radius, layerMask, queryTriggerInteraction);
 		}
 
+		public 	static	void DrawOverlapCapsuleNonAlloc (Vector3 point0, Vector3 point1, float radius
+			, int layerMask = Physics.DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal)
+		{
+			DrawCheckCapsule (point0, point1, radius, layerMask, queryTriggerInteraction);
+		}
+
 		public 	static	void DrawCheckCapsule (Vector3 start, Vector3 end, float radius
 		, int layerMask = Physics.DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal)
 		{
@@ -295,6 +301,12 @@ namespace UnityBerserkersGizmos
 		{
 			bool isOverlaped = Physics.CheckSphere (position, radius, layerMask, queryTriggerInteraction);
 			DrawOverlapSphere3DRaw (position, radius, isOverlaped);	
+		}
+
+		public 	static	void DrawOverlapSphereNonAlloc (Vector3 position, float radius
+			, int layerMask = Physics.DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal)
+		{
+			DrawOverlapSphere (position, radius, layerMask, queryTriggerInteraction);
 		}
 
 		public 	static	void DrawCheckSphere (Vector3 position, float radius
