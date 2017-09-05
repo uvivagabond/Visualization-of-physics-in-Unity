@@ -19,6 +19,6 @@ public class Box2DRigidbodyOverlapPoint : MonoBehaviour
 
 	void OnDrawGizmos ()
 	{
-		GizmosForPhysics2D.DrawRigidbody2D_OverlapPoint (point: point);
+		GizmosForPhysics2D.DrawRigidbody2D_OverlapPoint (rigidbody2D: rigidbody2D, point: point);
 	}
 }

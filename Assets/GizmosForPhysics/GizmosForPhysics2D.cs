@@ -230,7 +230,8 @@ namespace UnityBerserkersGizmos
 		{
 			Gizmos.color = (isOverlaped) ? overlappedColorR : nonOverlappedColorY;
 			Gizmos.DrawSphere (point, 0.08f);
-			WriteStartEndLabels (point, "point", Color.yellow);
+//			WriteStartEndLabels (point, "point", Color.yellow);
+			GizmosForVector.ShowVectorLabel (point, point, Gizmos.color);
 		}
 
 		#endregion
@@ -525,10 +526,10 @@ namespace UnityBerserkersGizmos
 			}
 			Collider2D[] results = new Collider2D[1];
 			bool isHit = collider.OverlapPoint (point);
-			Gizmos.color = (results [0] != null) ? Color.red : funkyBlue;
+			Gizmos.color = (isHit) ? Color.red : funkyBlue;
 			ChoiceColliderToDrawOverlap (collider);
-			GizmosForVector.ShowVectorLabel (point, point, Gizmos.color, new Vector3 (0, 0.4f));
-			Gizmos.DrawSphere (point, 0.3f);
+			GizmosForVector.ShowVectorLabel (point, point, Gizmos.color, new Vector3 (0.1f, 0.4f));
+			Gizmos.DrawSphere (point, 0.1f);
 		}
 
 		#endregion
@@ -569,8 +570,8 @@ namespace UnityBerserkersGizmos
 			for (int i = 0; i < results.Length; i++) {
 				ChoiceColliderToDrawOverlap (results [i]);
 			}
-			GizmosForVector.ShowVectorLabel (point, point, Gizmos.color, new Vector3 (0, 0.4f));
-			Gizmos.DrawSphere (point, 0.3f);
+			GizmosForVector.ShowVectorLabel (point, point, Gizmos.color, new Vector3 (0.1f, 0.4f));
+			Gizmos.DrawSphere (point, 0.1f);
 		}
 
 		#endregion

@@ -7,7 +7,6 @@ using UnityBerserkersGizmos;
 public class Box2DOverlapPoint : MonoBehaviour
 {
 	[SerializeField]Vector3 point;
-	RaycastHit2D hitByRayCast;
 
 	[Space (55)][Header ("Results:")]
 	[SerializeField]bool isSomethingOverlapingPoint;

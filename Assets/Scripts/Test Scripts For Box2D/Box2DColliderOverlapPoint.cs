@@ -20,6 +20,6 @@ public class Box2DColliderOverlapPoint : MonoBehaviour
 
 	void OnDrawGizmos ()
 	{
-		GizmosForPhysics2D.DrawCollider2D_OverlapPoint (point: point);
+		GizmosForPhysics2D.DrawCollider2D_OverlapPoint (collider: myCollider2D, point: point);
 	}
 }
