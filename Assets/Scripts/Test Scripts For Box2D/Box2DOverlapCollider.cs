@@ -24,7 +24,7 @@ public class Box2DOverlapCollider : MonoBehaviour
 		overlappedCollidersCount = Physics2D.OverlapCollider (collider: collider2D, contactFilter: cf, results: results);
 //		overlappedCollidersCount = rigidbody2D.OverlapCollider (contactFilter: cf, results: results);
 
-		hitCollidersCount2 = Physics2D.Raycast (new Vector3 (0, 0, 0), Vector3.up, cf, results2);
+		hitCollidersCount2 = Physics2D.Raycast (new Vector3 (0, 0, 0), Vector3.up, cf, results2, 5);
 	}
 
 	void OnDrawGizmos ()

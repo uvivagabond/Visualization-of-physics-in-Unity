@@ -518,7 +518,7 @@ namespace UnityBerserkersGizmos
 
 		#region Class Collider2D - OverlapPoint
 
-		public static void DrawCollider2D_OverlapPoint (Collider2D collider, Vector3 point)
+		public static void DrawCollider2D_OverlapPoint (Collider2D collider, Vector3 point) // for edgeCollider return false
 		{
 			if (collider == null) {
 				return;
@@ -646,7 +646,7 @@ namespace UnityBerserkersGizmos
 		public static void DrawRayCast (Vector2 origin, Vector2 direction, ContactFilter2D contactFilter, float distance = Mathf.Infinity)
 		{			
 			RaycastHit2D[] results = new RaycastHit2D[1];
-			int hitCollidersCount =	Physics2D.Raycast (origin, direction, contactFilter, results);
+			int hitCollidersCount =	Physics2D.Raycast (origin, direction, contactFilter, results, distance);
 			bool isHit = results [0].collider != null;
 			DrawRaycastRaw (origin, direction, distance, isHit);
 		}

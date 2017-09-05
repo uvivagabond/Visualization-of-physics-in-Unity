@@ -195,6 +195,12 @@ namespace UnityBerserkersGizmos
 			DrawOverlapBoxRawFull3D (center, halfExtents, orientation, isOverlaped);
 		}
 
+		public 	static	void DrawOverlapBoxNonAlloc (Vector3 center, Vector3 halfExtents, Quaternion orientation = default(Quaternion)
+			, int layerMask = Physics.DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal)
+		{
+			DrawOverlapBox (center, halfExtents, orientation, layerMask, queryTriggerInteraction);
+		}
+
 		public 	static	void DrawCheckBox (Vector3 center, Vector3 halfExtents, Quaternion orientation = default(Quaternion)
 		, int layerMask = Physics.DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal)
 		{
@@ -327,7 +333,6 @@ namespace UnityBerserkersGizmos
 		#endregion
 
 		#endregion
-
 
 		#region SWEEPING QUERIES
 
@@ -817,7 +822,7 @@ namespace UnityBerserkersGizmos
 
 		#endregion
 
-		#region RIGIDBODY CASTING
+		#region Class Rigidbody - SweepTest
 
 		/// <summary> /// Visualize Rigidbody.SweepTest() - only for colliders of type BoxCollider,SphereCollider,CapsuleCollider and MeshColliders (convex only) /// </summary>
 		public static void Rigidbody_SweepTestAll (Rigidbody rigidbody, Vector3 direction, float maxDistance = Mathf.Infinity,
