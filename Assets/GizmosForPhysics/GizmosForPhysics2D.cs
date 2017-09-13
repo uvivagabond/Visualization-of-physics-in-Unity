@@ -1840,7 +1840,21 @@ namespace UnityBerserkersGizmos
 			UnityEditor.Handles.color = temp2;
 			#endif
 		}
-	
+
+		public static void VizualizeDistance (ColliderDistance2D distance, bool showPointAAndB = !default(bool), bool showDistance = !default(bool))
+		{
+			if (!distance.isValid) {
+				return;
+			}
+			Gizmos.DrawLine (distance.pointA, distance.pointB);
+			if (showDistance) {            
+				GizmosForVector.ShowLabel (distance.pointB + distance.normal * distance.distance * 0.5f, "distance: " + System.Math.Round (distance.distance, 2), (distance.distance > 0) ? Color.green : Color.magenta);
+			}
+			if (distance.distance > 0 && showPointAAndB) {
+				GizmosForVector.ShowVectorValue (distance.pointA, "pointA", distance.pointA, Color.blue);
+				GizmosForVector.ShowVectorValue (distance.pointB, "pointB", distance.pointB, Color.red);
+			}
+		}
 	}
 }
 

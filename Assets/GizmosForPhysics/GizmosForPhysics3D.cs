@@ -1027,6 +1027,100 @@ namespace UnityBerserkersGizmos
 
 		#endregion
 
+		public static void VizualizeClosestPoint (Vector3 point, Collider collider, Vector3 position, Quaternion rotation, bool showPointAndClosestPoint = !default(bool), bool showDistance = !default(bool))
+		{
+			if (!IsAppropiateCollider (collider)) {
+				return;
+			}
+			Color temp = Gizmos.color;
+			Vector3 closestPoint = Physics.ClosestPoint (point, collider, position, rotation);
+			//			Gizmos.DrawLine (point, closestPoint);
+			//			float distance = (closestPoint - point).magnitude;
+			ShowClosestDistance (point, showPointAndClosestPoint, showDistance, closestPoint);	  
+
+			Gizmos.color = temp;
+		}
+
+		static void ShowClosestDistance (Vector3 point, bool showPointAndClosestPoint, bool showDistance, Vector3 closestPoint)
+		{
+			Gizmos.DrawLine (point, closestPoint);
+			float distance = (closestPoint - point).magnitude;
+
+			if (showDistance && distance > 0) {
+				GizmosForVector.ShowLabel (point + (closestPoint - point) * 0.5f, "distance: " + System.Math.Round (distance, 2), (distance > 0) ? Color.green : Color.magenta);
+			}
+			if (distance > 0 && showPointAndClosestPoint) {
+				GizmosForVector.ShowVectorValue (closestPoint, "closestPointOnCollider", closestPoint, Color.red);
+			}
+			GizmosForVector.ShowVectorValue (point, "point", point, (distance > 0) ? Color.blue : Color.magenta);
+			Gizmos.color = (distance > 0) ? Color.blue : Color.magenta;
+			Gizmos.DrawSphere (point, 0.05f);
+		}
+
+		public static void VizualizeClosestPoint (Vector3 point, Collider collider, bool showPointAndClosestPoint = !default(bool), bool showDistance = !default(bool))
+		{			
+			if (collider == null || !IsAppropiateCollider (collider)) {
+				return;
+			}
+			Vector3 offset;
+			offset = GetColliderOffset (collider);
+
+			Vector3 position = collider.transform.position;// + offset;
+			Quaternion rotation = collider.transform.rotation;
+
+			VizualizeClosestPoint (point, collider, position, rotation, showPointAndClosestPoint, showDistance);
+		}
+
+		/// <summary>
+		/// Check if collider is BoxCollider or SphereCollider or CapsuleCollider or MeshCollider (and is set as convex) otherwise return false
+		/// </summary>
+
+		static bool IsAppropiateCollider (Collider collider)
+		{
+			if (collider is MeshCollider) {
+				MeshCollider mc = (MeshCollider)collider;
+				return (!mc.convex) ? false : true;
+			}
+			return collider is BoxCollider || collider is SphereCollider || collider is CapsuleCollider;
+		}
+
+		/// <summary>
+		/// Gets the collider offset (takes scale into account)(available for BoxCollider,SphereCollider,CapsuleCollider).
+		/// </summary>
+		/// <returns>The collider offset.</returns>
+		/// <param name="collider">Collider.</param>
+		static Vector3 GetColliderOffset (Collider collider)
+		{
+			Vector3 offset = Vector3.zero;
+			if (collider is BoxCollider) {
+				BoxCollider bc = (BoxCollider)collider;
+				offset = bc.center;
+			} else if (collider is SphereCollider) {
+				SphereCollider sc = (SphereCollider)collider;
+				offset = sc.center;
+			} else if (collider is CapsuleCollider) {
+				CapsuleCollider cc = (CapsuleCollider)collider;
+				offset = cc.center;
+			}
+			offset.Scale (collider.transform.lossyScale);
+
+			return offset;
+		}
+
+		public static void VizualizeClosestPointOnBounds (Vector3 position, Collider collider, bool showPointAndClosestPoint = !default(bool), bool showDistance = !default(bool))
+		{		
+			if (collider == null || !IsAppropiateCollider (collider)) {
+				return;
+			}
+			Color temp = Gizmos.color;
+			Bounds b = collider.bounds;
+
+			Vector3 offset = GetColliderOffset (collider);
+			Gizmos.DrawWireCube (collider.transform.position + collider.transform.rotation * offset, b.size);
+			Vector3 closestPointOnBounds = collider.ClosestPointOnBounds (position);
+			ShowClosestDistance (position, showPointAndClosestPoint, showDistance, closestPointOnBounds);
+			Gizmos.color = temp;
+		}
 	}
 }
 
