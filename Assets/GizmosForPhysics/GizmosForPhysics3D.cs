@@ -1027,6 +1027,9 @@ namespace UnityBerserkersGizmos
 
 		#endregion
 
+
+		#region ClosestPoint, ClosestPointOnBounds
+
 		public static void VizualizeClosestPoint (Vector3 point, Collider collider, Vector3 position, Quaternion rotation, bool showPointAndClosestPoint = !default(bool), bool showDistance = !default(bool))
 		{
 			if (!IsAppropiateCollider (collider)) {
@@ -1113,6 +1116,7 @@ namespace UnityBerserkersGizmos
 				return;
 			}
 			Color temp = Gizmos.color;
+			Gizmos.color = Color.red;
 			Bounds b = collider.bounds;
 
 			Vector3 offset = GetColliderOffset (collider);
@@ -1121,6 +1125,26 @@ namespace UnityBerserkersGizmos
 			ShowClosestDistance (position, showPointAndClosestPoint, showDistance, closestPointOnBounds);
 			Gizmos.color = temp;
 		}
+
+		public static void VizualizeClosestPointOnBounds (Vector3 position, Rigidbody rigidbody, bool showPointAndClosestPoint = !default(bool), bool showDistance = !default(bool))
+		{	
+			if (rigidbody == null) {
+				return;
+			}
+			Color temp = Gizmos.color;
+			Gizmos.color = Color.red;
+			Collider[] colliders =	rigidbody.GetComponentsInChildren<Collider> ();
+			for (int i = 0; i < colliders.Length; i++) {
+				Gizmos.DrawWireCube (colliders [i].bounds.center, colliders [i].bounds.size);
+				Debug.Log (colliders.Length);
+			}
+			Vector3 closestPointOnBounds = rigidbody.ClosestPointOnBounds (position);
+			ShowClosestDistance (position, showPointAndClosestPoint, showDistance, closestPointOnBounds);
+			Gizmos.color = temp;
+		}
+
+		#endregion
+
 	}
 }
 
