@@ -15,6 +15,7 @@ namespace UnityBerserkersGizmos
 		static Color hitColorR2 = new Color (r: 1f, g: 0.058f, b: 0.01f, a: 0.25f);
 		static Color fireBrick = new Color32 (178, 34, 34, 255);
 		static Color funkyBlue = new Color32 (30, 144, 255, 255);
+		static Color defaultColor = new Color (1, 1, 1, 1);
 
 		#endregion
 
@@ -140,10 +141,11 @@ namespace UnityBerserkersGizmos
 			#endif
 		}
 
-		static void DrawPlane (Vector3 origin, Vector3 planeNormal, float vectorLenght)
+		internal static void DrawPlane (Vector3 origin, Vector3 planeNormal, float vectorLenght)
 		{
+			Vector3 planeNormalTemp = planeNormal;
 			Vector3 tangent = new Vector3 (0, 0, 0), binormal = new Vector3 (0, 0, 0);
-			Vector3.OrthoNormalize (ref planeNormal, ref tangent, ref binormal);
+			Vector3.OrthoNormalize (ref planeNormalTemp, ref tangent, ref binormal);
 			for (float i = 0.1f; i < 1.1f; i = i + 0.1f) {
 				Vector3 bt = origin + (tangent + binormal) * vectorLenght * i;
 				Vector3 bmt = origin + (-tangent + binormal) * vectorLenght * i;
@@ -457,7 +459,7 @@ namespace UnityBerserkersGizmos
 			return v;
 		}
 
-		internal static void ShowVectorValue (Vector3 origin, string name, Vector3 value, Color color = default(Color), Vector3 labelOffset = default(Vector3))
+		internal static void ShowVectorValue (Vector3 origin, string name, Vector3 value, Color color, Vector3 labelOffset = default(Vector3))
 		{
 			#if UNITY_EDITOR
 			Color temp2 = UnityEditor.Handles.color;
@@ -470,7 +472,7 @@ namespace UnityBerserkersGizmos
 			#endif
 		}
 
-		public 	static void ShowLabel (Vector3 origin, string name, Color color = default(Color), Vector3 labelOffset = default(Vector3))
+		public 	static void ShowLabel (Vector3 origin, string name, Color color, Vector3 labelOffset = default(Vector3))
 		{
 			#if UNITY_EDITOR
 			Color temp2 = UnityEditor.Handles.color;
@@ -481,7 +483,7 @@ namespace UnityBerserkersGizmos
 			#endif
 		}
 
-		public 	static void ShowVectorLabel (Vector3 origin, Vector3 valueToDisplay, Color color = default(Color), Vector3 labelOffset = default(Vector3))
+		public 	static void ShowVectorLabel (Vector3 origin, Vector3 valueToDisplay, Color color, Vector3 labelOffset = default(Vector3))
 		{
 			#if UNITY_EDITOR
 			Color temp2 = UnityEditor.Handles.color;
@@ -489,6 +491,7 @@ namespace UnityBerserkersGizmos
 			g.normal.textColor = color;
 			UnityEditor.Handles.Label (origin + labelOffset, "(" + valueToDisplay.x + "," + valueToDisplay.y + "," + valueToDisplay.z + ")", g);
 			UnityEditor.Handles.color = temp2;
+
 			#endif
 		}
 	}

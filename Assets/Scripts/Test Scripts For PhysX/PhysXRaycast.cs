@@ -11,14 +11,17 @@ public class PhysXRaycast : MonoBehaviour
 	[SerializeField]float maxDistance = 1;
 
 	RaycastHit hitByRayCast;
-
+	Ray ray;
 
 	[Space (55)][Header ("Results:")]
 	[SerializeField]bool isSomethingHit;
 
-	void FixedUpdate ()
+	void Update ()
 	{
 		isSomethingHit = Physics.Raycast (origin: origin, direction: direction, hitInfo: out hitByRayCast, maxDistance: maxDistance);
+		ray = new Ray (origin, direction);
+		isSomethingHit = Physics.Raycast (ray: ray, hitInfo: out hitByRayCast, maxDistance: maxDistance);
+
 	}
 
 	void OnDrawGizmos ()

@@ -960,13 +960,25 @@ namespace UnityBerserkersGizmos
 
 		#region PLANE RAYCAST
 
-		public static void Plane_Raycast (Plane plane, Ray ray)
+		/// <summary>
+		/// Draw ray that hit plane. If ray is red - ray hit forward side of plane. If ray is blue - ray hit opposite side of plane.
+		/// </summary>
+
+		public static void Plane_Raycast (Plane plane, Ray ray, bool showPlaneInHitPoint = !default(bool))
 		{
 			float end;
 		
-			bool isHit =	plane.Raycast (ray, out end);
+			bool isHit = plane.Raycast (ray, out end);
+			Vector3 endPoint = ray.GetPoint (end);
+			Vector3 planeNormal = plane.normal;
+			Vector3 endTangent = new Vector3 (0, 0);
+			Vector3.OrthoNormalize (ref planeNormal, ref endTangent);
 			ray.direction = (!isHit) ? -ray.direction : ray.direction;
 			DrawRaycast3DRaw (ray.origin, ray.direction, Mathf.Abs (end), isHit);
+			GizmosForVector.DrawVector (endPoint, planeNormal, 1, Color.green, "planeNormal");
+			if (showPlaneInHitPoint) {
+				GizmosForVector.DrawPlane (endPoint, planeNormal, 5);
+			}
 		}
 
 		#endregion

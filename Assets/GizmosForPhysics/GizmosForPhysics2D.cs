@@ -1285,13 +1285,14 @@ namespace UnityBerserkersGizmos
 
 		#endregion
 
+		#endregion
+
 		#region Class Collider2D  Casting
 
 		public static void DrawCollider2D_Raycast (Collider2D collider, Vector2 direction, float distance = Mathf.Infinity,
 		                                           int layerMask = Physics2D.AllLayers, float minDepth = -Mathf.Infinity, float maxDepth = Mathf.Infinity)
 		{
-			Vector3 origin = collider.GetComponent<Transform> ().position;
-//			bool isHit =	Physics2D.Raycast (origin, direction, distance);
+			Vector3 origin = GetColliderPosition (collider); //collider.GetComponent<Transform> ().position;
 			RaycastHit2D[] results = new RaycastHit2D[1];
 			int hitCollidersCount =	collider.Raycast (direction, results, distance, layerMask, minDepth, maxDepth);
 			bool isHit = results [0].collider != null;
@@ -1301,7 +1302,7 @@ namespace UnityBerserkersGizmos
 		public static void DrawCollider2D_Raycast (Collider2D collider, Vector2 direction, ContactFilter2D contactFilter, float distance = Mathf.Infinity)
 		{			
 			RaycastHit2D[] results = new RaycastHit2D[1];
-			Vector3 origin = collider.GetComponent<Transform> ().position;
+			Vector3 origin = GetColliderPosition (collider);
 			int hitCollidersCount = collider.Raycast (direction, contactFilter, results, distance);
 			bool isHit = results [0] != null;
 			DrawRaycastRaw (origin, direction, distance, isHit);
@@ -1329,6 +1330,31 @@ namespace UnityBerserkersGizmos
 			bool isHit = results [0] != null;
 			DrawCollider2DShape (collider, direction, distance, isHit);	
 			Gizmos.matrix = Matrix4x4.identity;
+		}
+
+		static Vector3 GetColliderPosition (Collider2D collider)
+		{
+			Vector3 offset = new Vector3 (0, 0);
+			if (collider is BoxCollider2D) {
+				BoxCollider2D bc = collider as BoxCollider2D;
+				offset = collider.transform.TransformPoint (bc.offset);
+			} else if (collider is CircleCollider2D) {
+				CircleCollider2D circleCollider = (CircleCollider2D)collider;
+				offset = collider.transform.TransformPoint (circleCollider.offset);
+			} else if (collider is CapsuleCollider2D) {
+				CapsuleCollider2D capsuleCollider = (CapsuleCollider2D)collider;
+				offset = collider.transform.TransformPoint (capsuleCollider.offset);
+			} else if (collider is EdgeCollider2D) {
+				EdgeCollider2D edgeCollider = (EdgeCollider2D)collider;
+				offset = collider.transform.TransformPoint (edgeCollider.offset);
+			} else if (collider is PolygonCollider2D) {
+				PolygonCollider2D polygonCollider = (PolygonCollider2D)collider;
+				offset = collider.transform.TransformPoint (polygonCollider.offset);
+			} else if (collider is CompositeCollider2D) {
+				CompositeCollider2D compositeCollider = (CompositeCollider2D)collider;
+				offset = collider.transform.TransformPoint (compositeCollider.offset);
+			}
+			return offset;
 		}
 
 		static void DrawCollider2DShape (Collider2D collider, Vector3 direction, float distance, bool isHit)
@@ -1400,7 +1426,7 @@ namespace UnityBerserkersGizmos
 
 			originOfEC += rotation * Vector3.Scale ((Vector3)edgeColider.offset, new Vector3 (scale.x, scale.y));
 			endOfEC += rotation * Vector3.Scale ((Vector3)edgeColider.offset, new Vector3 (scale.x, scale.y));
-//		endOfEC = new Vector3 (0, 1, 0);
+			//		endOfEC = new Vector3 (0, 1, 0);
 
 			float edgeRadius = edgeColider.edgeRadius;
 			Vector3 tangentToDirection = Vector3.zero;
@@ -1737,7 +1763,7 @@ namespace UnityBerserkersGizmos
 
 		#endregion
 
-		#endregion
+
 
 		#region Colors and Labels
 

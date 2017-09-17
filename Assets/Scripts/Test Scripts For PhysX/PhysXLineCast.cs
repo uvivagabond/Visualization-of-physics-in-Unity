@@ -13,7 +13,7 @@ public class PhysXLineCast : MonoBehaviour
 	[SerializeField]	bool isHitSomething;
 	RaycastHit hittedByLineCast;
 
-	void FixedUpdate ()
+	void Update ()
 	{
 		isHitSomething = Physics.Linecast (start: start, end: end, hitInfo: out hittedByLineCast);
 	}
