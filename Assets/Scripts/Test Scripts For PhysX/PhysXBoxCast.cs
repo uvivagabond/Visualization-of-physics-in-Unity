@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityBerserkersGizmos;
 
+[ExecuteInEditMode]
 public class PhysXBoxCast : MonoBehaviour
 {
 
@@ -17,7 +18,7 @@ public class PhysXBoxCast : MonoBehaviour
 	[SerializeField]bool isSomethingHit;
 	RaycastHit hitByBox;
 
-	void FixedUpdate ()
+	void Update ()
 	{
 		orientation = Quaternion.Euler (eulerAngles);
 		isSomethingHit = Physics.BoxCast (center: center, halfExtents: halfExtents, direction: direction, hitInfo: out hitByBox, orientation: orientation, maxDistance: maxDistance);

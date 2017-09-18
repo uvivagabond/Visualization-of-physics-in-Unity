@@ -9,14 +9,16 @@ namespace UnityBerserkersGizmos
 		Vector3 direction, scale, originOfCastShape, endOfCastShape;
 		Transform t;
 		Quaternion rotation;
-
-		internal DataForCasting (Collider2D collider2D, Vector3 direction, float distance)
+		// Constructor for Box2D
+		internal DataForCasting (Collider2D collider2D, Vector3 direction, float distance, bool setOffsetToZero = !default(bool))
 		{
 			this.t = collider2D.GetComponent<Transform> ();
-			Vector3 ofset = Vector3.Scale ((Vector3)collider2D.offset, new Vector3 (scale.x, scale.y));
+			this.scale = t.lossyScale;
+			Vector3 ofset;
+			ofset = Vector3.Scale ((Vector3)collider2D.offset, new Vector3 (scale.x, scale.y));//t.TransformVector ((Vector3)collider2D.offset);//
 			SetCommonValuesFor2DAnd3D (direction, distance, ofset);
 		}
-
+		// Constructor for Nvidia PhysX
 		internal DataForCasting (Collider collider, Vector3 direction, float distance)
 		{
 			this.t = collider.GetComponent<Transform> ();

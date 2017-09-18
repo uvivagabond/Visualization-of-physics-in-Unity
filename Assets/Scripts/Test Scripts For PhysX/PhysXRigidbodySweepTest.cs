@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityBerserkersGizmos;
 
+[ExecuteInEditMode]
 [RequireComponent (typeof(Rigidbody))]
 public class PhysXRigidbodySweepTest : MonoBehaviour
 {
@@ -16,7 +17,7 @@ public class PhysXRigidbodySweepTest : MonoBehaviour
 	[Space (55)][Header ("Results:")]
 	[SerializeField]bool isSomethingHit;
 
-	void FixedUpdate ()
+	void Update ()
 	{
 		if (!my_rigidbody) {
 			my_rigidbody = this.GetComponent<Rigidbody> ();

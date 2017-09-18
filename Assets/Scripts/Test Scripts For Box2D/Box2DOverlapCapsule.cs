@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityBerserkersGizmos;
 
+[ExecuteInEditMode]
 public class Box2DOverlapCapsule : MonoBehaviour
 {
 	[SerializeField]Vector3 point;

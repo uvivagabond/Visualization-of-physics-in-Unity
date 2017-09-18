@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityBerserkersGizmos;
 
+[ExecuteInEditMode]
 public class PhysXSphereCast : MonoBehaviour
 {
 	[SerializeField]Vector3 origin;
@@ -17,9 +18,11 @@ public class PhysXSphereCast : MonoBehaviour
 	[SerializeField]	 bool isHitSomething;
 	//	bool isHitSomethingR;
 
-	void FixedUpdate ()
+	void Update ()
 	{		
 		isHitSomething =	Physics.SphereCast (origin: origin, radius: radius, direction: direction, hitInfo: out hitBySphere, maxDistance: maxDistance);
+
+//		Ray ray =new Ray(origin,direction);
 //		isHitSomethingR =	Physics.SphereCast (ray: ray, radius: radius, hitInfo: out hittedBySphere, maxDistance: maxDistance);			
 	}
 

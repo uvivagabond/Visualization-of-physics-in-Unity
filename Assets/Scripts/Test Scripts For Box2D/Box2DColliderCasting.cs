@@ -11,7 +11,8 @@ public class Box2DColliderCasting : MonoBehaviour
 	[SerializeField]Vector3 direction;
 	[SerializeField]float distance = 1;
 	[SerializeField]bool ignoreSiblingsColliders = false;
-	RaycastHit2D[] hitByCollider2DCast;
+	// remember to always initialize this array!!!
+	RaycastHit2D[] hitByCollider2DCast = new RaycastHit2D[11];
 	[Space (55)][Header ("Results:")]
 	[SerializeField]int hitColliderCount;
 

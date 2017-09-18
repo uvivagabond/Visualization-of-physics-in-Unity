@@ -857,7 +857,9 @@ namespace UnityBerserkersGizmos
 				return;
 			}
 			for (int i = 0; i < colliders.Length; i++) {
-				DrawColliders3DShapes (rigidbody, direction, maxDistance, isHit, colliders [i]);
+				if (colliders [i].enabled) {
+					DrawColliders3DShapes (rigidbody, direction, maxDistance, isHit, colliders [i]);
+				}
 			}
 			Gizmos.matrix = Matrix4x4.identity;
 		}

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityBerserkersGizmos;
 
+[ExecuteInEditMode]
 public class PhysXCapsuleCast : MonoBehaviour
 {
 
@@ -16,7 +17,7 @@ public class PhysXCapsuleCast : MonoBehaviour
 	[SerializeField]bool isHitSomething;
 	RaycastHit hitByCapsule;
 
-	void FixedUpdate ()
+	void Update ()
 	{
 		isHitSomething = Physics.CapsuleCast (point1: point1, point2: point2, radius: radius, direction: direction, hitInfo: out hitByCapsule, maxDistance: maxDistance);
 	}
