@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityBerserkersGizmos;
 
+[ExecuteInEditMode]
 public class PhysXOverlapBox : MonoBehaviour
 {
 	[SerializeField]Vector3 center;
@@ -12,7 +13,7 @@ public class PhysXOverlapBox : MonoBehaviour
 	[Space (55)][Header ("Results:")]
 	[SerializeField]	Collider[] overlapedColliders;
 
-	void FixedUpdate ()
+	void Update ()
 	{
 		orientation = Quaternion.Euler (eulerAngles);
 		overlapedColliders = Physics.OverlapBox (center: center, halfExtents: halfExtents, orientation: orientation);			

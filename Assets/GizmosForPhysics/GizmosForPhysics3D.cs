@@ -247,6 +247,7 @@ namespace UnityBerserkersGizmos
 		public 	static	void DrawOverlapCapsule (Vector3 point0, Vector3 point1, float radius
 		, int layerMask = Physics.DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal)
 		{
+			
 			DrawCheckCapsule (point0, point1, radius, layerMask, queryTriggerInteraction);
 		}
 
@@ -285,6 +286,7 @@ namespace UnityBerserkersGizmos
 				return;
 			} else if (radius < 0) {
 				DisplayWarningAboutSize ("CheckCapsule/OverlapCapsule", "radius", "should be greater more then 0. ", null);
+				return;
 			}
 			Gizmos.matrix = Matrix4x4.TRS (origin, Quaternion.identity, new Vector3 (radius, radius, radius));
 			DrawHemispheresOfCapsule (point1, point2, radius);

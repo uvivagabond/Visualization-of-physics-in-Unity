@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityBerserkersGizmos;
 
+[ExecuteInEditMode]
 public class PhysXOverlapSphere : MonoBehaviour
 {
 
@@ -12,7 +13,7 @@ public class PhysXOverlapSphere : MonoBehaviour
 	[Space (55)][Header ("Results:")]
 	[SerializeField]	Collider[] overlapedColliders;
 
-	void FixedUpdate ()
+	void Update ()
 	{
 		overlapedColliders = Physics.OverlapSphere (position: position, radius: radius);			
 	}

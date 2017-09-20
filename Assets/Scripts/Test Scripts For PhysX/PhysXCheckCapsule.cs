@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityBerserkersGizmos;
 
+[ExecuteInEditMode]
 public class PhysXCheckCapsule : MonoBehaviour
 {
 

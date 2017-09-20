@@ -18,7 +18,7 @@ public class Box2DRigidbodyOverlapCollider : MonoBehaviour
 	{		
 		rigidbody2D = GetComponent<Rigidbody2D> ();
 		Collider2D[] results = new Collider2D[2];
-		overlappedCollidersCount = rigidbody2D.OverlapCollider (contactFilter: cf, results: results);
+		overlappedCollidersCount = rigidbody2D.OverlapCollider (contactFilter: cf.NoFilter (), results: results);
 
 	}
 

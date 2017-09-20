@@ -474,7 +474,6 @@ namespace UnityBerserkersGizmos
 			} else if (collider is CircleCollider2D) {
 				CircleCollider2D circleCollider = (CircleCollider2D)collider;
 				float scaleFactor = (scale.x > scale.y) ? scale.x : scale.y;
-//				VisualizeCircle (origin + (Vector3)Vector2.Scale (circleCollider.offset, (Vector2)scale), circleCollider.radius * scaleFactor);
 				VisualizeCircle (origin, circleCollider.radius * scaleFactor);
 
 			} else if (collider is CapsuleCollider2D) {
@@ -483,7 +482,6 @@ namespace UnityBerserkersGizmos
 				float angle = (rotation.eulerAngles.z);
 				size = (cc.direction == CapsuleDirection2D.Vertical) ? size : new Vector3 (size.y, size.x);
 				float deltaAngle = ((cc.direction == CapsuleDirection2D.Vertical) ? 0 : 90);
-//				ShowCapsuleWithoutDirectionControl (origin + (Vector3)Vector2.Scale (cc.offset, (Vector2)scale), size, angle + deltaAngle, false);
 				ShowCapsuleWithoutDirectionControl (origin, size, angle + deltaAngle, false);
 
 			} else if (collider is EdgeCollider2D) {
@@ -492,7 +490,6 @@ namespace UnityBerserkersGizmos
 				for (int i = 0; i < points.Length; i++) {
 					points [i] = rotation * (Vector3)Vector2.Scale (points [i], scale);
 				}
-//				VisualizeEdgeLine (points, origin + (Vector3)Vector2.Scale (ec.offset, (Vector2)scale), rotation);
 				VisualizeEdgeLine (points, origin, rotation);
 
 				DrawCapsulesForEdgeOrCompositeCast (points, origin, Vector3.up, ec.edgeRadius); 
@@ -506,7 +503,6 @@ namespace UnityBerserkersGizmos
 					for (int i = 0; i < points.Length; i++) {
 						points [i] = rotation * Vector2.Scale (points [i], new Vector3 (scale.x, scale.y));
 					}
-//					DrawPolygonOrCompositeCollider (points, origin + (Vector3)Vector2.Scale (polygonCollider.offset, (Vector2)scale));
 					DrawPolygonOrCompositeCollider (points, origin);
 
 				}
@@ -519,12 +515,7 @@ namespace UnityBerserkersGizmos
 					compositeCollider.GetPath (k, points);
 					for (int i = 0; i < points.Length; i++) {
 						points [i] = rotation * (points [i]) - rotation * (Vector3)Vector2.Scale (compositeCollider.offset, (Vector2)scale);
-						;
-//						points [i] = rotation * (points [i] - Vector2.Scale (compositeCollider.offset, (Vector2)scale));// compositeCollider.offset);
-//						points [i] = rotation * points [i] - rotation * Vector2.Scale (compositeCollider.offset, (Vector2)scale);// compositeCollider.offset);
-
 					}
-//					DrawPolygonOrCompositeCollider (points, origin + (Vector3)Vector2.Scale (compositeCollider.offset, (Vector2)scale));
 					DrawPolygonOrCompositeCollider (points, origin);
 				}
 			}

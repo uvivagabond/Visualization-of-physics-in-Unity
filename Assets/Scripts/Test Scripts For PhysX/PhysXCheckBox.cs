@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityBerserkersGizmos;
 
+[ExecuteInEditMode]
 public class PhysXCheckBox : MonoBehaviour
 {
 	[SerializeField]Vector3 center;
@@ -13,7 +14,7 @@ public class PhysXCheckBox : MonoBehaviour
 	[Space (55)][Header ("Results:")]
 	[SerializeField]	bool isBoxOverlapColliders;
 
-	void FixedUpdate ()
+	void Update ()
 	{
 		orientation = Quaternion.Euler (eulerAngles);
 		isBoxOverlapColliders = Physics.CheckBox (center: center, halfExtents: halfExtents, orientation: orientation);			

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityBerserkersGizmos;
 
+[ExecuteInEditMode]
 public class PhysXCheckSphere : MonoBehaviour
 {
 	[SerializeField]Vector3 position;
@@ -11,7 +12,7 @@ public class PhysXCheckSphere : MonoBehaviour
 	[Space (55)][Header ("Results:")]
 	[SerializeField]	bool isSphereOverlapColliders;
 
-	void FixedUpdate ()
+	void Update ()
 	{				
 		isSphereOverlapColliders = Physics.CheckSphere (position: position, radius: radius);				
 	}

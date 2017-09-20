@@ -12,13 +12,13 @@ public class Box2DCollider2DOverlapCollider : MonoBehaviour
 
 	[Space (22)][Header ("Results:")]
 	[SerializeField]int overlappedCollidersCount;
-	//	[SerializeField]Collider2D[] results = new Collider2D[3];
+	[SerializeField]Collider2D[] results = new Collider2D[3];
 
 	void Update ()
 	{		
 		collider2D = GetComponent<Collider2D> ();
-		Collider2D[] results = new Collider2D[2];
-		overlappedCollidersCount = collider2D.OverlapCollider (contactFilter: cf, results: results);
+//		Collider2D[] results = new Collider2D[2];
+		overlappedCollidersCount = collider2D.OverlapCollider (contactFilter: cf.NoFilter (), results: results);
 
 	}
 
