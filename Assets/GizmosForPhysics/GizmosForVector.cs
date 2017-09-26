@@ -1,11 +1,28 @@
-﻿using System.Collections;
+﻿/* MIT License
+Copyright (c) 2017 Uvi Vagabond, UnityBerserkers
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace UnityBerserkersGizmos
 {
 	
-
 	public static class GizmosForVector
 	{
 		#region Variables
@@ -15,7 +32,12 @@ namespace UnityBerserkersGizmos
 		static Color hitColorR2 = new Color (r: 1f, g: 0.058f, b: 0.01f, a: 0.25f);
 		static Color fireBrick = new Color32 (178, 34, 34, 255);
 		static Color funkyBlue = new Color32 (30, 144, 255, 255);
-		static Color defaultColor = new Color (1, 1, 1, 1);
+		static BaseVectorDirection customVectorDirection = (BaseVectorDirection)4;
+		static Color green = new Color32 (0, 199, 29, 255);
+		static Color red = new Color32 (240, 1, 1, 255);
+		static Color blue = new Color32 (30, 44, 255, 255);
+		static Color yellow = new Color32 (255, 128, 0, 255);
+
 
 		#endregion
 
@@ -34,9 +56,9 @@ namespace UnityBerserkersGizmos
 			float rhsLenght = (realScale) ? rhs.magnitude : lenght;
 			float resultLenght = (realScale) ? result.magnitude : lenght;
 			float max = (realScale) ? Mathf.Max (lhsLenght, rhsLenght) : lenght;
-			DrawVector (origin, lhs, lhsLenght, Color.red, "lhs");
-			DrawVector (origin, rhs, rhsLenght, Color.green, "rhs");
-			DrawVector (origin, result, resultLenght, Color.blue, "crossResult");
+			DrawVector (origin, lhs, lhsLenght, red, "lhs");
+			DrawVector (origin, rhs, rhsLenght, green, "rhs");
+			DrawVector (origin, result, resultLenght, blue, "crossResult");
 			DrawPlane (origin, result, max);
 		}
 
@@ -48,11 +70,11 @@ namespace UnityBerserkersGizmos
 			float rhsLenght = (realScale) ? rhs.magnitude : lenght;
 			float max = (realScale) ? Mathf.Min (lhsLenght, rhsLenght) : lenght;
 			#if UNITY_EDITOR
-			DrawVector (origin, lhs, lhsLenght, Color.red, "lhs");
-			DrawVector (origin, rhs, rhsLenght, Color.green, "rhs");
+			DrawVector (origin, lhs, lhsLenght, red, "lhs");
+			DrawVector (origin, rhs, rhsLenght, green, "rhs");
 			UnityEditor.Handles.color = new Color32 (255, 0, 0, 25);
 			UnityEditor.Handles.DrawSolidArc (origin, Vector3.Cross (lhs, rhs).normalized, lhs, Vector3.Angle (lhs, rhs), max * 0.8f);
-			ShowLabel (origin + new Vector3 (0, 0.5f, 0), "dotProduct: " + result, Color.blue);
+			ShowLabel (origin + new Vector3 (0, 0.5f, 0), "dotProduct: " + result, blue);
 			#endif
 		}
 
@@ -68,17 +90,17 @@ namespace UnityBerserkersGizmos
 		{
 			lenght = Mathf.Clamp (lenght, 1, 20);
 			Vector3 binormal = Vector3.Cross (normal, tangent);
-			DrawVector (origin, normal, lenght, Color.red, "normal");
-			DrawVector (origin, tangent, lenght, Color.green, "tangent");
-			DrawVector (origin, binormal, lenght, Color.blue, "binormal");
+			DrawVector (origin, normal, lenght, red, "normal");
+			DrawVector (origin, tangent, lenght, green, "tangent");
+			DrawVector (origin, binormal, lenght, blue, "binormal");
 		}
 
 		public static void VisualizeOrthonormalize (Vector3 origin, Vector3 normal,	Vector3 tangent, Vector3 binormal, float lenght = 5)
 		{
 			lenght = Mathf.Clamp (lenght, 1, 20);
-			DrawVector (origin, normal, lenght, Color.red, "normal");
-			DrawVector (origin, tangent, lenght, Color.green, "tangent");
-			DrawVector (origin, binormal, lenght, Color.blue, "binormal");
+			DrawVector (origin, normal, lenght, red, "normal");
+			DrawVector (origin, tangent, lenght, green, "tangent");
+			DrawVector (origin, binormal, lenght, blue, "binormal");
 		}
 
 		/// <summary>
@@ -96,13 +118,13 @@ namespace UnityBerserkersGizmos
 			float projectedLenght = (realScale) ? projected.magnitude : projected.magnitude / vector.magnitude * 5f;
 			float planetNormalL = Vector3.Project (vector, planeNormal).magnitude;
 			float planeNormalLenght = (realScale) ? ((planetNormalL > 1) ? planetNormalL : 1)
-			: (planetNormalL > 1) ? Vector3.Project (vector.normalized * 5, planeNormal).magnitude : 5;
+				: (planetNormalL > 1) ? Vector3.Project (vector.normalized * 5, planeNormal).magnitude : 5;
 
-			DrawVector (origin, vector, vectorLenght, Color.red, "vector");
-			DrawVector (origin, projected, projectedLenght, Color.yellow, "result");
+			DrawVector (origin, vector, vectorLenght, red, "vector");
+			DrawVector (origin, projected, projectedLenght, yellow, "result");
 			DrawVector (origin, planeNormal, planeNormalLenght, nonHitColorB2, "planeNormal");
 			DrawPlane (origin, planeNormal, vectorLenght);
-			DrawDottedLine (vector.normalized * vectorLenght, projected.normalized * projectedLenght, 3, Color.green);
+			DrawDottedLine (origin + vector.normalized * vectorLenght, origin + projected.normalized * projectedLenght, 3, green);
 
 			Gizmos.color = temp;
 		}
@@ -127,10 +149,10 @@ namespace UnityBerserkersGizmos
 
 			float planetNormalL = Vector3.Project (inDirection, inNormal).magnitude;
 			float inNormalLenght = (realScale) ? ((planetNormalL > 1) ? planetNormalL : 1)
-			: (planetNormalL > 1) ? Vector3.Project (inDirection.normalized * 5, inNormal).magnitude : 5;
+				: (planetNormalL > 1) ? Vector3.Project (inDirection.normalized * 5, inNormal).magnitude : 5;
 
-			DrawVector (originOfInDirection, tempInDirection, inDirectLenght, Color.red, "inDirection");
-			DrawVector (originOfInDirection + inDirection * inDirectLenght, reflected * tempInDirection.magnitude, projectedLenght, Color.green, "reflected");
+			DrawVector (originOfInDirection, tempInDirection, inDirectLenght, red, "inDirection");
+			DrawVector (originOfInDirection + inDirection * inDirectLenght, reflected * tempInDirection.magnitude, projectedLenght, green, "reflected");
 			DrawVector (originOfInDirection + inDirection * inDirectLenght, inNormal, inNormalLenght, nonHitColorB2, "inNormal");
 
 			DrawPlane (originOfInDirection + inDirection * inDirectLenght, inNormal, inDirectLenght);
@@ -141,26 +163,32 @@ namespace UnityBerserkersGizmos
 			#endif
 		}
 
-		internal static void DrawPlane (Vector3 origin, Vector3 planeNormal, float vectorLenght)
+		internal static void DrawPlane (Vector3 origin, Vector3 planeNormal, float vectorLenght, Color color = default(Color))
 		{
-			Vector3 planeNormalTemp = planeNormal;
+			Color temp = Gizmos.color;
 			Vector3 tangent = new Vector3 (0, 0, 0), binormal = new Vector3 (0, 0, 0);
-			Vector3.OrthoNormalize (ref planeNormalTemp, ref tangent, ref binormal);
+			Vector3.OrthoNormalize (ref planeNormal, ref tangent, ref binormal);
+			if (color == default(Color)) {
+				Gizmos.color = nonHitColorB2;
+			} else {
+				Gizmos.color = color;
+			}
 			for (float i = 0.1f; i < 1.1f; i = i + 0.1f) {
 				Vector3 bt = origin + (tangent + binormal) * vectorLenght * i;
 				Vector3 bmt = origin + (-tangent + binormal) * vectorLenght * i;
 				Vector3 mbmt = origin + (-tangent - binormal) * vectorLenght * i;
 				Vector3 mbt = origin + (tangent - binormal) * vectorLenght * i;
-				Gizmos.color = nonHitColorB2;
+
 				Gizmos.DrawLine (bt, bmt);
 				Gizmos.DrawLine (bmt, mbmt);
 				Gizmos.DrawLine (mbmt, mbt);
 				Gizmos.DrawLine (mbt, bt);
 			}
+			Gizmos.color = temp;
 		}
 
 
-		public static void DrawVector (Vector3 origin, Vector3 direction, float vectorLenght, Color vectorColor, string name, Vector3 labelOffset = default(Vector3), bool showLabel = !default(bool))
+		public static void DrawVector (Vector3 origin, Vector3 direction, float vectorLenght, Color vectorColor, string name = "", Vector3 labelOffset = default(Vector3), bool showLabel = !default(bool))
 		{
 			#if UNITY_EDITOR
 			Color temp = Gizmos.color;
@@ -217,25 +245,25 @@ namespace UnityBerserkersGizmos
 		{
 			#if UNITY_EDITOR
 			GUIStyle g = new GUIStyle ();
-			g.normal.textColor = Color.blue;
+			g.normal.textColor = blue;
 			UnityEditor.Handles.Label (startPosition, "startPosition", g);
-			g.normal.textColor = Color.red;
+			g.normal.textColor = red;
 			UnityEditor.Handles.Label (endPosition, "endPosition", g);
 			#endif
 		}
 
 
-		static void GetPointAndDrawInterpolation (System.Func<Vector3,Vector3,float,Vector3> func, Vector3 startPosition, Vector3 endPosition, int howMuchFuther = 1)
+		static void GetPointAndDrawInterpolation (System.Func<Vector3,Vector3,float,Vector3> func, Vector3 startPosition, Vector3 endPosition, int howMuchFuther = 1, Color color = default(Color), bool showStartPoints = !default(bool))
 		{
 			Color temp = Gizmos.color;
-			Gizmos.color = funkyBlue;
+
+			Gizmos.color = (color == default(Color)) ? funkyBlue : color;
 			howMuchFuther = Mathf.Clamp (howMuchFuther, 1, 10);
 			int iterations = 100 * howMuchFuther;
 			List<Vector3> points = new List<Vector3> (100 * iterations);
 			for (int i = 0; i < iterations; i++) {
 				float t = i * howMuchFuther / (float)iterations;
 				points.Add (func (startPosition, endPosition, t));
-
 			}
 			for (int i = 0; i < iterations - 1; i++) {
 				if (i % 2 == 0) {
@@ -251,12 +279,14 @@ namespace UnityBerserkersGizmos
 			if (howMuchFuther > 1) {
 				Gizmos.DrawSphere (points [points.Count - 1], 0.3f);
 			}
+			if (showStartPoints) {
+				Gizmos.color = blue;
+				Gizmos.DrawSphere (startPosition, 0.3f);
+				Gizmos.color = red;
+				Gizmos.DrawSphere (endPosition, 0.3f);
+				Gizmos.color = temp;	
+			}
 
-			Gizmos.color = Color.blue;
-			Gizmos.DrawSphere (startPosition, 0.3f);
-			Gizmos.color = Color.red;
-			Gizmos.DrawSphere (endPosition, 0.3f);
-			Gizmos.color = temp;
 		}
 
 		/// <summary>
@@ -310,19 +340,71 @@ namespace UnityBerserkersGizmos
 			}
 			Gizmos.DrawLine (points [capacity - 3], target);	
 			Gizmos.DrawLine (points [0], currentPositionHardCoded);	
-			Gizmos.color = Color.red;
+			Gizmos.color = red;
 			Gizmos.DrawSphere (target, 0.3f);
-			Gizmos.color = Color.blue;
+			Gizmos.color = blue;
 			Gizmos.DrawSphere (currentPositionHardCoded, 0.3f);
 
 			GUIStyle g = new GUIStyle ();
-			g.normal.textColor = Color.blue;
+			g.normal.textColor = blue;
 			UnityEditor.Handles.Label (currentPositionHardCoded, "start Position");	
-			g.normal.textColor = Color.red;
+			g.normal.textColor = red;
 			UnityEditor.Handles.Label (target, "target Position");	
 			Gizmos.color = tempColor;
 			#endif
 		}
+
+		public static void VisualizeRotateTowards (Vector3 origin, Vector3 current, Vector3 target, 
+		                                           BaseVectorDirection builtinDirection = default(BaseVectorDirection), float lenght = 6, bool showPlane = default(bool))
+		{
+			Vector3 direction = GizmosForQuaternion.GetBaseDirection (builtinDirection);
+			VisualizeRotateTowardsRaw (origin, current, target, builtinDirection, lenght, direction);
+		}
+
+		public static void VisualizeRotateTowards (Vector3 origin, Vector3 current, Vector3 target, 
+		                                           Vector3 customDirection, float lenght = 6, bool showPlane = default(bool))
+		{
+
+			VisualizeRotateTowardsRaw (origin, current, target, customVectorDirection, lenght, customDirection);
+		}
+
+		public static void VisualizeRotateTowardsRaw (Vector3 origin, Vector3 current, Vector3 target, 
+		                                              BaseVectorDirection builtinDirection = default(BaseVectorDirection), float lenght = 6,
+		                                              Vector3 direction = default(Vector3), bool showPlane = default(bool))
+		{
+			Color temp = Gizmos.color;
+			direction = (direction == Vector3.zero) ? Vector3.right : direction.normalized;
+			Color startColor = GizmosForQuaternion.GetColors (builtinDirection) [0];
+			Color endColor = GizmosForQuaternion.GetColors (builtinDirection) [1];
+			Color color = new Color ();
+			int iterations = 100;
+			List<Vector3> points = new List<Vector3> (iterations);
+			List<Color> colors = new List<Color> (iterations);
+
+			for (int i = 0; i < iterations; i++) {
+				float t = i / (float)iterations;
+				points.Add (Vector3.Slerp (current.normalized * lenght, target.normalized * lenght, t));
+				colors.Add (Color.Lerp (startColor, endColor, t));
+			}
+			for (int i = 0; i < iterations - 1; i++) {
+				if (i % 2 == 0) {
+					Gizmos.color = colors [i];
+					Gizmos.DrawLine (points [i] + origin, points [i + 1] + origin);
+				}
+			}
+			if (showPlane) {
+				Vector3 normal = Vector3.Cross (current, target);
+				if (normal.magnitude > 0f) {
+					DrawPlane (origin, normal, lenght);
+				}
+			}
+
+			DrawVector (origin, current, lenght, startColor);
+			DrawVector (origin, target, lenght, endColor);
+		}
+
+
+
 
 		static bool arePointsCached = false;
 		static Vector3[] points = new Vector3[148];
@@ -389,8 +471,8 @@ namespace UnityBerserkersGizmos
 			float angle = Vector3.Angle (from, to);
 			Vector3 normal = Vector3.Cross (from, to).normalized;
 			#if UNITY_EDITOR
-			DrawVector (origin, from, lenght, Color.red, "from");
-			DrawVector (origin, to, lenght, Color.blue, "to");
+			DrawVector (origin, from, lenght, red, "from");
+			DrawVector (origin, to, lenght, blue, "to");
 			UnityEditor.Handles.color = new Color32 (255, 0, 0, 25);
 			UnityEditor.Handles.Label (origin, "SignedAngle2D(deg): " + System.Math.Round (signedAngle, 0) + "\xB0");
 			UnityEditor.Handles.DrawSolidArc (origin, normal, from, angle, lenght * 0.8f);
@@ -411,14 +493,14 @@ namespace UnityBerserkersGizmos
 			float signedAngle = Vector3.SignedAngle (from, to, axis);
 			float sign = Vector3.Dot (axis, Vector3.Cross (from.normalized, to.normalized));
 			DrawAngles (origin, -sign * Vector3.Cross (to, from), from, to, signedAngle, "SignedAngle3D", lenght);
-			DrawVector (origin, axis, lenght / 2f, Color.blue, "axis");
+			DrawVector (origin, axis, lenght / 2f, blue, "axis");
 		}
 
 		static void DrawAngles (Vector3 origin, Vector3 axis, Vector3 from, Vector3 to, float angle, string nameOfAngle, float lenght = 5)
 		{
 			#if UNITY_EDITOR
-			DrawVector (origin, from, lenght, Color.red, "from");
-			DrawVector (origin, to, lenght, Color.green, "to");
+			DrawVector (origin, from, lenght, red, "from");
+			DrawVector (origin, to, lenght, green, "to");
 			UnityEditor.Handles.color = new Color32 (255, 0, 0, 25);
 			UnityEditor.Handles.Label (origin, nameOfAngle + "(deg): " + System.Math.Round (angle, 0) + "\xB0");
 			UnityEditor.Handles.DrawSolidArc (origin, axis, from, angle, lenght * 0.8f);
@@ -432,11 +514,11 @@ namespace UnityBerserkersGizmos
 			float vectorLenght = (realScale) ? vector.magnitude : lenght;
 			float onNormalLenght = 1;// (realScale) ? onNormal.magnitude : onNormal.magnitude / vector.magnitude * 5f;
 			float projectedLenght = (realScale) ? Vector3.Project (vector, result).magnitude : Vector3.Project (vector, result).magnitude * lenght / vector.magnitude;
-//		
+			//		
 			DrawDottedLine (vector.normalized * vectorLenght, result.normalized * projectedLenght, 3, funkyBlue);
 
-			DrawVector (origin, vector, vectorLenght, Color.green, "vector");
-			DrawVector (origin, result, projectedLenght, Color.red, "result", new Vector3 (0, 0.5f));
+			DrawVector (origin, vector, vectorLenght, green, "vector");
+			DrawVector (origin, result, projectedLenght, red, "result", new Vector3 (0, 0.5f));
 			DrawVector (origin, onNormal, onNormalLenght, funkyBlue, "onNormal");
 
 		}
@@ -459,7 +541,7 @@ namespace UnityBerserkersGizmos
 			return v;
 		}
 
-		internal static void ShowVectorValue (Vector3 origin, string name, Vector3 value, Color color, Vector3 labelOffset = default(Vector3))
+		internal static void ShowVectorValue (Vector3 origin, string name, Vector3 value, Color color = default(Color), Vector3 labelOffset = default(Vector3))
 		{
 			#if UNITY_EDITOR
 			Color temp2 = UnityEditor.Handles.color;
@@ -472,7 +554,7 @@ namespace UnityBerserkersGizmos
 			#endif
 		}
 
-		public 	static void ShowLabel (Vector3 origin, string name, Color color, Vector3 labelOffset = default(Vector3))
+		public 	static void ShowLabel (Vector3 origin, string name, Color color = default(Color), Vector3 labelOffset = default(Vector3))
 		{
 			#if UNITY_EDITOR
 			Color temp2 = UnityEditor.Handles.color;
@@ -483,7 +565,7 @@ namespace UnityBerserkersGizmos
 			#endif
 		}
 
-		public 	static void ShowVectorLabel (Vector3 origin, Vector3 valueToDisplay, Color color, Vector3 labelOffset = default(Vector3))
+		public 	static void ShowVectorLabel (Vector3 origin, Vector3 valueToDisplay, Color color = default(Color), Vector3 labelOffset = default(Vector3))
 		{
 			#if UNITY_EDITOR
 			Color temp2 = UnityEditor.Handles.color;
@@ -491,7 +573,6 @@ namespace UnityBerserkersGizmos
 			g.normal.textColor = color;
 			UnityEditor.Handles.Label (origin + labelOffset, "(" + valueToDisplay.x + "," + valueToDisplay.y + "," + valueToDisplay.z + ")", g);
 			UnityEditor.Handles.color = temp2;
-
 			#endif
 		}
 	}

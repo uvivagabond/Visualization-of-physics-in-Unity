@@ -255,7 +255,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &297122389
 Transform:
   m_ObjectHideFlags: 0
@@ -283,7 +283,7 @@ MonoBehaviour:
   originOfVectors: {x: 0, y: 0, z: 0}
   lhs: {x: 1, y: 1, z: 0}
   rhs: {x: 0, y: 4, z: 0}
-  useRealScale: 1
+  useRealScale: 0
   dotProduct: 4
 --- !u!1 &998328116
 GameObject:
@@ -737,7 +737,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1510447927
 Transform:
   m_ObjectHideFlags: 0
