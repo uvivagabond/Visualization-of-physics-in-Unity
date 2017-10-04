@@ -394,7 +394,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 249343033}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4, y: 0, z: 0}
+  m_LocalPosition: {x: -4, y: -0.18, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 882369963}
@@ -410,8 +410,8 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
-  m_Height: 1
-  m_Direction: 1
+  m_Height: 1.45
+  m_Direction: 0
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &401404923
 GameObject:
@@ -617,7 +617,7 @@ MonoBehaviour:
   direction: {x: 0.75, y: 1, z: 0}
   radius: 2.41
   maxDistance: 5.8
-  isHitSomething: 0
+  isHitSomething: 1
 --- !u!1 &615792085
 GameObject:
   m_ObjectHideFlags: 0
@@ -1417,7 +1417,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1743583136
 Transform:
   m_ObjectHideFlags: 0

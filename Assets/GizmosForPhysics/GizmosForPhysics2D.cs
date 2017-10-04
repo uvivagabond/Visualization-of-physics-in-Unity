@@ -1856,26 +1856,26 @@ namespace UnityBerserkersGizmos
 		}
 
 
-		public static void VizualizeNormalVector (RaycastHit2D hitInfo, float lenght = 1f)
+		public static void VizualizeNormalVector (RaycastHit2D hitInfo, float lenght = 1f, Color32 color = default(Color32))
 		{
 			if (!hitInfo) {
 				return;
 			}
+			color = (color == default(Color)) ? new Color32 (102, 255, 0, 255) : color;
 			ShowNormalVector (hitInfo.point, hitInfo.normal, lenght);
 		}
 
-		public static void VizualizeNormalVector (ContactPoint2D contactPoint, float lenght = 1f)
+		public static void VizualizeNormalVector (ContactPoint2D contactPoint, float lenght = 1f, Color32 color = default(Color32))
 		{
 			if (!contactPoint.otherCollider) {
 				return;
 			}
-			ShowNormalVector (contactPoint.point, contactPoint.normal, lenght);
+			color = (color == default(Color)) ? new Color32 (102, 255, 0, 255) : color;
+			ShowNormalVector (contactPoint.point, contactPoint.normal, lenght, color);
 		}
 
-		static void ShowNormalVector (Vector3 origin, Vector3 normal, float lenght = 1f)
+		static void ShowNormalVector (Vector3 origin, Vector3 normal, float lenght = 1f, Color color = default(Color))
 		{
-
-			Color color = new Color32 (102, 255, 0, 255);
 			GUIStyle g = new GUIStyle ();	
 			g.normal.textColor = color;
 
@@ -1901,8 +1901,8 @@ namespace UnityBerserkersGizmos
 				GizmosForVector.ShowLabel (distance.pointB + distance.normal * distance.distance * 0.5f, "distance: " + System.Math.Round (distance.distance, 2), (distance.distance > 0) ? Color.green : Color.magenta);
 			}
 			if (distance.distance > 0 && showPointAAndB) {
-				GizmosForVector.ShowVectorValue (distance.pointA, "pointA", distance.pointA, Color.blue);
-				GizmosForVector.ShowVectorValue (distance.pointB, "pointB", distance.pointB, Color.red);
+				GizmosForVector.ShowVectorValue (distance.pointA, "pointA\n", distance.pointA, Color.blue);
+				GizmosForVector.ShowVectorValue (distance.pointB, "pointB\n", distance.pointB, Color.red);
 			}
 		}
 
@@ -1911,13 +1911,16 @@ namespace UnityBerserkersGizmos
 			Color temp = Gizmos.color;
 			Gizmos.color = Color.red;
 			ContactPoint2D[] cp = new ContactPoint2D[100];
+			if (col == null) {
+				return;
+			}
 			col.GetContacts (contacts: cp);
 			for (int i = 0; i < cp.Length; i++) {
 				if (!cp [i].enabled) {
 					return;
 				}				
 				Gizmos.DrawSphere (cp [i].point, 0.1f);
-				GizmosForVector.ShowVectorValue (cp [i].point, "zzz", cp [i].point, Color.red);
+				GizmosForVector.ShowVectorValue (cp [i].point, "", cp [i].point, Color.red);
 				GizmosForVector.ShowVectorLabel (cp [i].point, cp [i].point);
 			}
 			Gizmos.color = temp;

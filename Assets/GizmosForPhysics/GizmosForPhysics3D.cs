@@ -806,7 +806,7 @@ namespace UnityBerserkersGizmos
 			}
 		}
 
-		static void DrawSphereCast3DRaw (Vector3 origin, float radius, Vector3 direction, float maxDistance, bool isHit)
+		static void DrawSphereCast3DRaw (Vector3 origin, float radius, Vector3 direction, float maxDistance, bool isHit, bool drawWireSphereFromGizmosClass = default(bool))
 		{
 			direction = direction.normalized;
 			FindSphereAndCapsuleMesh ();
@@ -820,10 +820,18 @@ namespace UnityBerserkersGizmos
 			Gizmos.color = (isHit) ? hitColorO : nonHitColorB;
 			Gizmos.matrix = Matrix4x4.identity;
 			Gizmos.matrix = Matrix4x4.TRS (endPositionOfSphere, Quaternion.identity, new Vector3 (radius, radius, radius));
-			Gizmos.DrawWireMesh (sphereMesh);
+			if (drawWireSphereFromGizmosClass) {
+				Gizmos.DrawWireSphere (Vector3.zero, 1);
+			} else {
+				Gizmos.DrawWireMesh (sphereMesh);
+			}
 			Gizmos.color = (isHit) ? hitColorR : nonHitColorBaseG;
 			Gizmos.matrix = Matrix4x4.TRS (origin, Quaternion.identity, new Vector3 (radius, radius, radius));
-			Gizmos.DrawWireMesh (sphereMesh);
+			if (drawWireSphereFromGizmosClass) {
+				Gizmos.DrawWireSphere (Vector3.zero, 1);
+			} else {
+				Gizmos.DrawWireMesh (sphereMesh);
+			}
 			Gizmos.matrix = Matrix4x4.identity;
 			#endregion
 			if (radius == 0) {
@@ -884,7 +892,7 @@ namespace UnityBerserkersGizmos
 			Gizmos.matrix = Matrix4x4.identity;
 		}
 
-		static void DrawColliders3DShapes (Rigidbody rigidbody, Vector3 direction, float maxDistance, bool isHit, Collider collider)
+		static void DrawColliders3DShapes (Rigidbody rigidbody, Vector3 direction, float maxDistance, bool isHit, Collider collider, bool showWarnings = !default(bool))
 		{
 			if (collider is BoxCollider) {
 				BoxCollider bc = collider as BoxCollider;
@@ -892,7 +900,7 @@ namespace UnityBerserkersGizmos
 				Quaternion rotation = Quaternion.identity;
 				DataForCasting data = new DataForCasting (collider, direction, maxDistance);
 				data.GetDataForCasting (out origin, out rotation, out direction, out size);
-				if (size.x < 0 || size.y < 0 || size.z < 0 || bc.size.x < 0 || bc.size.y < 0 || bc.size.z < 0) {
+				if (showWarnings && size.x < 0 || size.y < 0 || size.z < 0 || bc.size.x < 0 || bc.size.y < 0 || bc.size.z < 0) {
 					DisplayWarningAboutSize ("Rigidbody_SweepTest", "BoxCollider.size", "Transform's scale", "should't be negative! ", rigidbody);
 				}
 				size.Scale (bc.size / 2);
@@ -904,7 +912,9 @@ namespace UnityBerserkersGizmos
 				Quaternion rotation = Quaternion.identity;
 				DataForCasting data = new DataForCasting (collider, direction, maxDistance);
 				data.GetDataForCasting (out origin, out rotation, out direction, out scale);
-				DisplayWarningAboutScale (rigidbody, scale);
+				if (showWarnings) {
+					DisplayWarningAboutScale (rigidbody, scale);					
+				}
 				Vector3 capsuleDirection = (cc.direction == 0) ? Vector3.right : ((cc.direction == 1) ? Vector3.up : Vector3.forward);
 				float height = cc.height;
 				float radius = cc.radius;
@@ -913,12 +923,15 @@ namespace UnityBerserkersGizmos
 				height *= heightScale;
 				radius = Mathf.Clamp (radius, cc.radius * radiusScale, radius);
 				capsuleDirection = rotation * capsuleDirection;
+
 				Vector3 point1 = origin;
 				Vector3 point2 = origin;
 				if (height > 2 * radius) {
-					point1 = (height * 0.5f - radius) * capsuleDirection;
-					point2 = (-height * 0.5f + radius) * capsuleDirection;
+					point1 = origin + (height * 0.5f - radius) * capsuleDirection;
+					point2 = origin + (-height * 0.5f + radius) * capsuleDirection;
 				}
+
+
 				DrawCapsuleCast3DRaw (point1, point2, radius, direction, maxDistance, isHit);
 			} else if (collider is SphereCollider) {
 				SphereCollider sc = collider as SphereCollider;
@@ -927,10 +940,12 @@ namespace UnityBerserkersGizmos
 				Quaternion rotation = Quaternion.identity;
 				DataForCasting data = new DataForCasting (collider, direction, maxDistance);
 				data.GetDataForCasting (out origin, out rotation, out direction, out scale);
-				DisplayWarningAboutScale (rigidbody, scale);
+				if (showWarnings) {
+					DisplayWarningAboutScale (rigidbody, scale);					
+				}
 				float maxFactorOfScale = Mathf.Max (Mathf.Abs (scale.x), Mathf.Abs (scale.y), Mathf.Abs (scale.z));
 				radius *= maxFactorOfScale;
-				DrawSphereCast3DRaw (origin, radius, direction, maxDistance, isHit);
+				DrawSphereCast3DRaw (origin, radius, direction, maxDistance, isHit, true);
 			} else if (collider is MeshCollider) {
 				MeshCollider mc = collider as MeshCollider;
 				if (!mc.convex) {
@@ -942,7 +957,9 @@ namespace UnityBerserkersGizmos
 				Quaternion rotation = Quaternion.identity;
 				DataForCasting data = new DataForCasting (collider, direction, maxDistance);
 				data.GetDataForCasting (out origin, out endOfMC, out direction, out rotation, out scale);
-				DisplayWarningAboutScale (rigidbody, scale);
+				if (showWarnings) {
+					DisplayWarningAboutScale (rigidbody, scale);					
+				}
 				Gizmos.color = (isHit) ? hitColorR : nonHitColorBaseG;
 				Gizmos.DrawWireMesh (mesh, origin, rotation, scale);
 				Gizmos.color = (isHit) ? hitColorO : nonHitColorB;
@@ -954,6 +971,12 @@ namespace UnityBerserkersGizmos
 					Gizmos.DrawLine (origin + vert [i], endOfMC + vert [i]);
 				}
 			}
+		}
+
+		static void DrawColliders3DShapes (Collider collider, bool isHit)
+		{
+			Rigidbody rigidbody = null;
+			DrawColliders3DShapes (rigidbody, Vector3.one, 0, isHit, collider, false);
 		}
 
 		static void DisplayWarningAboutScale (Rigidbody rigidbody, Vector3 scale)
@@ -1078,7 +1101,7 @@ namespace UnityBerserkersGizmos
 			Gizmos.color = temp;
 		}
 
-		static void ShowClosestDistance (Vector3 point, bool showPointAndClosestPoint, bool showDistance, Vector3 closestPoint)
+		static void ShowClosestDistance (Vector3 point, bool showPointAndClosestPoint, bool showDistance, Vector3 closestPoint, string onWhat = "OnCollider")
 		{
 			Gizmos.DrawLine (point, closestPoint);
 			float distance = (closestPoint - point).magnitude;
@@ -1087,7 +1110,7 @@ namespace UnityBerserkersGizmos
 				GizmosForVector.ShowLabel (point + (closestPoint - point) * 0.5f, "distance: " + System.Math.Round (distance, 2), (distance > 0) ? Color.green : Color.magenta);
 			}
 			if (distance > 0 && showPointAndClosestPoint) {
-				GizmosForVector.ShowVectorValue (closestPoint, "closestPointOnCollider", closestPoint, Color.red);
+				GizmosForVector.ShowVectorValue (closestPoint, "closestPoint\n" + onWhat + "\n", closestPoint, Color.red);
 			}
 			GizmosForVector.ShowVectorValue (point, "point", point, (distance > 0) ? Color.blue : Color.magenta);
 			Gizmos.color = (distance > 0) ? Color.blue : Color.magenta;
@@ -1144,6 +1167,24 @@ namespace UnityBerserkersGizmos
 			return offset;
 		}
 
+		static Vector3 GetColliderSize (Collider collider)
+		{
+			Vector3 size = Vector3.zero;
+			if (collider is BoxCollider) {
+				BoxCollider bc = (BoxCollider)collider;
+				size = bc.size;
+			} else if (collider is SphereCollider) {
+				SphereCollider sc = (SphereCollider)collider;
+				size = sc.radius * Vector3.one;
+			} else if (collider is CapsuleCollider) {
+				CapsuleCollider cc = (CapsuleCollider)collider;
+				size = cc.center;
+			}
+			size.Scale (collider.transform.lossyScale);
+
+			return size;
+		}
+
 		public static void VizualizeClosestPointOnBounds (Vector3 position, Collider collider, bool showPointAndClosestPoint = !default(bool), bool showDistance = !default(bool))
 		{		
 			if (collider == null || !IsAppropiateCollider (collider)) {
@@ -1173,7 +1214,7 @@ namespace UnityBerserkersGizmos
 				Debug.Log (colliders.Length);
 			}
 			Vector3 closestPointOnBounds = rigidbody.ClosestPointOnBounds (position);
-			ShowClosestDistance (position, showPointAndClosestPoint, showDistance, closestPointOnBounds);
+			ShowClosestDistance (position, showPointAndClosestPoint, showDistance, closestPointOnBounds, "OnBounds");
 			Gizmos.color = temp;
 		}
 
@@ -1184,11 +1225,22 @@ namespace UnityBerserkersGizmos
 		public static void VizualizeComputePenetration (Collider colliderA, Vector3 positionA, Quaternion rotationA,
 		                                                Collider	colliderB, Vector3 positionB, Quaternion rotationB)
 		{
+			Color temp = Gizmos.color;
 			Vector3 direction;
 			float distance;
-			Physics.ComputePenetration (colliderA: colliderA, positionA: colliderA.transform.position, rotationA: colliderA.transform.rotation,
-				colliderB: colliderB, positionB: colliderB.transform.position, rotationB: colliderB.transform.rotation, direction: out direction, distance: out distance);
+			bool isPenetrating = Physics.ComputePenetration (colliderA: colliderA, positionA: colliderA.transform.position, rotationA: colliderA.transform.rotation,
+				                     colliderB: colliderB, positionB: colliderB.transform.position, rotationB: colliderB.transform.rotation, direction: out direction, distance: out distance);
 
+			Vector3 colACenter = GetColliderOffset (colliderA);
+			Vector3 colBCenter = GetColliderOffset (colliderB);
+			DrawColliders3DShapes (colliderA, false);
+			DrawColliders3DShapes (colliderB, false);
+			Gizmos.color = Color.red;
+			if (isPenetrating) {
+				GizmosForVector.DrawVector (colliderB.transform.position + Vector3.Scale (colBCenter, colliderB.transform.lossyScale), direction * distance, distance, Color.red);
+				Gizmos.DrawSphere (colliderB.transform.position + Vector3.Scale (colBCenter, colliderB.transform.lossyScale), 0.05f);
+			} 
+			Gizmos.color = temp;
 		}
 
 		#endregion
