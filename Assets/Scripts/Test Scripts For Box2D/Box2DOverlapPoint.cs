@@ -27,11 +27,11 @@ public class Box2DOverlapPoint : MonoBehaviour
 	[SerializeField]Vector3 point;
 
 	[Space (55)][Header ("Results:")]
-	[SerializeField]bool isSomethingOverlapingPoint;
+	[SerializeField]Collider2D overlapedCollider;
 
 	void Update ()
 	{		
-		isSomethingOverlapingPoint = Physics2D.OverlapPoint (point: point);
+		overlapedCollider = Physics2D.OverlapPoint (point: point);
 	}
 
 	void OnDrawGizmos ()

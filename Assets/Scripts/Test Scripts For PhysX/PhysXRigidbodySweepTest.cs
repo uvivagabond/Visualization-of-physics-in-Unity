@@ -41,7 +41,7 @@ public class PhysXRigidbodySweepTest : MonoBehaviour
 			my_rigidbody = this.GetComponent<Rigidbody> ();
 		}
 		if (my_rigidbody) {
-			my_rigidbody.SweepTest (direction: direction, hitInfo: out hitByRayCast, maxDistance: maxDistance);
+			isSomethingHit =	my_rigidbody.SweepTest (direction: direction, hitInfo: out hitByRayCast, maxDistance: maxDistance);
 		}
 	}
 
@@ -49,7 +49,5 @@ public class PhysXRigidbodySweepTest : MonoBehaviour
 	{
 
 		GizmosForPhysics3D.Rigidbody_SweepTest (rigidbody: my_rigidbody, direction: direction, maxDistance: maxDistance);
-//		GizmosForPhysics3D.DrawRaycast (origin: origin, direction: direction, maxDistance: maxDistance);
-//		GizmosForPhysics3D.DrawRaycast (ray: ray, maxDistance: maxDistance);
 	}
 }

@@ -30,7 +30,7 @@ public class PhysXCheckCapsule : MonoBehaviour
 	[SerializeField]float radius = 1;
 	[SerializeField]float maxDistance;
 	
-	[Space (55)][Header ("Results:")]
+	[Space (35)][Header ("Results:")]
 	[SerializeField]	bool isCapsuleOverlapSomething;
 
 

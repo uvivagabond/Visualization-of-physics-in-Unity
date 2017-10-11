@@ -31,11 +31,11 @@ public class Box2DOverlapCapsule : MonoBehaviour
 	RaycastHit2D hitByRayCast;
 
 	[Space (55)][Header ("Results:")]
-	[SerializeField]bool isSomethingHit;
+	[SerializeField]Collider2D overlapedCollider;
 
 	void Update ()
 	{		
-		isSomethingHit = Physics2D.OverlapCapsule (point: point, size: size, direction: capsuleDirection, angle: angle);
+		overlapedCollider = Physics2D.OverlapCapsule (point: point, size: size, direction: capsuleDirection, angle: angle);
 	}
 
 	void OnDrawGizmos ()

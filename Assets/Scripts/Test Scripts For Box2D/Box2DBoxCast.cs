@@ -21,12 +21,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityBerserkersGizmos;
 
+[ExecuteInEditMode]
 public class Box2DBoxCast : MonoBehaviour
 {
 	[SerializeField]Vector3 origin;
 	[SerializeField]Vector3 size;
-	[SerializeField]Vector3 direction;
 	[SerializeField]float angle = 0;
+	[Space (10)][SerializeField]Vector3 direction;
 	[SerializeField]float distance = 1;
 
 	RaycastHit2D hitByRayCast;

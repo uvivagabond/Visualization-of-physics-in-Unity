@@ -24,17 +24,19 @@ using UnityBerserkersGizmos;
 [ExecuteInEditMode]
 public class PhysXPlaneRaycast : MonoBehaviour
 {
+	[SerializeField]Vector3 inPoint = Vector3.zero;
 	[SerializeField]Vector3 origin;
 	[SerializeField]Vector3 direction;
-	[SerializeField]float end;
-	[SerializeField]bool isHitForwardSideOfPlane;
+	[SerializeField]float rayDistance;
+	[Space (22)]
+	[SerializeField]bool isHitPositiveSideOfPlane;
 	Plane my_Plane;
 
 	void Update ()
 	{
-		my_Plane = new Plane (inNormal: Vector3.up, inPoint: Vector3.zero);
+		my_Plane = new Plane (inNormal: Vector3.up, inPoint: inPoint);
 		
-		isHitForwardSideOfPlane = my_Plane.Raycast (new Ray (origin, direction), out end);
+		isHitPositiveSideOfPlane = my_Plane.Raycast (ray: new Ray (origin, direction), enter: out rayDistance);
 	}
 
 	void OnDrawGizmos ()

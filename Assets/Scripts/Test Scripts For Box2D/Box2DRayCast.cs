@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityBerserkersGizmos;
 
+[ExecuteInEditMode]
 public class Box2DRayCast : MonoBehaviour
 {
 
@@ -31,6 +32,7 @@ public class Box2DRayCast : MonoBehaviour
 
 	RaycastHit2D hitByRayCast;
 
+
 	[Space (55)][Header ("Results:")]
 	[SerializeField]bool isSomethingHit;
 
@@ -38,6 +40,7 @@ public class Box2DRayCast : MonoBehaviour
 	{		
 		isSomethingHit = Physics2D.Raycast (origin: origin, direction: direction, distance: distance,			
 			layerMask: Physics2D.DefaultRaycastLayers, minDepth: -Mathf.Infinity, maxDepth: Mathf.Infinity);
+
 	}
 
 	void OnDrawGizmos ()

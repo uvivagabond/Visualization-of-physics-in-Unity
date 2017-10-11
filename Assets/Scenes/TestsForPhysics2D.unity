@@ -326,7 +326,7 @@ MeshRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 305535433}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_MotionVectors: 1
@@ -362,7 +362,7 @@ CircleCollider2D:
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_UsedByEffector: 1
+  m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
@@ -381,7 +381,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 305535433}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4, y: 4.74, z: 0}
+  m_LocalPosition: {x: 12.87, y: 3.88, z: 0.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -440,15 +440,15 @@ GameObject:
   m_Component:
   - component: {fileID: 372625152}
   - component: {fileID: 372625153}
-  - component: {fileID: 372625155}
   - component: {fileID: 372625154}
+  - component: {fileID: 372625155}
   m_Layer: 0
   m_Name: RigidbodyCast
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &372625152
 Transform:
   m_ObjectHideFlags: 0
@@ -580,9 +580,9 @@ GameObject:
   m_Component:
   - component: {fileID: 459679455}
   - component: {fileID: 459679456}
-  - component: {fileID: 459679457}
-  - component: {fileID: 459679460}
   - component: {fileID: 459679458}
+  - component: {fileID: 459679460}
+  - component: {fileID: 459679457}
   m_Layer: 0
   m_Name: ColliderCast
   m_TagString: Untagged
@@ -597,7 +597,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 459679454}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 13.5, y: -7.97, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1478474100}
@@ -631,7 +631,7 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 4.96}
+  m_Offset: {x: 0, y: 2.92}
   serializedVersion: 2
   m_Radius: 0.5
 --- !u!61 &459679458
@@ -645,7 +645,7 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_UsedByComposite: 1
+  m_UsedByComposite: 0
   m_Offset: {x: -1.52, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
@@ -738,8 +738,8 @@ MonoBehaviour:
     maxNormalAngle: 359.9999
   overlappedCollidersCount: 0
   results:
-  - {fileID: 715875489}
-  - {fileID: 531966083}
+  - {fileID: 305535435}
+  - {fileID: 0}
   - {fileID: 0}
 --- !u!70 &531966083
 CapsuleCollider2D:
@@ -798,7 +798,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &552741521
 Transform:
   m_ObjectHideFlags: 0
@@ -831,7 +831,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 2
 --- !u!114 &552741523
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -996,9 +996,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61d0d864f32fcf44ba4d4b517d7cd26a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  point: {x: -3.3, y: -1.52, z: 0}
-  radius: 1.38
-  isSomethingHit: 0
+  point: {x: -2.41, y: 1.05, z: 0}
+  radius: 2.5
+  overlapedCollider: {fileID: 0}
 --- !u!1 &668834642
 GameObject:
   m_ObjectHideFlags: 0
@@ -1202,7 +1202,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &866771107
 Transform:
   m_ObjectHideFlags: 0
@@ -1249,6 +1249,10 @@ MonoBehaviour:
     minNormalAngle: 0
     maxNormalAngle: 359.9999
   overlappedCollidersCount: 0
+  results:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!66 &866771109
 CompositeCollider2D:
   m_ObjectHideFlags: 0
@@ -1265,7 +1269,29 @@ CompositeCollider2D:
   m_GeometryType: 0
   m_GenerationType: 0
   m_EdgeRadius: 0
-  m_ColliderPaths: []
+  m_ColliderPaths:
+  - m_Collider: {fileID: 552811368}
+    m_ColliderPaths:
+    - - X: 88524304
+        Y: -10787710
+      - X: 78526000
+        Y: -10733614
+      - X: 78471896
+        Y: -20733466
+      - X: 88470192
+        Y: -20787564
+  - m_Collider: {fileID: 552811367}
+    m_ColliderPaths:
+    - - X: 72354104
+        Y: -5700147
+      - X: 62807768
+        Y: -12558427
+      - X: 66379376
+        Y: -23758254
+      - X: 78133080
+        Y: -23821850
+      - X: 81825664
+        Y: -12661324
   m_CompositePaths:
     m_Paths:
     - - {x: 7.915369, y: -2.0737157}
@@ -1296,7 +1322,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 2
 --- !u!1 &911072375
 GameObject:
   m_ObjectHideFlags: 0
@@ -1511,7 +1537,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1005864604
 Transform:
   m_ObjectHideFlags: 0
@@ -1642,7 +1668,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1095171935
 Transform:
   m_ObjectHideFlags: 0
@@ -1667,10 +1693,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23df3f7eb63fc07439e9c0b87d952c17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  origin: {x: -5.45, y: 0, z: 0}
-  direction: {x: 0, y: 1, z: 0}
-  distance: 4
-  isSomethingHit: 0
+  origin: {x: -2.14, y: 6.37, z: 0}
+  direction: {x: 1, y: 0, z: 0}
+  distance: 2.58
+  isSomethingHit: 1
 --- !u!1 &1132257708
 GameObject:
   m_ObjectHideFlags: 0
@@ -1800,8 +1826,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1321f4141663e2541868868b38098bf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  point: {x: 1.83, y: -4.45, z: 0}
-  isSomethingOverlapingPoint: 0
+  point: {x: 2.39, y: -4.45, z: 0}
+  overlapedCollider: {fileID: 0}
 --- !u!1 &1214086676
 GameObject:
   m_ObjectHideFlags: 0
@@ -1826,7 +1852,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1214086676}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 1.71, y: 3.02, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1478474100}
@@ -1843,12 +1869,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0ae2f10a002d9a45a53637ff2413b55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  origin: {x: 3.79, y: 5.34, z: 0}
-  size: {x: 2.45, y: 0.89, z: 0}
+  origin: {x: -3.56, y: 1.18, z: 0}
+  size: {x: 2, y: 1, z: 0}
   capsuleDirection: 1
-  direction: {x: 0, y: 1, z: 0}
-  angle: 0
-  distance: 3.54
+  angle: 56.16
+  direction: {x: -0.06, y: 1, z: 0}
+  distance: 3.23
   isSomethingHit: 0
 --- !u!70 &1214086679
 CapsuleCollider2D:
@@ -1856,7 +1882,7 @@ CapsuleCollider2D:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1214086676}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -1905,8 +1931,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 741e14ef337f3ea48a06b665b42bd118, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  origin: {x: 0, y: 0, z: 0}
-  direction: {x: 3, y: 3, z: 3}
+  origin: {x: -2.09, y: 3.34, z: 0}
+  direction: {x: 2.94, y: 0, z: 0.84}
   distance: 3
   isSomethingHit: 0
 --- !u!1 &1292750422
@@ -1949,11 +1975,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81a7bc2dc8439e2439cc870547ba0b61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  point: {x: 7.19, y: 0, z: 0}
-  size: {x: 5.43, y: 2.26, z: 0}
+  point: {x: -2.16, y: 0, z: 0}
+  size: {x: 5.43, y: 2.81, z: 0}
   capsuleDirection: 1
-  angle: -56.07
-  isSomethingHit: 0
+  angle: 31.63
+  overlapedCollider: {fileID: 0}
 --- !u!1 &1329853391
 GameObject:
   m_ObjectHideFlags: 0
@@ -2024,14 +2050,14 @@ CompositeCollider2D:
   m_ColliderPaths: []
   m_CompositePaths:
     m_Paths:
-    - - {x: -1.8581424, y: 1.4583999}
-      - {x: -0.9269484, y: 1.4288116}
-      - {x: -0.8951899, y: 2.428307}
-      - {x: -1.8263838, y: 2.4578953}
-      - {x: -2.4982417, y: 2.9794955}
-      - {x: -3.4706154, y: 2.3190606}
-      - {x: -3.1430907, y: 1.1900554}
-      - {x: -1.9682958, y: 1.1527271}
+    - - {x: -1.8581421, y: 1.4584002}
+      - {x: -0.92694783, y: 1.428812}
+      - {x: -0.89518917, y: 2.4283075}
+      - {x: -1.8263836, y: 2.4578958}
+      - {x: -2.4982412, y: 2.979496}
+      - {x: -3.470615, y: 2.319061}
+      - {x: -3.1430902, y: 1.1900558}
+      - {x: -1.9682953, y: 1.1527274}
   m_VertexDistance: 0.0005
 --- !u!50 &1329853397
 Rigidbody2D:
@@ -2111,7 +2137,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1478474100
 Transform:
   m_ObjectHideFlags: 0
@@ -2229,7 +2255,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1559896356
 Transform:
   m_ObjectHideFlags: 0
@@ -2254,8 +2280,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0cf5214fd674f049869b4dbc0136333, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  point: {x: 6.84, y: 2.3, z: 0}
-  size: {x: 3, y: 3, z: 0}
+  point: {x: -0.12, y: 2.3, z: 0}
+  size: {x: 5.53, y: 3.15, z: 0}
   angle: 0
   cf:
     useTriggers: 0
@@ -2271,19 +2297,7 @@ MonoBehaviour:
     maxDepth: 0
     minNormalAngle: 0
     maxNormalAngle: 0
-  isSomethingHit: 0
-  overlappedCollidersCount: 0
-  results:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  overlapedCollider: {fileID: 0}
 --- !u!1 &1697329835
 GameObject:
   m_ObjectHideFlags: 0
@@ -2324,8 +2338,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fb59c8d0734eb245a31319d295d253f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pointA: {x: -3.9, y: 3.87, z: 0}
-  pointB: {x: 0, y: 0, z: 0}
+  pointA: {x: -5.01, y: 3.92, z: 0}
+  pointB: {x: 0.84, y: 0.41, z: 0}
+  overlapedCollider: {fileID: 0}
   isSomethingHit: 0
 --- !u!1 &1831638755
 GameObject:
@@ -2367,10 +2382,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c635b6c097206bb44a21d525413bb690, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  origin: {x: -2.08, y: 5.57, z: 0}
-  direction: {x: -0.59, y: 1, z: 0}
-  radius: 0.51
-  distance: 2.99
+  origin: {x: -2.14, y: 1.37, z: 0}
+  direction: {x: -1.03, y: 1, z: 0}
+  radius: 0.56
+  distance: 3.63
   isSomethingHit: 0
 --- !u!1 &1861960427
 GameObject:
@@ -2456,8 +2471,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88a3dc924956560408683e526a82d85d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  start: {x: 10.34, y: 10.12, z: 0}
-  end: {x: 9.53, y: 6.11, z: 0}
+  start: {x: 0.95, y: 6.28, z: 0}
+  end: {x: -0.96, y: 3.11, z: 0}
   distance: 1
   isSomethingHit: 0
 --- !u!1 &1881605078
@@ -2475,7 +2490,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1881605079
 Transform:
   m_ObjectHideFlags: 0
@@ -2483,7 +2498,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1881605078}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.02, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1478474100}
@@ -2500,11 +2515,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc6835d77ac9a51478a8adceaf20eea7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  origin: {x: 0.08, y: 0.38, z: 0}
-  size: {x: 1, y: 1, z: 0}
-  direction: {x: 0, y: 1, z: 0}
-  angle: 52.59
-  distance: 4.46
+  origin: {x: -1.86, y: 0, z: 0}
+  size: {x: 1.18, y: 1.14, z: 0}
+  angle: 36.3
+  direction: {x: -0.16, y: 1, z: 0}
+  distance: 3.18
   isSomethingHit: 0
 --- !u!1 &1948790786
 GameObject:
@@ -2549,8 +2564,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myCollider2D: {fileID: 1948790790}
-  point: {x: 0, y: 0, z: 0}
-  isColliderOverlapingPoint: 1
+  point: {x: 0, y: -0.39, z: 0}
+  isColliderOverlapingPoint: 0
 --- !u!50 &1948790789
 Rigidbody2D:
   serializedVersion: 4

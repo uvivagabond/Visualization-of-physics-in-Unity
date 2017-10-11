@@ -21,26 +21,33 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityBerserkersGizmos;
 
-[ExecuteInEditMode]
-public class Box2DOverlapCollider : MonoBehaviour
+public class MouseControl2D : MonoBehaviour
 {
-
-	[SerializeField]Collider2D collider2D;
-	[SerializeField]ContactFilter2D cf = new ContactFilter2D ();
-
-	[Space (22)][Header ("Results:")]
-	[SerializeField]int overlappedCollidersCount;
-	[SerializeField]Collider2D[] results = new Collider2D[3];
+	Camera mainCamera;
+	Ray ray;
 
 	void Update ()
-	{	
-		collider2D = GetComponent<Collider2D> ();
+	{		
+		ray =	mainCamera.ScreenPointToRay (Input.mousePosition);		// we shot ray in camera forward direction
 
-		overlappedCollidersCount = Physics2D.OverlapCollider (collider: collider2D, contactFilter: cf.NoFilter (), results: results);
+		if (!Input.GetMouseButton (0)) {
+			return;
+		}
+		RaycastHit2D hitInfo = Physics2D.GetRayIntersection (ray: ray); // get info about hit collider
+
+		if (hitInfo) {// if we hit something we set new position of collider
+			Vector3 newPosition = mainCamera.ScreenToWorldPoint (Input.mousePosition);
+			hitInfo.transform.position = new Vector3 (newPosition.x, newPosition.y, transform.position.z);
+		}
+	}
+
+	void Start ()
+	{
+		mainCamera = Camera.main;
 	}
 
 	void OnDrawGizmos ()
 	{
-		GizmosForPhysics2D.DrawOverlapCollider (collider: collider2D, contactFilter: cf);
+		GizmosForPhysics2D.DrawGetRayIntersection (ray: ray, distance: 20);
 	}
 }

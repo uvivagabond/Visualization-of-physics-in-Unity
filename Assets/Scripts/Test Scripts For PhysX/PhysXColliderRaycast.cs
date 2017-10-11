@@ -27,7 +27,7 @@ public class PhysXColliderRaycast : MonoBehaviour
 	[SerializeField]Vector3 origin;
 	[SerializeField]Vector3 direction;
 	[SerializeField]float maxDistance = 1;
-	[SerializeField]	Collider my_collider;
+	[SerializeField]Collider my_collider;
 	Ray ray;
 	RaycastHit hitByRayCast;
 

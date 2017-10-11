@@ -30,12 +30,11 @@ public class Box2DRigidbodyOverlapCollider : MonoBehaviour
 
 	[Space (22)][Header ("Results:")]
 	[SerializeField]int overlappedCollidersCount;
-	//	[SerializeField]Collider2D[] results = new Collider2D[3];
+	[SerializeField]Collider2D[] results = new Collider2D[3];
 
 	void Update ()
 	{		
 		rigidbody2D = GetComponent<Rigidbody2D> ();
-		Collider2D[] results = new Collider2D[2];
 		overlappedCollidersCount = rigidbody2D.OverlapCollider (contactFilter: cf.NoFilter (), results: results);
 
 	}

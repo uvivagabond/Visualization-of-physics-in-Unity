@@ -35,7 +35,6 @@ public class Box2DCollider2DOverlapCollider : MonoBehaviour
 	void Update ()
 	{		
 		collider2D = GetComponent<Collider2D> ();
-//		Collider2D[] results = new Collider2D[2];
 		overlappedCollidersCount = collider2D.OverlapCollider (contactFilter: cf.NoFilter (), results: results);
 
 	}

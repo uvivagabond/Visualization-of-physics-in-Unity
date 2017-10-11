@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityBerserkersGizmos;
 
+[ExecuteInEditMode]
 public class Box2DCircleCast : MonoBehaviour
 {
 	[SerializeField]Vector3 origin;

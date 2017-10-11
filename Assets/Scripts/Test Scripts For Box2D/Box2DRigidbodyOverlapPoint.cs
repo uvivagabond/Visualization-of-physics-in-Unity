@@ -32,7 +32,7 @@ public class Box2DRigidbodyOverlapPoint : MonoBehaviour
 
 	void Update ()
 	{		
-		isAnyOfRigidbodysCollidersOverlapingPoint = rigidbody2D.OverlapPoint (point);  //Physics2D.OverlapPoint (point: point);
+		isAnyOfRigidbodysCollidersOverlapingPoint = rigidbody2D.OverlapPoint (point);  
 	}
 
 	void OnDrawGizmos ()

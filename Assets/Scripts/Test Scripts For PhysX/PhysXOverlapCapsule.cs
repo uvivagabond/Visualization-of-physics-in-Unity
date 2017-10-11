@@ -29,7 +29,7 @@ public class PhysXOverlapCapsule : MonoBehaviour
 	[SerializeField]Vector3 point1;
 	[SerializeField]float radius;
 	
-	[Space (55)][Header ("Results:")]
+	[Space (35)][Header ("Results:")]
 	[SerializeField]	Collider[] overlapedColliders;
 
 

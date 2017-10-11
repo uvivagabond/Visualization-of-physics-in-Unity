@@ -21,6 +21,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityBerserkersGizmos;
 
+[ExecuteInEditMode]
+
 public class Box2DOverlapCircle : MonoBehaviour
 {
 	[SerializeField]Vector3 point;
@@ -28,11 +30,11 @@ public class Box2DOverlapCircle : MonoBehaviour
 	RaycastHit2D hitByRayCast;
 
 	[Space (55)][Header ("Results:")]
-	[SerializeField]bool isSomethingHit;
+	[SerializeField]Collider2D overlapedCollider;
 
 	void Update ()
 	{		
-		isSomethingHit = Physics2D.OverlapCircle (point: point, radius: radius);
+		overlapedCollider = Physics2D.OverlapCircle (point: point, radius: radius);
 	}
 
 	void OnDrawGizmos ()
