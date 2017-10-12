@@ -1,7 +1,4 @@
-﻿/* MIT License
-Copyright (c) 2017 Uvi Vagabond, UnityBerserkers
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
+﻿/* MIT License Copyright (c) 2017 Uvi Vagabond, UnityBerserkers Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
@@ -1625,12 +1622,22 @@ namespace UnityBerserkersGizmos
 
 		}
 
-		public static void VisualizeEdgeLine (Vector2[] points, Vector3 origin, Quaternion rotation)
+		static void VisualizeEdgeLine (Vector2[] points, Vector3 origin, Quaternion rotation)
 		{		
 			for (int i = 0; i < points.Length - 1; i++) {
 				Gizmos.DrawLine (origin + (Vector3)points [i], origin + (Vector3)points [i + 1]);
 			}	
 		}
+
+		public	static void VisualizeEdge (Vector2[] points, float edgeRadius, Vector3 origin)
+		{		
+			Quaternion rotation = Quaternion.identity;
+			VisualizeEdgeLine (points, origin, rotation);
+			if (edgeRadius > 0) {
+				DrawCapsulesForEdgeOrCompositeCast (points, origin, Vector3.up, edgeRadius); 
+			}
+		}
+
 
 		static void DrawLinesConnectingEdgePolygonCompositeCast (Vector3 direction, Vector3 tangentToDirection, Vector2[] points, bool isHit, Vector3 originOfEC, Vector3 endOfEC, float edgeRadius = default(float))
 		{
@@ -1825,7 +1832,7 @@ namespace UnityBerserkersGizmos
 
 		#endregion
 
-		public static void VisualizePolygonShape (Vector2[] points, Vector3 origin)
+		public static void VisualizePolygonShape (Vector3 origin, Vector2[] points)
 		{
 			DrawPolygonOrCompositeCollider (points, origin);
 		}
