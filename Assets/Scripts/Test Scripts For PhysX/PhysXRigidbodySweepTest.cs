@@ -25,7 +25,6 @@ using UnityBerserkersGizmos;
 [RequireComponent (typeof(Rigidbody))]
 public class PhysXRigidbodySweepTest : MonoBehaviour
 {
-	[SerializeField]Vector3 origin;
 	[SerializeField]Vector3 direction;
 	[SerializeField]Ray ray;
 	[SerializeField]float maxDistance = 1;

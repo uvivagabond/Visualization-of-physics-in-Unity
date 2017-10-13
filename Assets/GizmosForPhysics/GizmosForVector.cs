@@ -354,28 +354,45 @@ namespace UnityBerserkersGizmos
 			#endif
 		}
 
+		/// <summary>
+		/// Visualizes the rotate towards with posibility to show one of default axis.
+		/// </summary>
+		/// <param name="origin">Origin of rotating object</param>
+		/// <param name="current">Current direction of rotating object.</param>
+		/// <param name="target">Target direction.</param>
+		/// <param name="builtinDirection">We can choice one of default axis direction to show in space.</param>
+		/// <param name="lenght">Lenght of vectors.</param>
+		/// <param name="showPlane">If set to <c>true</c> show plane in which are current and target direction are.</param>
 		public static void VisualizeRotateTowards (Vector3 origin, Vector3 current, Vector3 target, 
 		                                           BaseVectorDirection builtinDirection = default(BaseVectorDirection), float lenght = 6, bool showPlane = default(bool))
 		{
-			Vector3 direction = GizmosForQuaternion.GetBaseDirection (builtinDirection);
+			Vector3 direction = ColorsAndDirections.GetBaseDirection (builtinDirection);
 			VisualizeRotateTowardsRaw (origin, current, target, builtinDirection, lenght, direction);
 		}
 
+		/// <summary>
+		/// Visualizes the rotate towards with posibility to show choicen direction.
+		/// </summary>
+		/// <param name="origin">Origin of rotating object</param>
+		/// <param name="current">Current direction of rotating object.</param>
+		/// <param name="target">Target direction.</param>
+		/// <param name="customDirection">We can choice own axis direction to show in space.</param>
+		/// <param name="lenght">Lenght of vectors.</param>
+		/// <param name="showPlane">If set to <c>true</c> show plane in which are current and target direction are.</param>
 		public static void VisualizeRotateTowards (Vector3 origin, Vector3 current, Vector3 target, 
 		                                           Vector3 customDirection, float lenght = 6, bool showPlane = default(bool))
 		{
-
 			VisualizeRotateTowardsRaw (origin, current, target, customVectorDirection, lenght, customDirection);
 		}
 
-		public static void VisualizeRotateTowardsRaw (Vector3 origin, Vector3 current, Vector3 target, 
-		                                              BaseVectorDirection builtinDirection = default(BaseVectorDirection), float lenght = 6,
-		                                              Vector3 direction = default(Vector3), bool showPlane = default(bool))
+		static void VisualizeRotateTowardsRaw (Vector3 origin, Vector3 current, Vector3 target, 
+		                                       BaseVectorDirection builtinDirection = default(BaseVectorDirection), float lenght = 6,
+		                                       Vector3 direction = default(Vector3), bool showPlane = default(bool))
 		{
 			Color temp = Gizmos.color;
 			direction = (direction == Vector3.zero) ? Vector3.right : direction.normalized;
-			Color startColor = GizmosForQuaternion.GetColors (builtinDirection) [0];
-			Color endColor = GizmosForQuaternion.GetColors (builtinDirection) [1];
+			Color startColor = ColorsAndDirections.GetColors (builtinDirection) [0];
+			Color endColor = ColorsAndDirections.GetColors (builtinDirection) [1];
 			Color color = new Color ();
 			int iterations = 100;
 			List<Vector3> points = new List<Vector3> (iterations);
@@ -533,6 +550,10 @@ namespace UnityBerserkersGizmos
 			#endif
 		}
 
+		/// <summary>
+		/// Round the specified vector.
+		/// </summary>
+		/// <param name="digits">Digits of rounding.</param>
 		public static Vector3 Round (this Vector3 v, int digits)
 		{
 			v.x = (float)System.Math.Round (v.x, digits);
@@ -554,6 +575,10 @@ namespace UnityBerserkersGizmos
 			#endif
 		}
 
+		/// <summary>
+		/// Shows the label in space.
+		/// </summary>
+
 		public 	static void ShowLabel (Vector3 origin, string name, Color color = default(Color), Vector3 labelOffset = default(Vector3))
 		{
 			#if UNITY_EDITOR
@@ -564,6 +589,10 @@ namespace UnityBerserkersGizmos
 			UnityEditor.Handles.color = temp2;
 			#endif
 		}
+
+		/// <summary>
+		/// Shows values of vector in space. For example: (11,5,7)
+		/// </summary>
 
 		public 	static void ShowVectorLabel (Vector3 origin, Vector3 valueToDisplay, Color color = default(Color), Vector3 labelOffset = default(Vector3))
 		{

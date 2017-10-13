@@ -23,6 +23,9 @@ using UnityBerserkersGizmos;
 
 public class SmoothDamp : MonoBehaviour
 {
+
+	[Header ("Parameters can be only set in edit mode!!!")][Space (10)]
+
 	[SerializeField] Vector3 targetPosition;
 	[SerializeField] float smoothTime = 0.3F;
 	[SerializeField] Vector3 velocity = Vector3.zero;

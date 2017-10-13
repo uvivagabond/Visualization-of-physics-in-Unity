@@ -1794,8 +1794,6 @@ namespace UnityBerserkersGizmos
 
 		#endregion
 
-
-
 		#region Colors and Labels
 
 		static void WriteStartEndLabels (Vector3 pos1, string name1, Vector3 pos2, string name2)
@@ -1832,6 +1830,11 @@ namespace UnityBerserkersGizmos
 
 		#endregion
 
+		/// <summary>
+		/// Visualizes the polygon shape like polygon collider.
+		/// </summary>
+		/// <param name="origin">Origin of shape.</param>
+		/// <param name="points">Points in local space.</param>
 		public static void VisualizePolygonShape (Vector3 origin, Vector2[] points)
 		{
 			DrawPolygonOrCompositeCollider (points, origin);
@@ -1848,6 +1851,9 @@ namespace UnityBerserkersGizmos
 			DrawBoxCollider (center, size, edgeRadius, identity);
 		}
 
+		/// <summary>
+		/// Visualizes the world center of mass of rigidbody2D.
+		/// </summary>
 		public static void VisualizeWorldCenterOfMass (Rigidbody2D rigidbody)
 		{
 			if (rigidbody) {

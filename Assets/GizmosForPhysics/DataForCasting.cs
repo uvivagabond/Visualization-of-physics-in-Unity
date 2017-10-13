@@ -102,6 +102,64 @@ namespace UnityBerserkersGizmos
 		up = 1,
 		forward = 2
 	}
+
+	internal static class ColorsAndDirections
+	{
+		internal static Color[] GetColors (BaseVectorDirection direction)
+		{
+			Color[] c = new Color[2];
+			switch (direction) {
+			case BaseVectorDirection.right:
+				c [0] = new Color32 (240, 1, 1, 255);
+				c [1] = new Color32 (255, 128, 0, 255);
+				break;
+			case BaseVectorDirection.up:
+				c [0] = new Color32 (0, 199, 29, 255);
+				c [1] = new Color32 (255, 128, 0, 255);
+				break;
+			case BaseVectorDirection.forward:
+				c [0] = new Color32 (30, 44, 255, 255);
+				c [1] = new Color32 (255, 128, 0, 255);
+				break;
+			case (BaseVectorDirection) 5:
+				c [0] = new Color32 (240, 1, 1, 255);
+				c [1] = new Color32 (30, 44, 255, 255);
+				break;
+			case (BaseVectorDirection) 6:
+				c [0] = new Color32 (240, 1, 1, 255);
+				c [1] = new Color32 (0, 199, 29, 255);
+				break;
+			case (BaseVectorDirection) 7:
+				c [0] = new Color32 (240, 1, 1, 255);
+				c [1] = new Color32 (127, 0, 255, 255);
+				break;
+
+			default:
+				c [0] = new Color32 (127, 0, 255, 255);
+				c [1] = new Color32 (255, 128, 0, 255);
+				break;		
+			}
+			return c;
+		}
+
+		internal static Vector3 GetBaseDirection (BaseVectorDirection direction)
+		{
+			Vector3 v = new Vector3 ();
+			switch (direction) {
+			case BaseVectorDirection.right:
+				v = Vector3.right;
+				break;
+			case BaseVectorDirection.up:
+				v = Vector3.up;
+				break;
+			case BaseVectorDirection.forward:
+				v = Vector3.forward;
+				break;
+			}
+			return v;
+		}
+	}
+
 }
 
 

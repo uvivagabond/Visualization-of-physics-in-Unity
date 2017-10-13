@@ -21,19 +21,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityBerserkersGizmos;
 
-[ExecuteInEditMode]
-public class PhysXRigidbodyCenterOfMass : MonoBehaviour
+public class VizualizeRotateTowardsTest : MonoBehaviour
 {
-	[SerializeField]	Rigidbody myRigidbody;
+	[Header ("Origin and end of rotation:")]
+	[SerializeField]Vector3 origin;
+	[SerializeField]Vector3 endDirection = Vector3.zero;
+	[Tooltip ("Velocity in degrees/s")][SerializeField]float maxDegreesVelocity = 6;
+	[Tooltip ("Constraint for lenght of vector")][SerializeField]float maxMagnitudeDelta = 3;
 
-	void Start ()
+	[Space (22)][Header ("Choice builtin direction (already is hardcoded)")]
+	[Space (5)][SerializeField]BaseVectorDirection builtinDirection;
+
+	void Update ()
 	{
-		myRigidbody = GetComponent<Rigidbody> ();
+		float maxAngleInDegrees = maxDegreesVelocity * Mathf.Deg2Rad * Time.deltaTime;
+		// if you want to see rotation for other transform direction change CURRENT value here and in VisualizeRotateTowards
+		Vector3 direction = Vector3.RotateTowards (current: transform.up, target: endDirection, maxRadiansDelta: maxAngleInDegrees, maxMagnitudeDelta: maxMagnitudeDelta);
+		transform.up = direction;
 	}
 
-
 	void OnDrawGizmos ()
-	{
-		GizmosForPhysics3D.VisualizeWorldCenterOfMass (myRigidbody);
+	{ 		
+		GizmosForVector.VisualizeRotateTowards (origin: origin, current: transform.up, target: endDirection, builtinDirection: builtinDirection);	
 	}
 }
