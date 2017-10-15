@@ -12,7 +12,7 @@ Method can be invoked from OnDrawGizmos() and OnDrawGizmosSelected():
 
 Classes to visualize methods you can find in this folder:
 
-![alt tag](https://github.com/uvivagabond/Visualization-of-physics-in-Unity/blob/master/Wiki/Basics/1.2%20where%20to%20use%20them.png)
+![alt tag](https://github.com/uvivagabond/Visualization-of-physics-in-Unity/blob/master/Wiki/Basics/1.%20scripts.png)
 
 In this folder you can find example scenes with examples of uses of classes.
 
