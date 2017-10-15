@@ -513,7 +513,6 @@ MonoBehaviour:
   startPosition: {x: -15.62, y: 0, z: 0}
   endPosition: {x: 11, y: 11, z: 0}
   t: 0
-  howfuther: 0
 --- !u!23 &1274401246
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -878,7 +877,6 @@ MonoBehaviour:
   startPosition: {x: -10, y: -1.79, z: 0}
   endPosition: {x: 14.08, y: 16.49, z: 0}
   t: 3
-  howfuther: 0
 --- !u!23 &1510447929
 MeshRenderer:
   m_ObjectHideFlags: 0

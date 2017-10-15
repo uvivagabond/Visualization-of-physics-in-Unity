@@ -30,7 +30,6 @@ public class Lerp : MonoBehaviour
 	[SerializeField]Vector3 endPosition = Vector3.zero;
 	[SerializeField]float t;
 	IEnumerator myLerp;
-	[SerializeField] int howfuther;
 
 	void Update ()
 	{

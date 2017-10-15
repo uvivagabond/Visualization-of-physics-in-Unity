@@ -4,22 +4,4 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes:
-  - enabled: 1
-    path: Assets/Scenes/TestForVectors.unity
-    guid: 51ad1b3e5dd3159428146d53fb520f8f
-  - enabled: 1
-    path: Assets/Scenes/TestsForPhysics2D.unity
-    guid: fd35d9684761c7c4d921b8371c4f5fa6
-  - enabled: 1
-    path: Assets/Scenes/TestsForPhysics3D.unity
-    guid: 8c63890f38a96374ea4fdb8077b2fa68
-  - enabled: 1
-    path: Assets/Scenes/TestForPhysics2D_Distance_GetContacts.unity
-    guid: 43f1d5385c3744140a71946b57629250
-  - enabled: 1
-    path: Assets/Scenes/TestForPhysics3D_ComputePenetrationClosest_PointClosest_PointOnBounds.unity
-    guid: 00f2e65165734394e9413df613370f07
-  - enabled: 1
-    path: Assets/Scenes/TestForSimpleShapesOfColliders2D.unity
-    guid: fbd534215a4fdb84d9dd48471605e75d
+  m_Scenes: []
