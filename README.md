@@ -1,5 +1,10 @@
 # Visualization-of-physics-in-Unity
-Few class to visualize shapes in space, vectors
+Few class to visualize shapes in space, vectors.
+
+For example:
+
+![alt tag](https://github.com/uvivagabond/Visualization-of-physics-in-Unity/blob/master/Wiki/Queries%20basic/fizyka%203d%20zapytania.png)
+![alt tag](https://github.com/uvivagabond/Visualization-of-physics-in-Unity/blob/master/Wiki/Queries%20basic/fizyka2d%20zapytania.png)
 
 First we must add namespace to your script:
 
@@ -27,3 +32,4 @@ How to use examples?
 
 Where can we get more about methods to visualize?
 CHECK WIKI!
+![alt tag](https://github.com/uvivagabond/Visualization-of-physics-in-Unity/blob/master/Wiki/wiki.png)
