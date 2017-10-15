@@ -1875,7 +1875,7 @@ namespace UnityBerserkersGizmos
 				return;
 			}
 			color = (color == default(Color)) ? new Color32 (102, 255, 0, 255) : color;
-			ShowNormalVector (hitInfo.point, hitInfo.normal, lenght);
+			ShowNormalVector (hitInfo.point, hitInfo.normal, lenght, color);
 		}
 
 		public static void VizualizeNormalVector (ContactPoint2D contactPoint, float lenght = 1f, Color32 color = default(Color32))
@@ -1899,7 +1899,7 @@ namespace UnityBerserkersGizmos
 			Color temp2 = UnityEditor.Handles.color;
 			signedAngle = (signedAngle < 0) ? 360 - angle : signedAngle;
 			UnityEditor.Handles.color = color;
-			UnityEditor.Handles.Label (origin + normal * (lenght + 0.3f) - new Vector3 (-1.4f, 0.3f), System.Math.Round (signedAngle, 0) + "\xB0", g);
+			UnityEditor.Handles.Label (origin + normal, System.Math.Round (signedAngle, 0) + "\xB0", g);// * (lenght + 0.3f) - new Vector3 (-1.4f, 0.3f)
 			UnityEditor.Handles.color = temp2;
 			#endif
 		}

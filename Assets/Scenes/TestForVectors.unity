@@ -407,9 +407,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startPosition: {x: 1, y: 1, z: 0}
-  endPosition: {x: 10, y: 10.7, z: 0}
+  endPosition: {x: -10.02, y: 10.7, z: 0}
   t: 1
-  howfuther: 5
+  howfuther: 16
 --- !u!4 &1183596450
 Transform:
   m_ObjectHideFlags: 0

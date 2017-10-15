@@ -23,6 +23,8 @@ using UnityBerserkersGizmos;
 
 public class VizualizeRotateTowardsTest : MonoBehaviour
 {
+	[Header ("Press Play and will start to rotate!")]	[Space (22)]
+
 	[Header ("Origin and end of rotation:")]
 	[SerializeField]Vector3 origin;
 	[SerializeField]Vector3 endDirection = Vector3.zero;

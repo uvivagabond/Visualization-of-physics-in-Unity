@@ -1212,7 +1212,6 @@ namespace UnityBerserkersGizmos
 			Collider[] colliders =	rigidbody.GetComponentsInChildren<Collider> ();
 			for (int i = 0; i < colliders.Length; i++) {
 				Gizmos.DrawWireCube (colliders [i].bounds.center, colliders [i].bounds.size);
-				Debug.Log (colliders.Length);
 			}
 			Vector3 closestPointOnBounds = rigidbody.ClosestPointOnBounds (position);
 			ShowClosestDistance (position, showPointAndClosestPoint, showDistance, closestPointOnBounds, "OnBounds");
