@@ -6,6 +6,10 @@ For example:
 ![alt tag](https://github.com/uvivagabond/Visualization-of-physics-in-Unity/blob/master/Wiki/Queries%20basic/fizyka%203d%20zapytania.png)
 ![alt tag](https://github.com/uvivagabond/Visualization-of-physics-in-Unity/blob/master/Wiki/Queries%20basic/fizyka2d%20zapytania.png)
 
+
+
+WHAT WE MUST DO TO USE THOSE METHODS:
+
 First we must add namespace to your script:
 
 ![alt tag](https://github.com/uvivagabond/Visualization-of-physics-in-Unity/blob/master/Wiki/Basics/1.1%20namespace.png)
