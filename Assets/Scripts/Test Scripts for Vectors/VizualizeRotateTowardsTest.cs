@@ -31,8 +31,6 @@ public class VizualizeRotateTowardsTest : MonoBehaviour
 	[Tooltip ("Velocity in degrees/s")][SerializeField]float maxDegreesVelocity = 6;
 	[Tooltip ("Constraint for lenght of vector")][SerializeField]float maxMagnitudeDelta = 3;
 
-	[Space (22)][Header ("Choice builtin direction (already is hardcoded)")]
-	[Space (5)][SerializeField]BaseVectorDirection builtinDirection;
 
 	void Update ()
 	{
@@ -44,6 +42,6 @@ public class VizualizeRotateTowardsTest : MonoBehaviour
 
 	void OnDrawGizmos ()
 	{ 		
-		GizmosForVector.VisualizeRotateTowards (origin: origin, current: transform.up, target: endDirection, builtinDirection: builtinDirection);	
+		GizmosForVector.VisualizeRotateTowards (origin: origin, current: transform.up, target: endDirection);	
 	}
 }

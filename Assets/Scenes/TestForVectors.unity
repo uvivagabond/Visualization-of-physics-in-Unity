@@ -641,7 +641,6 @@ MonoBehaviour:
   endDirection: {x: 5.69, y: -7.08, z: 0}
   maxDegreesVelocity: 7
   maxMagnitudeDelta: 3
-  builtinDirection: 1
 --- !u!4 &1333231009
 Transform:
   m_ObjectHideFlags: 0

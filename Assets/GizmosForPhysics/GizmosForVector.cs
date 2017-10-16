@@ -360,29 +360,13 @@ namespace UnityBerserkersGizmos
 		/// <param name="origin">Origin of rotating object</param>
 		/// <param name="current">Current direction of rotating object.</param>
 		/// <param name="target">Target direction.</param>
-		/// <param name="builtinDirection">We can choice one of default axis direction to show in space.</param>
 		/// <param name="lenght">Lenght of vectors.</param>
 		/// <param name="showPlane">If set to <c>true</c> show plane in which are current and target direction are.</param>
 		public static void VisualizeRotateTowards (Vector3 origin, Vector3 current, Vector3 target, 
-		                                           BaseVectorDirection builtinDirection = default(BaseVectorDirection), float lenght = 6, bool showPlane = default(bool))
-		{
-			Vector3 direction = ColorsAndDirections.GetBaseDirection (builtinDirection);
-			VisualizeRotateTowardsRaw (origin, current, target, builtinDirection, lenght, direction);
-		}
-
-		/// <summary>
-		/// Visualizes the rotate towards with posibility to show choicen direction.
-		/// </summary>
-		/// <param name="origin">Origin of rotating object</param>
-		/// <param name="current">Current direction of rotating object.</param>
-		/// <param name="target">Target direction.</param>
-		/// <param name="customDirection">We can choice own axis direction to show in space.</param>
-		/// <param name="lenght">Lenght of vectors.</param>
-		/// <param name="showPlane">If set to <c>true</c> show plane in which are current and target direction are.</param>
-		public static void VisualizeRotateTowards (Vector3 origin, Vector3 current, Vector3 target, 
-		                                           Vector3 customDirection, float lenght = 6, bool showPlane = default(bool))
-		{
-			VisualizeRotateTowardsRaw (origin, current, target, customVectorDirection, lenght, customDirection);
+		                                           float lenght = 6, bool showPlane = default(bool))
+        {
+			Vector3 direction = ColorsAndDirections.GetBaseDirection (default(BaseVectorDirection));
+			VisualizeRotateTowardsRaw (origin, current, target, default(BaseVectorDirection), lenght, current);
 		}
 
 		static void VisualizeRotateTowardsRaw (Vector3 origin, Vector3 current, Vector3 target, 
@@ -391,9 +375,8 @@ namespace UnityBerserkersGizmos
 		{
 			Color temp = Gizmos.color;
 			direction = (direction == Vector3.zero) ? Vector3.right : direction.normalized;
-			Color startColor = ColorsAndDirections.GetColors (builtinDirection) [0];
-			Color endColor = ColorsAndDirections.GetColors (builtinDirection) [1];
-			Color color = new Color ();
+			Color startColor = ColorsAndDirections.GetColors ((BaseVectorDirection)4) [0];
+			Color endColor = ColorsAndDirections.GetColors ((BaseVectorDirection)4) [1];
 			int iterations = 100;
 			List<Vector3> points = new List<Vector3> (iterations);
 			List<Color> colors = new List<Color> (iterations);
