@@ -26,7 +26,7 @@ public class SlerpUnclamped : MonoBehaviour
 	[Header ("Press L to start moving ball")][Space (10)]
 	[SerializeField]Vector3 startPosition;
 	[SerializeField]Vector3 endPosition = Vector3.zero;
-	[SerializeField]float t;
+	[SerializeField]float t = 5;
 	IEnumerator myLerp;
 	[SerializeField] int howfuther;
 
