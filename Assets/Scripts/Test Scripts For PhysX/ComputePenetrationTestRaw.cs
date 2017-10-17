@@ -18,7 +18,8 @@ public class ComputePenetrationTestRaw : MonoBehaviour
 	void Update ()
 	{
 		isPenetrating =	Physics.ComputePenetration (colliderA: colliderA, positionA: colliderA.transform.position, rotationA: colliderA.transform.rotation,
-			colliderB: colliderB, positionB: colliderB.transform.position, rotationB: colliderB.transform.rotation, direction: out direction, distance: out distance);
+			colliderB: colliderB, positionB: colliderB.transform.position, rotationB: colliderB.transform.rotation, 
+            direction: out direction, distance: out distance);
 	}
 
 	void OnDrawGizmos ()

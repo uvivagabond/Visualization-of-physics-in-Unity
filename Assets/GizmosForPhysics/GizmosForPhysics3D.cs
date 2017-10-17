@@ -971,7 +971,34 @@ namespace UnityBerserkersGizmos
 					Gizmos.DrawLine (origin + vert [i], endOfMC + vert [i]);
 				}
 			}
-		}
+            else if (collider is CharacterController)
+            {
+                CharacterController cc = collider as CharacterController;
+                Vector3 origin, scale;
+                Quaternion rotation = Quaternion.identity;
+                DataForCasting data = new DataForCasting(collider, direction, maxDistance);
+                data.GetDataForCasting(out origin, out rotation, out direction, out scale);
+                if (showWarnings)
+                {
+                    DisplayWarningAboutScale(rigidbody, scale);
+                }
+                float height = cc.height;
+                float radius = cc.radius*0.5f;
+                float heightScale = scale.y;
+                float radiusScale = Mathf.Max(Mathf.Abs(scale.x), Mathf.Abs(scale.z));
+                height *= heightScale;
+                radius = Mathf.Clamp(radius, cc.radius * radiusScale, radius);
+                origin = origin + Vector3.Scale(scale, cc.center);
+                Vector3 point1 = origin;
+                Vector3 point2 = origin ;
+                if (height > 2 * radius)
+                {
+                    point1 = origin + (height * 0.5f - radius)*Vector3.up;
+                    point2 = origin + (-height * 0.5f + radius) * Vector3.up;
+                }
+                DrawCapsuleCast3DRaw(point1, point2, radius, direction, maxDistance, isHit);
+            }
+        }
 
 		static void DrawColliders3DShapes (Collider collider, bool isHit)
 		{
@@ -1237,8 +1264,8 @@ namespace UnityBerserkersGizmos
 			DrawColliders3DShapes (colliderB, false);
 			Gizmos.color = Color.red;
 			if (isPenetrating) {
-				GizmosForVector.DrawVector (colliderB.transform.position + Vector3.Scale (colBCenter, colliderB.transform.lossyScale), direction * distance, distance, Color.red);
-				Gizmos.DrawSphere (colliderB.transform.position + Vector3.Scale (colBCenter, colliderB.transform.lossyScale), 0.05f);
+				GizmosForVector.DrawVector (colliderA.transform.position + Vector3.Scale (colACenter, colliderA.transform.lossyScale), direction * distance, distance, Color.red);
+				Gizmos.DrawSphere (colliderA.transform.position + Vector3.Scale (colACenter, colliderA.transform.lossyScale), 0.05f);
 			} 
 			Gizmos.color = temp;
 		}
