@@ -891,113 +891,465 @@ namespace UnityBerserkersGizmos
 			}
 			Gizmos.matrix = Matrix4x4.identity;
 		}
+        static void DrawColliders3DShapesForComputePenetration(bool isHit, Collider collider,
+          Vector3 positionForPenetration, Quaternion rotationForPenetration)
+        {
+            Vector3 direction = Vector3.one;
+            float maxDistance = 0;
+            Rigidbody rigidbody = null;
 
-		static void DrawColliders3DShapes (Rigidbody rigidbody, Vector3 direction, float maxDistance, bool isHit, Collider collider, bool showWarnings = !default(bool))
-		{
-			if (collider is BoxCollider) {
-				BoxCollider bc = collider as BoxCollider;
-				Vector3 origin, size;
-				Quaternion rotation = Quaternion.identity;
-				DataForCasting data = new DataForCasting (collider, direction, maxDistance);
-				data.GetDataForCasting (out origin, out rotation, out direction, out size);
-				if (showWarnings && size.x < 0 || size.y < 0 || size.z < 0 || bc.size.x < 0 || bc.size.y < 0 || bc.size.z < 0) {
-					DisplayWarningAboutSize ("Rigidbody_SweepTest", "BoxCollider.size", "Transform's scale", "should't be negative! ", rigidbody);
-				}
-				size.Scale (bc.size / 2);
-				size = new Vector3 (Mathf.Abs (size.x), Mathf.Abs (size.y), Mathf.Abs (size.z));
-				DrawBoxCast3DRaw (origin, size, direction, rotation, maxDistance, isHit);
-			} else if (collider is CapsuleCollider) {
-				CapsuleCollider cc = collider as CapsuleCollider;
-				Vector3 origin, scale;
-				Quaternion rotation = Quaternion.identity;
-				DataForCasting data = new DataForCasting (collider, direction, maxDistance);
-				data.GetDataForCasting (out origin, out rotation, out direction, out scale);
-				if (showWarnings) {
-					DisplayWarningAboutScale (rigidbody, scale);					
-				}
-				Vector3 capsuleDirection = (cc.direction == 0) ? Vector3.right : ((cc.direction == 1) ? Vector3.up : Vector3.forward);
-				float height = cc.height;
-				float radius = cc.radius;
-				float heightScale = (cc.direction == 0) ? Mathf.Abs (scale.x) : ((cc.direction == 1) ? Mathf.Abs (scale.y) : Mathf.Abs (scale.z));
-				float radiusScale = (cc.direction == 0) ? Mathf.Max (Mathf.Abs (scale.y), Mathf.Abs (scale.z)) : ((cc.direction == 1) ? Mathf.Max (Mathf.Abs (scale.x), Mathf.Abs (scale.z)) : Mathf.Max (Mathf.Abs (scale.x), Mathf.Abs (scale.y)));
-				height *= heightScale;
-				radius = Mathf.Clamp (radius, cc.radius * radiusScale, radius);
-				capsuleDirection = rotation * capsuleDirection;
+            if (collider is BoxCollider)
+            {
+                BoxCollider bc = collider as BoxCollider;
+                RawBoxColliderCP(positionForPenetration,  rotationForPenetration, direction, maxDistance, isHit, bc);
+            }
+            else if (collider is CapsuleCollider)
+            {
+                CapsuleCollider cc = collider as CapsuleCollider;
+                RawCapsuleColliderCP(positionForPenetration, rotationForPenetration, direction, maxDistance, isHit, cc);
 
-				Vector3 point1 = origin;
-				Vector3 point2 = origin;
-				if (height > 2 * radius) {
-					point1 = origin + (height * 0.5f - radius) * capsuleDirection;
-					point2 = origin + (-height * 0.5f + radius) * capsuleDirection;
-				}
+            }
+            else if (collider is SphereCollider)
+            {
+                SphereCollider sc = collider as SphereCollider;
+                RawSphereColliderCP(positionForPenetration, rotationForPenetration, direction, maxDistance, isHit, sc);
 
-
-				DrawCapsuleCast3DRaw (point1, point2, radius, direction, maxDistance, isHit);
-			} else if (collider is SphereCollider) {
-				SphereCollider sc = collider as SphereCollider;
-				float radius = sc.radius;
-				Vector3 origin, scale;
-				Quaternion rotation = Quaternion.identity;
-				DataForCasting data = new DataForCasting (collider, direction, maxDistance);
-				data.GetDataForCasting (out origin, out rotation, out direction, out scale);
-				if (showWarnings) {
-					DisplayWarningAboutScale (rigidbody, scale);					
-				}
-				float maxFactorOfScale = Mathf.Max (Mathf.Abs (scale.x), Mathf.Abs (scale.y), Mathf.Abs (scale.z));
-				radius *= maxFactorOfScale;
-				DrawSphereCast3DRaw (origin, radius, direction, maxDistance, isHit, true);
-			} else if (collider is MeshCollider) {
-				MeshCollider mc = collider as MeshCollider;
-				if (!mc.convex) {
-					return;
-				}
-				Mesh mesh = mc.sharedMesh;
-				Vector3[] vert = mesh.vertices;
-				Vector3 origin, scale, endOfMC;
-				Quaternion rotation = Quaternion.identity;
-				DataForCasting data = new DataForCasting (collider, direction, maxDistance);
-				data.GetDataForCasting (out origin, out endOfMC, out direction, out rotation, out scale);
-				if (showWarnings) {
-					DisplayWarningAboutScale (rigidbody, scale);					
-				}
-				Gizmos.color = (isHit) ? hitColorR : nonHitColorBaseG;
-				Gizmos.DrawWireMesh (mesh, origin, rotation, scale);
-				Gizmos.color = (isHit) ? hitColorO : nonHitColorB;
-				Gizmos.DrawWireMesh (mesh, endOfMC, rotation, scale);
-				Gizmos.color = (isHit) ? hitColorR3 : nonHitColorB3;
-				for (int i = 0; i < vert.Length; i++) {
-					vert [i].Scale (scale);
-					vert [i] = rotation * vert [i];
-					Gizmos.DrawLine (origin + vert [i], endOfMC + vert [i]);
-				}
-			}
+            }
+            else if (collider is MeshCollider)
+            {
+                MeshCollider mc = collider as MeshCollider;
+                RawMeshColliderCP(positionForPenetration, rotationForPenetration, direction, maxDistance, isHit, mc);
+            }
             else if (collider is CharacterController)
             {
                 CharacterController cc = collider as CharacterController;
-                Vector3 origin, scale;
-                Quaternion rotation = Quaternion.identity;
-                DataForCasting data = new DataForCasting(collider, direction, maxDistance);
-                data.GetDataForCasting(out origin, out rotation, out direction, out scale);
-                if (showWarnings)
-                {
-                    DisplayWarningAboutScale(rigidbody, scale);
-                }
-                float height = cc.height;
-                float radius = cc.radius*0.5f;
-                float heightScale = scale.y;
-                float radiusScale = Mathf.Max(Mathf.Abs(scale.x), Mathf.Abs(scale.z));
-                height *= heightScale;
-                radius = Mathf.Clamp(radius, cc.radius * radiusScale, radius);
-                origin = origin + Vector3.Scale(scale, cc.center);
-                Vector3 point1 = origin;
-                Vector3 point2 = origin ;
-                if (height > 2 * radius)
-                {
-                    point1 = origin + (height * 0.5f - radius)*Vector3.up;
-                    point2 = origin + (-height * 0.5f + radius) * Vector3.up;
-                }
-                DrawCapsuleCast3DRaw(point1, point2, radius, direction, maxDistance, isHit);
+                RawCharacterControllerCP(positionForPenetration, rotationForPenetration, direction, maxDistance, isHit, cc);
             }
+        }
+        static void RawCapsuleColliderCP(Vector3 positionForPenetration, Quaternion rotationForPenetration, Vector3 direction, float maxDistance, bool isHit, CapsuleCollider cc)
+        {
+            Vector3 center = cc.transform.TransformVector(cc.center);// GetColliderCenterInWorldSpace(sc);           
+                                                                       center = cc.transform.InverseTransformDirection(center);
+            float radius = cc.GetRadiusFromScale();
+            Gizmos.color = isHit ? Color.red : Color.green;
+            //Gizmos.matrix = Matrix4x4.TRS(Vector3.zero, rotationForPenetration, Vector3.one);
+            Vector3 origin = rotationForPenetration * center + positionForPenetration;
+            float height = cc.height;
+            Vector3 point1 = origin;
+            Vector3 point2 = origin;
+            if (height > 2 * radius)
+            {
+                point1 = origin + rotationForPenetration * Vector3.up* (height * 0.5f - radius);
+                point2 = origin + rotationForPenetration * Vector3.up* (-height * 0.5f + radius);
+            }
+            DrawCapsuleCast3DRaw(point1,point2, radius, direction, maxDistance, isHit);
+            Gizmos.matrix = Matrix4x4.identity;
+
+            //Vector3 origin, scale;
+            //Quaternion rotation = Quaternion.identity;
+            //DataForCasting data = new DataForCasting(cc, direction, maxDistance);
+            //data.GetDataForCasting(out origin, out rotation, out direction, out scale);
+            //origin = positionForPenetration;
+            //rotation = rotationForPenetration;
+            //Vector3 capsuleDirection = (cc.direction == 0) ? Vector3.right : ((cc.direction == 1) ? Vector3.up : Vector3.forward);
+            //float height = cc.height;
+            //float radius = cc.radius;
+            //float heightScale = (cc.direction == 0) ? Mathf.Abs(scale.x) : ((cc.direction == 1) ? Mathf.Abs(scale.y) : Mathf.Abs(scale.z));
+            //float radiusScale = (cc.direction == 0) ? Mathf.Max(Mathf.Abs(scale.y), Mathf.Abs(scale.z)) : ((cc.direction == 1) ? Mathf.Max(Mathf.Abs(scale.x), Mathf.Abs(scale.z)) : Mathf.Max(Mathf.Abs(scale.x), Mathf.Abs(scale.y)));
+            //height *= heightScale;
+            //radius = Mathf.Clamp(radius, cc.radius * radiusScale, radius);
+            //capsuleDirection = rotation * capsuleDirection;
+
+            //Vector3 point1 = origin;
+            //Vector3 point2 = origin;
+            //if (height > 2 * radius)
+            //{
+            //    point1 = origin + (height * 0.5f - radius) * capsuleDirection;
+            //    point2 = origin + (-height * 0.5f + radius) * capsuleDirection;
+            //}
+            //DrawCapsuleCast3DRaw(point1, point2, radius, direction, maxDistance, isHit);
+        }
+        static float GetRadiusFromScale(this SphereCollider collider) {
+            float radius = collider.radius;
+            Vector3 scale = collider.transform.lossyScale;
+            radius = radius * Mathf.Max(Mathf.Abs(scale.x), Mathf.Abs(scale.y), Mathf.Abs(scale.z));
+            return radius;
+                }
+        static float GetRadiusFromScale(this CharacterController collider)
+        {
+            float radius = collider.radius;
+            Vector3 scale = collider.transform.lossyScale;
+            radius = radius * Mathf.Max(Mathf.Abs(scale.x), Mathf.Abs(scale.y), Mathf.Abs(scale.z));
+            return radius;
+        }
+        static float GetRadiusFromScale(this CapsuleCollider collider)
+        {
+            float radius = collider.radius;
+            Vector3 scale = collider.transform.lossyScale;
+            radius = radius * Mathf.Max(Mathf.Abs(scale.x), Mathf.Abs(scale.y), Mathf.Abs(scale.z));
+            return radius;
+        }
+
+        static void RawSphereColliderCP(Vector3 positionForPenetration, Quaternion rotationForPenetration, Vector3 direction, float maxDistance, bool isHit, SphereCollider sc)
+        {
+            Vector3 center =sc.transform.TransformVector( sc.center);// GetColliderCenterInWorldSpace(sc);           
+            center = sc.transform.InverseTransformDirection(center);
+            float radius = sc.GetRadiusFromScale();
+            Gizmos.color = isHit ? Color.red : Color.green;
+            Gizmos.matrix = Matrix4x4.TRS(  positionForPenetration, rotationForPenetration,Vector3.one);
+            Gizmos.DrawWireSphere(center, radius);
+            Gizmos.matrix = Matrix4x4.identity;
+        }
+
+        static void RawBoxColliderCP(Vector3 positionForPenetration, Quaternion rotationForPenetration,Vector3 direction, float maxDistance, bool isHit, BoxCollider bc )
+               {
+            Vector3 center = GetColliderCenterInWorldSpace(bc);
+            Vector3 size = bc.transform.TransformVector(bc.size);
+            center = bc.transform.InverseTransformDirection(center);
+            size = bc.transform.InverseTransformDirection(size);
+            Gizmos.color = isHit? Color.red: Color.green;
+            Gizmos.matrix = Matrix4x4.TRS(Vector3.zero, rotationForPenetration, Vector3.one);
+            Gizmos.DrawWireCube(center, size);
+            Gizmos.matrix = Matrix4x4.identity;
+      
+        }
+        static void RawMeshColliderCP(Vector3 positionForPenetration, Quaternion rotationForPenetration,Vector3 direction, float maxDistance, bool isHit, MeshCollider mc)
+        {         
+            Mesh mesh = mc.sharedMesh;
+            Vector3[] vert = mesh.vertices;
+            Vector3 origin, scale, endOfMC;
+            Quaternion rotation = Quaternion.identity;
+            DataForCasting data = new DataForCasting(mc, direction, maxDistance);
+            data.GetDataForCasting(out origin, out endOfMC, out direction, out rotation, out scale);
+            origin = positionForPenetration;
+            rotation = rotationForPenetration;
+            Gizmos.color = (isHit) ? hitColorR : nonHitColorBaseG;
+            Gizmos.DrawWireMesh(mesh, origin, rotation, scale);
+            Gizmos.color = (isHit) ? hitColorO : nonHitColorB;
+            Gizmos.DrawWireMesh(mesh, endOfMC, rotation, scale);
+            Gizmos.color = (isHit) ? hitColorR3 : nonHitColorB3;
+            for (int i = 0; i < vert.Length; i++)
+            {
+                vert[i].Scale(scale);
+                vert[i] = rotation * vert[i];
+                Gizmos.DrawLine(origin + vert[i], endOfMC + vert[i]);
+            }
+        }
+
+        static void RawCharacterControllerCP(Vector3 positionForPenetration, Quaternion rotationForPenetration, Vector3 direction, float maxDistance, bool isHit, CharacterController cc)
+        {
+            Vector3 center = cc.transform.TransformVector(cc.center);// GetColliderCenterInWorldSpace(sc);           
+          //  center = cc.transform.InverseTransformDirection(center);
+            float radius = cc.GetRadiusFromScale();
+            Gizmos.color = isHit ? Color.red : Color.green;
+            Gizmos.matrix = Matrix4x4.TRS(positionForPenetration, rotationForPenetration, Vector3.one);
+            Vector3 origin= center+ positionForPenetration;
+            float height = cc.height;
+            Vector3 point1 = origin;
+            Vector3 point2 = origin;
+            if (height > 2 * radius)
+            {
+                point1 = origin + (height * 0.5f - radius) * Vector3.up;
+                point2 = origin + (-height * 0.5f + radius) * Vector3.up;
+            }
+            DrawCapsuleCast3DRaw(point1, point2, radius, direction, maxDistance, isHit);
+            Gizmos.matrix = Matrix4x4.identity;
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        static void RawBoxCollider(Vector3 direction, float maxDistance, bool isHit, BoxCollider bc, 
+            Rigidbody rigidbody,bool showWarnings = !default(bool)) {
+                Vector3 origin, size;
+                Quaternion rotation = Quaternion.identity;
+                DataForCasting data = new DataForCasting(bc, direction, maxDistance);
+                data.GetDataForCasting(out origin, out rotation, out direction, out size);
+                if (showWarnings && size.x < 0 || size.y < 0 || size.z < 0 || bc.size.x < 0 || bc.size.y < 0 || bc.size.z < 0)
+                {
+                    DisplayWarningAboutSize("Rigidbody_SweepTest", "BoxCollider.size", "Transform's scale", "should't be negative! ", rigidbody);
+                }
+                size.Scale(bc.size / 2);
+                size = new Vector3(Mathf.Abs(size.x), Mathf.Abs(size.y), Mathf.Abs(size.z));
+                DrawBoxCast3DRaw(GetColliderCenterInWorldSpace(bc), size, direction, rotation, maxDistance, isHit);
+            }
+
+        static void RawCapsuleCollider(Vector3 direction, float maxDistance, bool isHit, CapsuleCollider cc,
+           Rigidbody rigidbody, bool showWarnings = !default(bool))
+        {
+            Vector3 origin, scale;
+            Quaternion rotation = Quaternion.identity;
+            DataForCasting data = new DataForCasting(cc, direction, maxDistance);
+            data.GetDataForCasting(out origin, out rotation, out direction, out scale);
+            if (showWarnings)
+            {
+                DisplayWarningAboutScale(rigidbody, scale);
+            }
+            Vector3 capsuleDirection = (cc.direction == 0) ? Vector3.right : ((cc.direction == 1) ? Vector3.up : Vector3.forward);
+            float height = cc.height;
+            float radius = cc.radius;
+            float heightScale = (cc.direction == 0) ? Mathf.Abs(scale.x) : ((cc.direction == 1) ? Mathf.Abs(scale.y) : Mathf.Abs(scale.z));
+            float radiusScale = (cc.direction == 0) ? Mathf.Max(Mathf.Abs(scale.y), Mathf.Abs(scale.z)) : ((cc.direction == 1) ? Mathf.Max(Mathf.Abs(scale.x), Mathf.Abs(scale.z)) : Mathf.Max(Mathf.Abs(scale.x), Mathf.Abs(scale.y)));
+            height *= heightScale;
+            radius = Mathf.Clamp(radius, cc.radius * radiusScale, radius);
+            capsuleDirection = rotation * capsuleDirection;
+            origin = GetColliderCenterInWorldSpace(cc);
+            Vector3 point1 = origin;
+            Vector3 point2 = origin;
+            if (height > 2 * radius)
+            {
+                point1 = origin + (height * 0.5f - radius) * capsuleDirection;
+                point2 = origin + (-height * 0.5f + radius) * capsuleDirection;
+            }
+            DrawCapsuleCast3DRaw(point1, point2, radius, direction, maxDistance, isHit);
+        }
+
+        static void RawSphereCollider(Vector3 direction, float maxDistance, bool isHit, SphereCollider sc,
+           Rigidbody rigidbody, bool showWarnings = !default(bool))
+        {
+            float radius = sc.radius;
+            Vector3 origin, scale;
+            Quaternion rotation = Quaternion.identity;
+            DataForCasting data = new DataForCasting(sc, direction, maxDistance);
+            data.GetDataForCasting(out origin, out rotation, out direction, out scale);
+            if (showWarnings)
+            {
+                DisplayWarningAboutScale(rigidbody, scale);
+            }
+            float maxFactorOfScale = Mathf.Max(Mathf.Abs(scale.x), Mathf.Abs(scale.y), Mathf.Abs(scale.z));
+            radius *= maxFactorOfScale;
+            DrawSphereCast3DRaw(GetColliderCenterInWorldSpace(sc), radius, direction, maxDistance, isHit, true);
+        }
+
+        static void RawMeshCollider(Vector3 direction, float maxDistance, bool isHit, MeshCollider mc,
+           Rigidbody rigidbody, bool showWarnings = !default(bool))
+        {
+            if (!mc.convex)
+            {
+                return;
+            }
+            Mesh mesh = mc.sharedMesh;
+            Vector3[] vert = mesh.vertices;
+            Vector3 origin, scale, endOfMC;
+            Quaternion rotation = Quaternion.identity;
+            DataForCasting data = new DataForCasting(mc, direction, maxDistance);
+            data.GetDataForCasting(out origin, out endOfMC, out direction, out rotation, out scale);
+            if (showWarnings)
+            {
+                DisplayWarningAboutScale(rigidbody, scale);
+            }
+            Gizmos.color = (isHit) ? hitColorR : nonHitColorBaseG;
+            Gizmos.DrawWireMesh(mesh, origin, rotation, scale);
+            Gizmos.color = (isHit) ? hitColorO : nonHitColorB;
+            Gizmos.DrawWireMesh(mesh, endOfMC, rotation, scale);
+            Gizmos.color = (isHit) ? hitColorR3 : nonHitColorB3;
+            for (int i = 0; i < vert.Length; i++)
+            {
+                vert[i].Scale(scale);
+                vert[i] = rotation * vert[i];
+                Gizmos.DrawLine(origin + vert[i], endOfMC + vert[i]);
+            }
+        }
+
+        static void RawCharacterController(Vector3 direction, float maxDistance, bool isHit, CharacterController cc,
+           Rigidbody rigidbody, bool showWarnings = !default(bool))
+        {
+            Vector3 origin, scale;
+            Quaternion rotation = Quaternion.identity;
+            DataForCasting data = new DataForCasting(cc, direction, maxDistance);
+            data.GetDataForCasting(out origin, out rotation, out direction, out scale);
+            if (showWarnings)
+            {
+                DisplayWarningAboutScale(rigidbody, scale);
+            }
+            float height = cc.height;
+            float radius = cc.radius * 0.5f;
+            float heightScale = scale.y;
+            float radiusScale = Mathf.Max(Mathf.Abs(scale.x), Mathf.Abs(scale.z));
+            height *= heightScale;
+            radius = Mathf.Clamp(radius, cc.radius * radiusScale, radius);
+            origin = origin + Vector3.Scale(scale, cc.center);
+            origin = GetColliderCenterInWorldSpace(cc);
+            Vector3 point1 = origin;
+            Vector3 point2 = origin;
+            if (height > 2 * radius)
+            {
+                point1 = origin + (height * 0.5f - radius) * Vector3.up;
+                point2 = origin + (-height * 0.5f + radius) * Vector3.up;
+            }
+            DrawCapsuleCast3DRaw(point1, point2, radius, direction, maxDistance, isHit);
+        
+    }
+
+
+        //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        static Vector3 GetColliderCenterInWorldSpace(Collider collider) {
+            Vector3 centerInWS = new Vector3(0, 0);
+                if (collider is BoxCollider)
+                {
+                    BoxCollider bc = collider as BoxCollider;
+                centerInWS = bc.transform.TransformPoint(bc.center);
+                }
+                else if (collider is CapsuleCollider)
+                {
+                    CapsuleCollider cc = collider as CapsuleCollider;
+                centerInWS = cc.transform.TransformPoint(cc.center);
+            }
+            else if (collider is SphereCollider)
+                {
+                    SphereCollider sc = collider as SphereCollider;
+                centerInWS=sc.transform.TransformPoint(sc.center);
+            }
+               
+                else if (collider is CharacterController)
+                {
+                    CharacterController cc = collider as CharacterController;
+                centerInWS = cc.transform.TransformPoint(cc.center);
+            }
+            else if (collider is MeshCollider)
+            {
+                MeshCollider mc = collider as MeshCollider;
+                centerInWS = mc.transform.position;
+            }
+            return centerInWS;
+        }
+
+        static void DrawColliders3DShapes (Rigidbody rigidbody, Vector3 direction, float maxDistance, bool isHit, Collider collider, 
+            bool showWarnings = !default(bool))
+		{
+            if (collider is BoxCollider)
+            {
+                BoxCollider bc = collider as BoxCollider;
+                RawBoxCollider(direction, maxDistance, isHit, bc, rigidbody, showWarnings);
+            }
+            else if (collider is CapsuleCollider)
+            {
+                CapsuleCollider cc = collider as CapsuleCollider;
+                RawCapsuleCollider(direction, maxDistance, isHit, cc, rigidbody, showWarnings);
+
+            }
+            else if (collider is SphereCollider)
+            {
+                SphereCollider sc = collider as SphereCollider;
+                RawSphereCollider(direction, maxDistance, isHit, sc, rigidbody, showWarnings);
+
+            }
+            else if (collider is MeshCollider)
+            {
+                MeshCollider mc = collider as MeshCollider;
+                RawMeshCollider(direction, maxDistance, isHit, mc, rigidbody, showWarnings);
+            }
+            else if (collider is CharacterController)
+            {
+                CharacterController cc = collider as CharacterController;
+                RawCharacterController(direction, maxDistance, isHit, cc, rigidbody, showWarnings);
+            }
+
+   //         if (collider is BoxCollider) {
+			//	BoxCollider bc = collider as BoxCollider;
+			//	Vector3 origin, size;
+			//	Quaternion rotation = Quaternion.identity;
+			//	DataForCasting data = new DataForCasting (collider, direction, maxDistance);
+			//	data.GetDataForCasting (out origin, out rotation, out direction, out size);
+			//	if (showWarnings && size.x < 0 || size.y < 0 || size.z < 0 || bc.size.x < 0 || bc.size.y < 0 || bc.size.z < 0) {
+			//		DisplayWarningAboutSize ("Rigidbody_SweepTest", "BoxCollider.size", "Transform's scale", "should't be negative! ", rigidbody);
+			//	}
+			//	size.Scale (bc.size / 2);
+			//	size = new Vector3 (Mathf.Abs (size.x), Mathf.Abs (size.y), Mathf.Abs (size.z));
+
+			//	DrawBoxCast3DRaw (origin, size, direction, rotation, maxDistance, isHit);
+
+			//} else if (collider is CapsuleCollider) {
+			//	CapsuleCollider cc = collider as CapsuleCollider;
+			//	Vector3 origin, scale;
+			//	Quaternion rotation = Quaternion.identity;
+			//	DataForCasting data = new DataForCasting (collider, direction, maxDistance);
+			//	data.GetDataForCasting (out origin, out rotation, out direction, out scale);
+			//	if (showWarnings) {
+			//		DisplayWarningAboutScale (rigidbody, scale);					
+			//	}
+			//	Vector3 capsuleDirection = (cc.direction == 0) ? Vector3.right : ((cc.direction == 1) ? Vector3.up : Vector3.forward);
+			//	float height = cc.height;
+			//	float radius = cc.radius;
+			//	float heightScale = (cc.direction == 0) ? Mathf.Abs (scale.x) : ((cc.direction == 1) ? Mathf.Abs (scale.y) : Mathf.Abs (scale.z));
+			//	float radiusScale = (cc.direction == 0) ? Mathf.Max (Mathf.Abs (scale.y), Mathf.Abs (scale.z)) : ((cc.direction == 1) ? Mathf.Max (Mathf.Abs (scale.x), Mathf.Abs (scale.z)) : Mathf.Max (Mathf.Abs (scale.x), Mathf.Abs (scale.y)));
+			//	height *= heightScale;
+			//	radius = Mathf.Clamp (radius, cc.radius * radiusScale, radius);
+			//	capsuleDirection = rotation * capsuleDirection;
+
+			//	Vector3 point1 = origin;
+			//	Vector3 point2 = origin;
+			//	if (height > 2 * radius) {
+			//		point1 = origin + (height * 0.5f - radius) * capsuleDirection;
+			//		point2 = origin + (-height * 0.5f + radius) * capsuleDirection;
+			//	}
+
+
+			//	DrawCapsuleCast3DRaw (point1, point2, radius, direction, maxDistance, isHit);
+			//} else if (collider is SphereCollider) {
+			//	SphereCollider sc = collider as SphereCollider;
+			//	float radius = sc.radius;
+			//	Vector3 origin, scale;
+			//	Quaternion rotation = Quaternion.identity;
+			//	DataForCasting data = new DataForCasting (collider, direction, maxDistance);
+			//	data.GetDataForCasting (out origin, out rotation, out direction, out scale);
+			//	if (showWarnings) {
+			//		DisplayWarningAboutScale (rigidbody, scale);					
+			//	}
+			//	float maxFactorOfScale = Mathf.Max (Mathf.Abs (scale.x), Mathf.Abs (scale.y), Mathf.Abs (scale.z));
+			//	radius *= maxFactorOfScale;
+			//	DrawSphereCast3DRaw (origin, radius, direction, maxDistance, isHit, true);
+			//}
+   //         else if (collider is MeshCollider) {
+			//	MeshCollider mc = collider as MeshCollider;
+			//	if (!mc.convex) {
+			//		return;
+			//	}
+			//	Mesh mesh = mc.sharedMesh;
+			//	Vector3[] vert = mesh.vertices;
+			//	Vector3 origin, scale, endOfMC;
+			//	Quaternion rotation = Quaternion.identity;
+			//	DataForCasting data = new DataForCasting (collider, direction, maxDistance);
+			//	data.GetDataForCasting (out origin, out endOfMC, out direction, out rotation, out scale);
+			//	if (showWarnings) {
+			//		DisplayWarningAboutScale (rigidbody, scale);					
+			//	}
+			//	Gizmos.color = (isHit) ? hitColorR : nonHitColorBaseG;
+			//	Gizmos.DrawWireMesh (mesh, origin, rotation, scale);
+			//	Gizmos.color = (isHit) ? hitColorO : nonHitColorB;
+			//	Gizmos.DrawWireMesh (mesh, endOfMC, rotation, scale);
+			//	Gizmos.color = (isHit) ? hitColorR3 : nonHitColorB3;
+			//	for (int i = 0; i < vert.Length; i++) {
+			//		vert [i].Scale (scale);
+			//		vert [i] = rotation * vert [i];
+			//		Gizmos.DrawLine (origin + vert [i], endOfMC + vert [i]);
+			//	}
+			//}
+   //         else if (collider is CharacterController)
+   //         {
+   //             CharacterController cc = collider as CharacterController;
+   //             Vector3 origin, scale;
+   //             Quaternion rotation = Quaternion.identity;
+   //             DataForCasting data = new DataForCasting(collider, direction, maxDistance);
+   //             data.GetDataForCasting(out origin, out rotation, out direction, out scale);
+   //             if (showWarnings)
+   //             {
+   //                 DisplayWarningAboutScale(rigidbody, scale);
+   //             }
+   //             float height = cc.height;
+   //             float radius = cc.radius*0.5f;
+   //             float heightScale = scale.y;
+   //             float radiusScale = Mathf.Max(Mathf.Abs(scale.x), Mathf.Abs(scale.z));
+   //             height *= heightScale;
+   //             radius = Mathf.Clamp(radius, cc.radius * radiusScale, radius);
+   //             origin = origin + Vector3.Scale(scale, cc.center);
+   //             Vector3 point1 = origin;
+   //             Vector3 point2 = origin ;
+   //             if (height > 2 * radius)
+   //             {
+   //                 point1 = origin + (height * 0.5f - radius)*Vector3.up;
+   //                 point2 = origin + (-height * 0.5f + radius) * Vector3.up;
+   //             }
+   //             DrawCapsuleCast3DRaw(point1, point2, radius, direction, maxDistance, isHit);
+   //         }
         }
 
 		static void DrawColliders3DShapes (Collider collider, bool isHit)
@@ -1173,9 +1525,9 @@ namespace UnityBerserkersGizmos
 		}
 
 		/// <summary>
-		/// Gets the collider offset (takes scale into account)(available for BoxCollider,SphereCollider,CapsuleCollider).
+		/// Gets the collider offset from transform position to colider position(takes scale into account)(available for BoxCollider,SphereCollider,CapsuleCollider).
 		/// </summary>
-		/// <returns>The collider offset.</returns>
+		/// <returns>The collider offset from transform.position - value are in World Space.</returns>
 		/// <param name="collider">Collider.</param>
 		static Vector3 GetColliderOffset (Collider collider)
 		{
@@ -1258,15 +1610,17 @@ namespace UnityBerserkersGizmos
 			bool isPenetrating = Physics.ComputePenetration (colliderA: colliderA, positionA: colliderA.transform.position, rotationA: colliderA.transform.rotation,
 				                     colliderB: colliderB, positionB: colliderB.transform.position, rotationB: colliderB.transform.rotation, direction: out direction, distance: out distance);
 
-			Vector3 colACenter = GetColliderOffset (colliderA);
-			Vector3 colBCenter = GetColliderOffset (colliderB);
-			DrawColliders3DShapes (colliderA, false);
-			DrawColliders3DShapes (colliderB, false);
-			Gizmos.color = Color.red;
+			Vector3 colACenter = GetColliderCenterInWorldSpace(colliderA);
+			Vector3 colBCenter = GetColliderCenterInWorldSpace(colliderB);
+
+            DrawColliders3DShapesForComputePenetration(false, colliderA, positionA, rotationA);
+            DrawColliders3DShapesForComputePenetration(false, colliderB, positionB, rotationB);
+
+            Gizmos.color = Color.blue;
 			if (isPenetrating) {
-				GizmosForVector.DrawVector (colliderA.transform.position + Vector3.Scale (colACenter, colliderA.transform.lossyScale), direction * distance, distance, Color.red);
-				Gizmos.DrawSphere (colliderA.transform.position + Vector3.Scale (colACenter, colliderA.transform.lossyScale), 0.05f);
-			} 
+				GizmosForVector.DrawVector (colACenter, direction * distance, distance, Color.red);//+ Vector3.Scale (colACenter, colliderA.transform.lossyScale)
+                Gizmos.DrawSphere (colACenter, 0.05f);// + Vector3.Scale (colACenter, colliderA.transform.lossyScale)
+            } 
 			Gizmos.color = temp;
 		}
 
