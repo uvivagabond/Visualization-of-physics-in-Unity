@@ -1577,7 +1577,7 @@ namespace UnityBerserkersGizmos
 			Vector3 offset = GetColliderOffset (collider);
 			Gizmos.DrawWireCube (collider.transform.position + collider.transform.rotation * offset, b.size);
 			Vector3 closestPointOnBounds = collider.ClosestPointOnBounds (position);
-			ShowClosestDistance (position, showPointAndClosestPoint, showDistance, closestPointOnBounds);
+			ShowClosestDistance (position, showPointAndClosestPoint, showDistance, closestPointOnBounds,"OnBounds");
 			Gizmos.color = temp;
 		}
 
