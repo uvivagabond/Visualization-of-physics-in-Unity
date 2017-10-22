@@ -29,26 +29,33 @@ public class DistanceTest : MonoBehaviour
 	[SerializeField]Collider2D firstCollider;
 	[SerializeField]Collider2D secondCollider;
 
-	ColliderDistance2D distance;
-	[SerializeField] Vector3 normal;
-	[SerializeField]bool isOverlaped;
+    ColliderDistance2D colliderDistance2D;
+    [Space(15)][SerializeField] Vector3 normal;
+    [SerializeField]Vector3 pointA;
+    [SerializeField]Vector3 pointB;
+    [Space(15)][SerializeField]bool isOverlaped;
 	[SerializeField]bool isValid;
 
 
 	void Update ()
 	{
-		//		Physics2D.Distance (colliderA: firstCollider, colliderB: secondCollider);
-		//		firstCollider.Distance (collider: secondCollider);
+        //colliderDistance2D=Physics2D.Distance (colliderA: firstCollider, colliderB: secondCollider);
 
-		distance = myRigidbody2D.Distance (collider: secondCollider);
-		normal = GizmosForVector.Round (distance.normal, 2);
-		isValid = distance.isValid;
-		isOverlaped = distance.isOverlapped;
-	}
+        //colliderDistance2D = firstCollider.Distance(collider: secondCollider);
+
+        colliderDistance2D = myRigidbody2D.Distance(collider: secondCollider);
+
+        normal = GizmosForVector.Round (colliderDistance2D.normal, 2);
+		isValid = colliderDistance2D.isValid;
+		isOverlaped = colliderDistance2D.isOverlapped;
+        pointA = GizmosForVector.Round(colliderDistance2D.pointA,2);
+        pointB = GizmosForVector.Round(colliderDistance2D.pointB,2);
+    }
 
 
 	void OnDrawGizmos ()
 	{
-		GizmosForPhysics2D.VizualizeDistance (distance);
+		GizmosForPhysics2D.VizualizeDistance (colliderDistance2D);
 	}
 }
+

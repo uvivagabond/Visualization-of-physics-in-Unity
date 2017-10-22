@@ -6,7 +6,6 @@ using UnityBerserkersGizmos;
 [ExecuteInEditMode]
 public class ComputePenetrationTestRaw : MonoBehaviour
 {
-
 	[SerializeField] Collider colliderA;
 	[SerializeField] Collider colliderB;
 
@@ -17,7 +16,7 @@ public class ComputePenetrationTestRaw : MonoBehaviour
 
 	void Update ()
 	{
-		isPenetrating =	Physics.ComputePenetration (colliderA: colliderA, positionA: Vector3.zero, rotationA: colliderA.transform.rotation,// colliderA.transform.position+
+		isPenetrating =	Physics.ComputePenetration (colliderA: colliderA, positionA: colliderA.transform.position, rotationA: colliderA.transform.rotation,
             colliderB: colliderB, positionB: colliderB.transform.position, rotationB: colliderB.transform.rotation, 
             direction: out direction, distance: out distance);
 	}

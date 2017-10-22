@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityBerserkersGizmos;
 
+
 [ExecuteInEditMode]
 public class ClosestPointOnBounds : MonoBehaviour
 {
@@ -17,15 +18,17 @@ public class ClosestPointOnBounds : MonoBehaviour
 
 	void Update ()
 	{
-		//		closestPointOnBounds =	col.ClosestPointOnBounds (position:point);
-		closestPointOnBounds =	rig.ClosestPointOnBounds (position: point);
-		closestPointOnBounds = GizmosForVector.Round (closestPointOnBounds, 2);
+        //closestPointOnBounds =	col.ClosestPointOnBounds (position:point);
+
+        closestPointOnBounds = rig.ClosestPointOnBounds(position: point);
+
+        closestPointOnBounds = GizmosForVector.Round (closestPointOnBounds, 2);
 	}
 
 	void OnDrawGizmos ()
 	{
-		//		GizmosForPhysics3D.VizualizeClosestPointOnBounds (position: point,collider: col);
-		GizmosForPhysics3D.VizualizeClosestPointOnBounds (position: point, rigidbody: rig);
+        //GizmosForPhysics3D.VizualizeClosestPointOnBounds(position: point, collider: col);
+        GizmosForPhysics3D.VizualizeClosestPointOnBounds (position: point, rigidbody: rig);
 	}
 }
 
