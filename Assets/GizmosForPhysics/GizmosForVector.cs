@@ -581,9 +581,10 @@ namespace UnityBerserkersGizmos
 		{
 			#if UNITY_EDITOR
 			Color temp2 = UnityEditor.Handles.color;
+            valueToDisplay= Round(valueToDisplay, 2);
 			GUIStyle g = new GUIStyle ();	
 			g.normal.textColor = color;
-			UnityEditor.Handles.Label (origin + labelOffset, "(" + valueToDisplay.x + "," + valueToDisplay.y + "," + valueToDisplay.z + ")", g);
+			UnityEditor.Handles.Label (origin + labelOffset, "(" + valueToDisplay.x + ", " + valueToDisplay.y + ", " + valueToDisplay.z + ")", g);
 			UnityEditor.Handles.color = temp2;
 			#endif
 		}
