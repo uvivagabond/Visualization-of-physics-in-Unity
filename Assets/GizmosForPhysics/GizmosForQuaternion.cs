@@ -22,8 +22,7 @@ using UnityEngine;
 using UnityBerserkersGizmos;
 
 namespace UnityBerserkersGizmos
-{
-	
+{	
 	public static class GizmosForQuaternion
 	{
 		const float lenght6 = 6;
@@ -38,16 +37,16 @@ namespace UnityBerserkersGizmos
 
 	
 		public static void Angle (Vector3 origin, Quaternion startRotation, Quaternion endRotation, 
-		                          BaseVectorDirection builtinDirection = default(BaseVectorDirection), float lenght = lenght6)
+		                          BaseVectorDirection builtinDirection = default(BaseVectorDirection), float lenght = lenght6,bool showVectorLabel=!default(bool))
 		{
-			Slerp (origin, startRotation, endRotation, builtinDirection, lenght);
+			Slerp (origin, startRotation, endRotation, builtinDirection, lenght,showVectorLabel);
 			GizmosForVector.ShowLabel (origin, "angle: " + System.Math.Round (Quaternion.Angle (startRotation, endRotation), 0) + "\xB0", new Color32 (127, 0, 255, 255));
 		}
 
 		public static void Angle (Vector3 origin, Quaternion startRotation, Quaternion endRotation, 
-		                          Vector3 customDirection, float lenght = lenght6)
+		                          Vector3 customDirection, float lenght = lenght6,bool showVectorLabel=!default(bool))
 		{
-			Slerp (origin, startRotation, endRotation, customDirection, lenght);
+			Slerp (origin, startRotation, endRotation, customDirection, lenght,showVectorLabel);
 			GizmosForVector.ShowLabel (origin, "angle: " + System.Math.Round (Quaternion.Angle (startRotation, endRotation), 0) + "\xB0", new Color32 (127, 0, 255, 255));
 		}
 
@@ -56,24 +55,24 @@ namespace UnityBerserkersGizmos
 		#region ToAngleAxis
 
 		public static void ToAngleAxis (Vector3 origin, Quaternion rotation,  
-		                                BaseVectorDirection builtinDirection = default(BaseVectorDirection), float halfAxisLenght = 3)
+		                                BaseVectorDirection builtinDirection = default(BaseVectorDirection), float halfAxisLenght = 3,bool showVectorLabel=!default(bool))
 		{
 			float angle;
 			Vector3 axis; 
 			rotation.ToAngleAxis (out angle, out  axis);
 			Vector3 direction = ColorsAndDirections.GetBaseDirection (builtinDirection);
 			Quaternion startRotation = Quaternion.FromToRotation (Vector3.right, direction);
-			AngleAxisRaw (origin, angle, axis, startRotation, builtinDirection, halfAxisLenght, Vector3.right);
+			AngleAxisRaw (origin, angle, axis, startRotation, builtinDirection, halfAxisLenght, Vector3.right,showVectorLabel);
 		}
 
 		public static void ToAngleAxis (Vector3 origin, Quaternion rotation,
-		                                Vector3 customDirection, float halfAxisLenght = 3)
+		                                Vector3 customDirection, float halfAxisLenght = 3,bool showVectorLabel=!default(bool))
 		{
 			float angle;
 			Vector3 axis; 
 			rotation.ToAngleAxis (out angle, out  axis);
 			Quaternion startRotation = Quaternion.FromToRotation (Vector3.right, customDirection);
-			AngleAxisRaw (origin, angle, axis, Quaternion.identity, customVectorDirection, halfAxisLenght, customDirection.normalized);
+			AngleAxisRaw (origin, angle, axis, Quaternion.identity, customVectorDirection, halfAxisLenght, customDirection.normalized,showVectorLabel);
 		}
 
 		#endregion
@@ -81,19 +80,19 @@ namespace UnityBerserkersGizmos
 		#region AngleAxis
 
 		public static void AngleAxis (Vector3 origin, float angle, Vector3 axis, Quaternion startRotation, 
-		                              BaseVectorDirection builtinDirection = default(BaseVectorDirection), float halfAxisLenght = 3)
+		                              BaseVectorDirection builtinDirection = default(BaseVectorDirection), float halfAxisLenght = 3,bool showVectorLabel=!default(bool))
 		{
 			Vector3 direction = ColorsAndDirections.GetBaseDirection (builtinDirection);
-			AngleAxisRaw (origin, angle, axis, startRotation, builtinDirection, halfAxisLenght, direction);
+			AngleAxisRaw (origin, angle, axis, startRotation, builtinDirection, halfAxisLenght, direction,showVectorLabel);
 		}
 
 		public static void AngleAxis (Vector3 origin, float angle, Vector3 axis, Quaternion startRotation, 
-		                              Vector3 customDirection, float halfAxisLenght = 3)
+		                              Vector3 customDirection, float halfAxisLenght = 3,bool showVectorLabel=!default(bool))
 		{
-			AngleAxisRaw (origin, angle, axis, startRotation, customVectorDirection, halfAxisLenght, customDirection.normalized);
+			AngleAxisRaw (origin, angle, axis, startRotation, customVectorDirection, halfAxisLenght, customDirection.normalized,showVectorLabel);
 		}
 
-		static void AngleAxisRaw (Vector3 origin, float angle, Vector3 axis, Quaternion startRotation, BaseVectorDirection builtinDirection, float halfAxisLenght, Vector3 direction)
+		static void AngleAxisRaw (Vector3 origin, float angle, Vector3 axis, Quaternion startRotation, BaseVectorDirection builtinDirection, float halfAxisLenght, Vector3 direction,bool showVectorLabel=!default(bool))
 		{
 			Color temp = Gizmos.color;
 			direction.Normalize ();
@@ -101,7 +100,7 @@ namespace UnityBerserkersGizmos
 			Gizmos.DrawRay (origin - axis.normalized * halfAxisLenght, axis.normalized * halfAxisLenght * 2);
 			Quaternion endRotation = Quaternion.AngleAxis (angle, axis);
 			endRotation = endRotation * startRotation;
-			Slerp (origin, startRotation, endRotation, builtinDirection, halfAxisLenght, direction);
+			Slerp (origin, startRotation, endRotation, builtinDirection, halfAxisLenght, direction,showVectorLabel);
 
 			Quaternion middle = Quaternion.Slerp (startRotation, endRotation, 0.5f);
 //		DrawQuaternion (origin, middle, Color.yellow, 6, direction);////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -120,30 +119,30 @@ namespace UnityBerserkersGizmos
 		/// <param name="origin">Origin.</param>
 		/// <param name="forward">The direction to look in.</param>
 		/// <param name="upwards">The vector that defines in which direction up is. We use it to project on plane (which normal is forward vector). By default is directed to Vector3.up</param>
-		public static void LookRotation (Vector3 origin, Vector3 forward, Vector3 upwards = default(Vector3), float lenght = 5)
+		public static void LookRotation (Vector3 origin, Vector3 forward, Vector3 upwards = default(Vector3), float lenght = 5,bool showVectorLabel=!default(bool))
 		{
             upwards=upwards==default(Vector3)?Vector3.up:upwards;
             Vector3 up = Vector3.ProjectOnPlane (upwards, forward);
 			Quaternion forwardRotation = Quaternion.FromToRotation (Vector3.right, forward);
 			Quaternion upwardsRotation = Quaternion.FromToRotation (Vector3.right, up);
-			Slerp (origin, Quaternion.identity, forwardRotation, (BaseVectorDirection)5, lenght, right);
-			Slerp (origin, Quaternion.identity, upwardsRotation, (BaseVectorDirection)6, lenght, right);
+			Slerp (origin, Quaternion.identity, forwardRotation, (BaseVectorDirection)5, lenght, right,showVectorLabel);
+			Slerp (origin, Quaternion.identity, upwardsRotation, (BaseVectorDirection)6, lenght, right,showVectorLabel);
 		}
 
-		public static void SetLookRotation (Vector3 origin, Vector3 forward, Vector3 upwards = default(Vector3), float lenght = 5)
+		public static void SetLookRotation (Vector3 origin, Vector3 forward, Vector3 upwards = default(Vector3), float lenght = 5,bool showVectorLabel=!default(bool))
 		{
-			LookRotation (origin, forward, upwards, lenght);
+			LookRotation (origin, forward, upwards, lenght,showVectorLabel);
 		}
 
 		#endregion
 
 		#region Inverse
 
-		public static void Inverse (Vector3 origin, Quaternion rotation, float lenght = lenght6)
+		public static void Inverse (Vector3 origin, Quaternion rotation, float lenght = lenght6,bool showVectorLabel=!default(bool))
 		{
 			Quaternion inverseRotation = Quaternion.Inverse (rotation);
-			Slerp (origin, Quaternion.identity, rotation, (BaseVectorDirection)6, lenght, right, true, "", "rotation");
-			Slerp (origin, Quaternion.identity, inverseRotation, (BaseVectorDirection)7, lenght, right, true, "", "inverseRotation");
+			Slerp (origin, Quaternion.identity, rotation, (BaseVectorDirection)6, lenght, right, showVectorLabel, "", "rotation");
+			Slerp (origin, Quaternion.identity, inverseRotation, (BaseVectorDirection)7, lenght, right, showVectorLabel, "", "inverseRotation");
 			float angle;
 			Vector3 axis; 
 			rotation.ToAngleAxis (out angle, out axis);
@@ -156,79 +155,40 @@ namespace UnityBerserkersGizmos
 		#region RotateTowards
 
 		public static void RotateTowards (Vector3 origin, Quaternion from, Quaternion to,
-		                                  BaseVectorDirection builtinDirection = default(BaseVectorDirection), float lenght = lenght6)
+		                                  BaseVectorDirection builtinDirection = default(BaseVectorDirection), float lenght = lenght6,bool showVectorLabel=!default(bool))
 		{
 			Vector3 direction = ColorsAndDirections.GetBaseDirection (builtinDirection);
-			Slerp (origin, from, to, builtinDirection, lenght, direction, true, "from", "to");
+			Slerp (origin, from, to, builtinDirection, lenght, direction, showVectorLabel, "from", "to");
 
 		}
 
 		public static void RotateTowards (Vector3 origin, Quaternion from, Quaternion to,
-		                                  Vector3 customDirection, float lenght = lenght6)
+		                                  Vector3 customDirection, float lenght = lenght6,bool showVectorLabel=!default(bool))
 		{
-			Slerp (origin, from, to, customVectorDirection, lenght, customDirection.normalized, true, "from", "to");
+			Slerp (origin, from, to, customVectorDirection, lenght, customDirection.normalized , showVectorLabel, "from", "to");
 		}
 
 
 		#endregion
 
-		#region Other
+		#region Dot Other
 
-		public static void Dot (Vector3 origin, Quaternion a, Quaternion b, float lenght = 5)
+		public static void Dot (Vector3 origin, Quaternion a, Quaternion b, float lenght = 5,bool showVectorLabel=!default(bool))
 		{
-			Slerp (origin, a, b, (BaseVectorDirection)5, lenght, right);
+			Slerp (origin, a, b, (BaseVectorDirection)5, lenght, right,showVectorLabel);
 			GizmosForVector.ShowLabel (origin, "dotProduct: " + System.Math.Round (Quaternion.Dot (a, b), 4), new Color32 (0, 199, 29, 255));
-		}
-
-		static void DrawAxis (Vector3 origin, Quaternion startRotation, Quaternion endRotation, float halfAxisLenght = 3)
-		{
-			Color temp = Gizmos.color;
-			Vector3 axis;
-			float angle;
-			Quaternion halfOfRotation = Quaternion.Slerp (startRotation, endRotation, 0.5f);
-			halfOfRotation.ToAngleAxis (out angle, out axis);
-			Gizmos.color = new Color32 (162, 0, 255, 255);
-			Gizmos.DrawRay (origin - axis.normalized * halfAxisLenght, axis.normalized * halfAxisLenght * 2);
-			Gizmos.color = temp;
-		}
-
-		public static void ShowQuaternions (Vector3 origin, Vector3 startPosition, Vector3 endPosition, float time)
-		{
-			float lenght = (startPosition.magnitude > endPosition.magnitude) ? startPosition.magnitude : endPosition.magnitude;
-
-			GizmosForVector.DrawVector (origin, Quaternion.identity * startPosition, lenght, Color.red, "");
-			GizmosForVector.DrawVector (origin, endPosition, lenght, Color.green, "");
-
-			Quaternion endQ = Quaternion.FromToRotation (startPosition, endPosition);
-			int iterations = 100;
-			List<Quaternion> points = new List<Quaternion> (100 * iterations);
-			List<Color> colors = new List<Color> (100 * iterations);
-
-			for (int i = 0; i < iterations; i++) {
-				float t = i / (float)iterations;
-				points.Add (Quaternion.Slerp (Quaternion.identity, endQ, t));
-				colors.Add (Color.Lerp (Color.red, Color.green, t));
-
-			}
-			for (int i = 0; i < iterations - 1; i++) {
-				if (i % 2 == 0) {
-					Gizmos.color = colors [i];
-					Gizmos.DrawLine (points [i] * startPosition + origin, points [i + 1] * startPosition + origin);
-				}
-			}
-		}
+		}	
 
 		#endregion
-
 
 		#region FromToRotation
 
 		public static void FromToRotation (Vector3 origin, Vector3 fromDirection, Vector3 toDirection, 
-		                                   float lenght = lenght6)
+		                                   float lenght = lenght6,bool showVectorLabel=!default(bool))
 		{
 			Quaternion startRotation = Quaternion.FromToRotation (Vector3.right, fromDirection);
 			Quaternion endRotation = Quaternion.FromToRotation (Vector3.right, toDirection);
-			Slerp (origin, startRotation, endRotation, BaseVectorDirection.right, lenght);
+			Slerp (origin, startRotation, endRotation, BaseVectorDirection.right, lenght,showVectorLabel);
 		}
 
 		#endregion
@@ -237,9 +197,9 @@ namespace UnityBerserkersGizmos
 
 		// work only for variables, not for properties like transform.rotation
 		public static void SetFromToRotation (Vector3 origin, Vector3 fromDirection, Vector3 toDirection, 
-		                                      float lenght = lenght6)
+		                                      float lenght = lenght6,bool showVectorLabel=!default(bool))
 		{
-			FromToRotation (origin, fromDirection, toDirection, lenght);
+			FromToRotation (origin, fromDirection, toDirection, lenght,showVectorLabel);
 		}
 
 		#endregion
@@ -248,39 +208,40 @@ namespace UnityBerserkersGizmos
 
 		public static void Lerp (Vector3 origin, Quaternion startRotation, Quaternion endRotation, 
 		                         BaseVectorDirection builtinDirection = default(BaseVectorDirection), 
-		                         float lenght = lenght6)
+		                         float lenght = lenght6,bool showVectorLabel=!default(bool))
 		{
 			Vector3 direction = ColorsAndDirections.GetBaseDirection (builtinDirection);
-			InterpolateQuaternions (Quaternion.Lerp, origin, startRotation, endRotation, builtinDirection, lenght, direction);
+			InterpolateQuaternions (Quaternion.Lerp, origin, startRotation, endRotation, builtinDirection, lenght, direction,showVectorLabel);
 		}
 
 		public static void Lerp (Vector3 origin, Quaternion startRotation, Quaternion endRotation, 
-		                         Vector3 customDirection, float halfAxisLenght = 3)
+		                         Vector3 customDirection, float halfAxisLenght = 3,bool showVectorLabel=!default(bool))
 		{
-			InterpolateQuaternions (Quaternion.Lerp, origin, startRotation, endRotation, customVectorDirection, halfAxisLenght, customDirection);
+			InterpolateQuaternions (Quaternion.Lerp, origin, startRotation, endRotation, customVectorDirection, halfAxisLenght, customDirection,showVectorLabel);
 		}
 
 		#endregion
-#region LerpUnclamped
+		
+		#region LerpUnclamped
 	public static void LerpUnclamped (Vector3 origin, Quaternion startRotation, Quaternion endRotation, 
 		                                   float howFuther, BaseVectorDirection builtinDirection = default(BaseVectorDirection), 
-		                                   float lenght = lenght6)
+		                                   float lenght = lenght6,bool showVectorLabel=!default(bool))
 		{
 			Vector3	direction = ColorsAndDirections.GetBaseDirection (builtinDirection);
-		SlerpUnclampedRaw ( origin,  startRotation,  endRotation, howFuther,  builtinDirection, lenght,direction )	;
+		SlerpUnclampedRaw ( origin,  startRotation,  endRotation, howFuther,  builtinDirection, lenght,direction,showVectorLabel )	;
 		}
 
 		public static void LerpUnclamped (Vector3 origin, Quaternion startRotation, Quaternion endRotation, 
-		                                   float howFuther, Vector3 customDirection, float lenght = 3)
+		                                   float howFuther, Vector3 customDirection, float lenght = 3,bool showVectorLabel=!default(bool))
 		{
-SlerpUnclampedRaw ( origin,  startRotation,  endRotation, howFuther,  customVectorDirection, lenght,customDirection )	;	
+SlerpUnclampedRaw ( origin,  startRotation,  endRotation, howFuther,  customVectorDirection, lenght,customDirection,showVectorLabel )	;	
 }
 #endregion
 
 		#region SlerpUnclamped
 public static void SlerpUnclampedRaw (Vector3 origin, Quaternion startRotation, Quaternion endRotation, 
 		                                   float howFuther, BaseVectorDirection builtinDirection = default(BaseVectorDirection), 
-		                                   float lenght = lenght6, Vector3 direction= default(Vector3))
+		                                   float lenght = lenght6, Vector3 direction= default(Vector3),bool showVectorLabel=!default(bool))
 		{
 
 			float angle;
@@ -297,10 +258,10 @@ public static void SlerpUnclampedRaw (Vector3 origin, Quaternion startRotation, 
 			Color startColor = ColorsAndDirections.GetColors (builtinDirection) [0];
 			Color endColor = ColorsAndDirections.GetColors (builtinDirection) [1];
 
-			DrawQuaternion (origin, startRotation, startColor, lenght, direction, true, "start");
-			DrawQuaternion (origin, endRotation, endColor, lenght, direction, true, "end");
+			DrawQuaternion (origin, startRotation, startColor, lenght, direction, showVectorLabel, "start");
+			DrawQuaternion (origin, endRotation, endColor, lenght, direction, showVectorLabel, "end");
 			Color finishColor=(builtinDirection==customVectorDirection)?(Color)new Color32 (0,174,219, 255): ColorsAndDirections.GetColors ((BaseVectorDirection)7) [1];
-			DrawQuaternion (origin, Quaternion.SlerpUnclamped (startRotation, endRotation, howFuther),finishColor, lenght, direction, true, "howFuther: " + howFuther + "\nfinal Position: ");
+			DrawQuaternion (origin, Quaternion.SlerpUnclamped (startRotation, endRotation, howFuther),finishColor, lenght, direction, showVectorLabel, "howFuther: " + howFuther + "\nfinal Position: ");
 
 			Quaternion pendicularQ0 = Quaternion.AngleAxis (0, axis);
 			Quaternion pendicularQ90 = Quaternion.AngleAxis (90, axis);
@@ -325,41 +286,39 @@ public static void SlerpUnclampedRaw (Vector3 origin, Quaternion startRotation, 
 
 		public static void SlerpUnclamped (Vector3 origin, Quaternion startRotation, Quaternion endRotation, 
 		                                   float howFuther, BaseVectorDirection builtinDirection = default(BaseVectorDirection), 
-		                                   float lenght = lenght6)
+		                                   float lenght = lenght6,bool showVectorLabel=!default(bool))
 		{
 			Vector3	direction = ColorsAndDirections.GetBaseDirection (builtinDirection);
-		SlerpUnclampedRaw ( origin,  startRotation,  endRotation, howFuther,  builtinDirection, lenght,direction )	;
+		SlerpUnclampedRaw ( origin,  startRotation,  endRotation, howFuther,  builtinDirection, lenght,direction,showVectorLabel )	;
 		}
 
 		public static void SlerpUnclamped (Vector3 origin, Quaternion startRotation, Quaternion endRotation, 
-		                                   float howFuther, Vector3 customDirection, float lenght = 3)
+		                                   float howFuther, Vector3 customDirection, float lenght = 3,bool showVectorLabel=!default(bool))
 		{
-SlerpUnclampedRaw ( origin,  startRotation,  endRotation, howFuther,  customVectorDirection, lenght,customDirection )	;	
+SlerpUnclampedRaw ( origin,  startRotation,  endRotation, howFuther,  customVectorDirection, lenght,customDirection,showVectorLabel )	;	
 }
 
 		#endregion
-
-	
 
 		#region Slerp + InterpolateQuaternion
 
 		public static void Slerp (Vector3 origin, Quaternion startRotation, Quaternion endRotation, 
 		                          BaseVectorDirection builtinDirection = default(BaseVectorDirection), 
-		                          float lenght = lenght6)
+		                          float lenght = lenght6,bool showVectorLabel=!default(bool))
 		{
 			Vector3 direction = ColorsAndDirections.GetBaseDirection (builtinDirection);
-			InterpolateQuaternions (Quaternion.Slerp, origin, startRotation, endRotation, builtinDirection, lenght, direction);
+			InterpolateQuaternions (Quaternion.Slerp, origin, startRotation, endRotation, builtinDirection, lenght, direction,showVectorLabel);
 		}
 
 		public static void Slerp (Vector3 origin, Quaternion startRotation, Quaternion endRotation, 
-		                          Vector3 customDirection, float halfAxisLenght = 3)
+		                          Vector3 customDirection, float halfAxisLenght = 3,bool showVectorLabel=!default(bool))
 		{
-			InterpolateQuaternions (Quaternion.Slerp, origin, startRotation, endRotation, customVectorDirection, halfAxisLenght, customDirection);
+			InterpolateQuaternions (Quaternion.Slerp, origin, startRotation, endRotation, customVectorDirection, halfAxisLenght, customDirection,showVectorLabel);
 		}
 
 		static void Slerp (Vector3 origin, Quaternion startRotation, Quaternion endRotation, 
 		                   BaseVectorDirection builtinDirection, 
-		                   float lenght, Vector3 customDirection, bool showVectorLabel = default(bool), string name1 = "", string name2 = "")
+		                   float lenght, Vector3 customDirection, bool showVectorLabel = !default(bool), string name1 = "", string name2 = "")
 		{		
 			InterpolateQuaternions (Quaternion.Slerp, origin, startRotation, endRotation, builtinDirection, lenght, customDirection, showVectorLabel, name1, name2);
 		}
@@ -459,7 +418,6 @@ SlerpUnclampedRaw ( origin,  startRotation,  endRotation, howFuther,  customVect
 		}
 
 		#endregion
-
 	
 	}
 }
