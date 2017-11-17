@@ -31,14 +31,13 @@ public class Inverse : MonoBehaviour
 
 	[Space (22)][Header ("Quaternions in form of euler angle")]
 	[SerializeField]Vector3 inverseEA;
-	[SerializeField]Vector3 inverseEA2;
+	
 
 
 	void Update ()
 	{
 		Quaternion startQ = Quaternion.Euler (rotation);
-		Quaternion	inverse = Quaternion.Inverse (startQ);	
-		Quaternion	inverse2 = Quaternion.Inverse (startQ);	
+		Quaternion	inverse = Quaternion.Inverse (startQ);			
 
 		inverseEA = inverse.eulerAngles;
 	}
