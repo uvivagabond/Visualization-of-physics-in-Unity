@@ -4,38 +4,17 @@ using UnityEngine;
 
 public static class QuaternionExtensions
 {
-	public static float SignedAngle1 (this Quaternion q)
-	{
-		float angle = Mathf.Acos (q.w) * 2f * Mathf.Rad2Deg;
-		float signx = q.x != 0 ? Mathf.Sign (q.x) : (q.y != 0 ? Mathf.Sign (q.y) : (q.z != 0 ? Mathf.Sign (q.z) : 1));
-
-		if (signx > 0) {
-			return	angle = (Mathf.Sign (q.w) >= 0) ? angle : angle - 360;
-		} else {
-			return	angle = (Mathf.Sign (q.w) < 0) ? 360 - angle : -angle;
-		}
-	}
-
 	public static float SignedAngle (this Quaternion q)
 	{
 		float angle;
 		Vector3 axis;
 		q.ToAngleAxis (out angle, out axis);
-
-		Vector3 normal = new Vector3 (q.x, q.y, q.z);
 		Vector3 right = Vector3.right;
 		Vector3 quat = q * Vector3.right;
 		Vector3.OrthoNormalize (ref axis, ref right);
-		float dot = //Quaternion.Dot (q, Quaternion.identity);
-			Vector3.Dot (Vector3.Cross (right, quat), axis);
-//		float angle = Mathf.Acos (q.w) * 2f * Mathf.Rad2Deg;
-		float signx = Mathf.Sign (dot);
-
-		if (signx > 0) {
-			return	angle = angle;
-		} else {
-			return angle - 360;
-		}
+		float dot =	Vector3.Dot (Vector3.Cross (right, quat), axis);
+		float sign = Mathf.Sign (dot);
+		return Mathf.Sign (dot) > 0 ? angle : angle - 360;
 	}
 
 	public static float GetWFromAngle (float angle)
