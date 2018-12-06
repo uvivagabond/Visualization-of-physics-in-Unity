@@ -27,7 +27,8 @@ namespace UnityBerserkersGizmos
 	{
 		#region Variables
 
-		static Color nonHitColorB2 = new Color (r: 0.129f, g: 0.108f, b: 0.922f, a: 0.25f);
+		static Color nonHitColorB2 = new Color (r: 0.129f, g: 0.108f, b: 0.922f, a: 1);
+// 0.25f
 		static Color hitColorO = new Color (r: 0.18f, g: 0.88f, b: 0.49f, a: 1f);
 		static Color hitColorR2 = new Color (r: 1f, g: 0.058f, b: 0.01f, a: 0.25f);
 		static Color fireBrick = new Color32 (178, 34, 34, 255);
@@ -74,7 +75,7 @@ namespace UnityBerserkersGizmos
 			DrawVector (origin, rhs, rhsLenght, green, "rhs");
 			UnityEditor.Handles.color = new Color32 (255, 0, 0, 25);
 			UnityEditor.Handles.DrawSolidArc (origin, Vector3.Cross (lhs, rhs).normalized, lhs, Vector3.Angle (lhs, rhs), max * 0.8f);
-			ShowLabel (origin + new Vector3 (0, 0.5f, 0), "dotProduct: " + result, blue);
+			ShowLabel (origin + new Vector3 (0, 0.5f, 0), "dotProduct: " + result, Color.white);
 			#endif
 		}
 
@@ -364,7 +365,7 @@ namespace UnityBerserkersGizmos
 		/// <param name="showPlane">If set to <c>true</c> show plane in which are current and target direction are.</param>
 		public static void VisualizeRotateTowards (Vector3 origin, Vector3 current, Vector3 target, 
 		                                           float lenght = 6, bool showPlane = default(bool))
-        {
+		{
 			Vector3 direction = ColorsAndDirections.GetBaseDirection (default(BaseVectorDirection));
 			VisualizeRotateTowardsRaw (origin, current, target, default(BaseVectorDirection), lenght, current);
 		}
@@ -581,7 +582,7 @@ namespace UnityBerserkersGizmos
 		{
 			#if UNITY_EDITOR
 			Color temp2 = UnityEditor.Handles.color;
-            valueToDisplay= Round(valueToDisplay, 2);
+			valueToDisplay = Round (valueToDisplay, 2);
 			GUIStyle g = new GUIStyle ();	
 			g.normal.textColor = color;
 			UnityEditor.Handles.Label (origin + labelOffset, "(" + valueToDisplay.x + ", " + valueToDisplay.y + ", " + valueToDisplay.z + ")", g);

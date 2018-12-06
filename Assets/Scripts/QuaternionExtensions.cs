@@ -32,17 +32,4 @@ public static class QuaternionExtensions
 	{
 		return first * Quaternion.Inverse (second);
 	}
-
-	/// <summary>
-	/// Return axis for difference rotation between start and end rotation
-	/// </summary>
-	/// <returns>The angle axis custom.</returns>
-	/// <param name="endRotation">Second rotation.</param>
-	/// <param name="angle">Angle between rotations.</param>
-	/// <param name="axis">Rotatio axis.</param>
-	//	public static void ToAngleAxisCustom (this Quaternion startRotation, Quaternion endRotation, out float angle, out Vector3 axis)
-	//	{
-	//		Quaternion sub = startRotation.Substraction (endRotation);
-	//		sub.ToAngleAxis (out angle, out axis);
-	//	}
 }
