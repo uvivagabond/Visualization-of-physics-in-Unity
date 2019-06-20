@@ -589,6 +589,20 @@ namespace UnityBerserkersGizmos
 			UnityEditor.Handles.color = temp2;
 			#endif
 		}
-	}
+        public static void DrawCoordinateSystem(Vector3 origin, Quaternion rotationOfCoordinateSystem, float axisLenght=3)
+        {
+            GizmosForVector.DrawVector(origin, rotationOfCoordinateSystem * Vector3.right, axisLenght, 
+                Color.red, "x", Vector3.zero, false);
+
+            GizmosForVector.DrawVector(origin, rotationOfCoordinateSystem * Vector3.up, axisLenght,
+               Color.green, "y", Vector3.zero, false);
+
+            GizmosForVector.DrawVector(origin, rotationOfCoordinateSystem * Vector3.forward, axisLenght,
+                Color.blue, "z", Vector3.zero, false);          
+        }
+    }
+
+
+   
 }
 

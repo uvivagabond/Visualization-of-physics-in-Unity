@@ -31,18 +31,19 @@ public class RotateAroundTest : MonoBehaviour
 	[SerializeField]Vector3 axis;
 	[Space (22)][Header ("Angle - how fast object will rotate")]
 	[SerializeField] float angle;
-	//[SerializeField]Vector3 inpoint;
-
 
 	void Update ()
-	{//we must multiple angle by Time.time to get smooth move - we will get constant speed
+	{//we must multiple angle by Time.deltaTime to get smooth move - we will get constant angular speed
 	
-		transform.RotateAround (point, axis, angle * Time.deltaTime);
+		transform.RotateAround (
+			point: point, 
+			axis: axis, 
+			angle: angle * Time.deltaTime);
 	}
 
 	void OnDrawGizmos ()
 	{
-			GizmosForTransform.RotateAround (transform, point,  angle, axis);
+		GizmosForTransform.RotateAround (transform, point, angle, axis);
 		
 	}
 }

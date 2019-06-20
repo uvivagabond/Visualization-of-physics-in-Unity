@@ -39,6 +39,9 @@ public class Dot : MonoBehaviour
 
 	void Update ()
 	{
+//		lhs.Normalize ();
+//		rhs.Normalize ();
+
 		dotProduct = Vector3.Dot (lhs: lhs, rhs: rhs);
 	}
 
@@ -46,4 +49,5 @@ public class Dot : MonoBehaviour
 	{
 		GizmosForVector.VisualizeDot (origin: originOfVectors, lhs: lhs, rhs: rhs, realScale: useRealScale);
 	}
+
 }

@@ -17,19 +17,28 @@ public static class QuaternionExtensions
 		return Mathf.Sign (dot) > 0 ? angle : angle - 360;
 	}
 
-	public static float GetWFromAngle (float angle)
+    public static void SignedToAngleAxis(this Quaternion q, out float  angle, out Vector3 axis)
+    {
+        float tempAngle=0;
+        q.ToAngleAxis(out tempAngle, out axis);
+        Vector3 right = Vector3.right;
+        Vector3 quat = q * Vector3.right;
+        Vector3.OrthoNormalize(ref axis, ref right);
+        float dot = Vector3.Dot(Vector3.Cross(right, quat), axis);
+        float sign = Mathf.Sign(dot);
+        angle= Mathf.Sign(dot) > 0 ? tempAngle : tempAngle - 360;
+    }
+
+
+    public static float GetWFromAngle (float angle)
 	{
-		float sign = Mathf.Sign (Mathf.Cos (angle * 0.5f * Mathf.Deg2Rad));
-		return Mathf.Abs (Mathf.Cos (angle / 2 * Mathf.Deg2Rad)) * sign;
+		return Mathf.Cos (angle * 0.5f * Mathf.Deg2Rad);
 	}
 
-	public static Quaternion Add (this Quaternion first, Quaternion second)
+	public static Vector3 GetAxis (this Quaternion q)
 	{
-		return first * second;
+		return new Vector3 (q.x, q.y, q.z).normalized;
 	}
 
-	public static Quaternion Substract (this Quaternion first, Quaternion second)
-	{
-		return first * Quaternion.Inverse (second);
-	}
+
 }

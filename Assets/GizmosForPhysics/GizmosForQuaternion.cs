@@ -108,10 +108,13 @@ namespace UnityBerserkersGizmos
 //		DrawQuaternion (origin, middle, Color.yellow, 6, direction);////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			GizmosForVector.ShowLabel (origin + middle * direction * halfAxisLenght, //* startRotation
 //				System.Math.Round (Quaternion.Angle (startRotation, endRotation), 0) + "\xB0", Color.magenta);
-				System.Math.Round ((startRotation * Quaternion.Inverse (endRotation)).SignedAngle ()) + "\xB0", Color.magenta);
+			//	System.Math.Round ((startRotation * Quaternion.Inverse (endRotation)).SignedAngle ()) + "\xB0", Color.magenta);
+            System.Math.Round((Quaternion.Inverse(endRotation) * startRotation).SignedAngle()) + "\xB0", Color.magenta);
 
-			//first * Quaternion.Inverse (second)
-			Gizmos.color = temp;
+            //System.Math.Round ((angle), 2) + "\xB0", Color.magenta);
+
+            //first * Quaternion.Inverse (second)
+            Gizmos.color = temp;
 		}
 
 		#endregion

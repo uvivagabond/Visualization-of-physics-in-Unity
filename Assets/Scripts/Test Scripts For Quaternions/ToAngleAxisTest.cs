@@ -21,38 +21,44 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityBerserkersGizmos;
 
+[ExecuteInEditMode]
 public class ToAngleAxisTest : MonoBehaviour
 {
-
-	[Header ("Origin of vectors")]
-	[SerializeField]Vector3 origin = Vector3.zero;
-	[Header ("Quaternions in form of euler angle")]
-	[SerializeField]Vector3 startRotation = Vector3.right;
-	[Space (22)][Header ("Which version of method")]
-	[SerializeField] bool useBuiltinDirection;
-	[Space (5)][SerializeField]BaseVectorDirection builtinDirection;
-	[SerializeField]Vector3 customDirectionn = Vector3.right;
-
+ 
+    [Header ("Quaternions in form of euler angle")]
+	[SerializeField]Vector3 eulerAngles = Vector3.right;
 
 	[Space (22)][Space (22)][Header ("Results:")]
 	[SerializeField]Vector3 axis;
 	[SerializeField] float angle;
 
-	void Update ()
+    [Space(11)]
+    [Header("Results:")]
+    [SerializeField] Quaternion q;
+
+
+    [Space(55)]
+    [Header("Visualization parameters")]
+    [Header("Origin of vectors")]
+    [SerializeField] Vector3 origin = Vector3.zero;
+    [Header("Which version of method")]
+    [SerializeField] bool useBuiltinDirection;
+    [SerializeField] BaseVectorDirection builtinDirection;
+    [SerializeField] Vector3 customDirectionn = Vector3.right;
+
+    void Update ()
 	{
-		Quaternion startQ = Quaternion.Euler (startRotation);
-		startQ.ToAngleAxis (out angle, out axis);
+        q = Quaternion.Euler (eulerAngles);
+        q.ToAngleAxis (angle:out angle,axis: out axis);
 	}
 
 	void OnDrawGizmos ()
 	{
-//		GizmosForQuaternion.DrawQuaternion (origin, customDirectionn, Color.red, 11, true);
-		Quaternion startQ = Quaternion.Euler (startRotation);
+		Quaternion startQ = Quaternion.Euler (eulerAngles);
 		if (useBuiltinDirection) {
 			GizmosForQuaternion.ToAngleAxis (origin, startQ, builtinDirection);
 		} else {
 			GizmosForQuaternion.ToAngleAxis (origin, startQ, customDirectionn);
 		}
-
 	}
 }

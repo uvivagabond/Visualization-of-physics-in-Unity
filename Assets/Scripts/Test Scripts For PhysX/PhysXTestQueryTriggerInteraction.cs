@@ -43,7 +43,7 @@ public class PhysXTestQueryTriggerInteraction : MonoBehaviour
 
 			layerMask: Physics.DefaultRaycastLayers, queryTriggerInteraction: QueryTriggerInteraction.UseGlobal);
 
-		RaycastHit[] hitInfos = Physics.RaycastAll (origin: origin, direction: direction, maxDistance: maxDistance, layermask: Physics.DefaultRaycastLayers, queryTriggerInteraction: queryTriggerInteraction);
+		RaycastHit[] hitInfos = Physics.RaycastAll (origin: origin, direction: direction, maxDistance: maxDistance, layerMask: Physics.DefaultRaycastLayers, queryTriggerInteraction: queryTriggerInteraction);
 		   
 
 

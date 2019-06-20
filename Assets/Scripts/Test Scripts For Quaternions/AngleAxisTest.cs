@@ -21,35 +21,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityBerserkersGizmos;
 
+[ExecuteInEditMode]
 public class AngleAxisTest : MonoBehaviour
 {
-	[Header ("Origin of vectors")]
-	[SerializeField]Vector3 origin1 = Vector3.zero;
-	[Header ("Quaternions in form of euler angle")]
+ 
+    [Header ("Quaternions in form of euler angle")]
 	[SerializeField]Vector3 startRotation = Vector3.right;
-	[Space (22)][Header ("Which version of method")]
-	[SerializeField] bool useBuiltinDirection;
-	[Space (5)][SerializeField]BaseVectorDirection builtinDirection;
-	[SerializeField]Vector3 customDirectionn = Vector3.right;
-
-
+	
 	[Space (22)]
 	[SerializeField]Vector3 axis;
 	[SerializeField] float angle;
 
-	void Update ()
-	{
-		if (Input.GetKeyDown (KeyCode.O)) {
-			Quaternion startQ = Quaternion.Euler (startRotation);
-			Quaternion end =	Quaternion.AngleAxis (angle, axis);
+    [Space(11)]
+    [Header("Results:")]
+    [SerializeField] Quaternion q;
 
-			IEnumerator slerp = QuaternionCoroutines.Slerp (transform, startQ, end * startQ, 5);
+    [Space(55)]
+    [Header("Visualization parameters")]
+    [Header("Origin of vectors")]
+    [SerializeField] Vector3 origin1 = Vector3.zero;
+    [Header("Which version of method")]
+    [SerializeField] bool useBuiltinDirection;
+    [Space(5)] [SerializeField] BaseVectorDirection builtinDirection;
+    [SerializeField] Vector3 customDirectionn = Vector3.right;
 
-			StartCoroutine (slerp);
-		}
-		if (Input.GetKeyDown (KeyCode.P)) {
-			transform.rotation = Quaternion.Euler (startRotation);	
-		}
+
+
+    void Update ()	{
+        q = Quaternion.AngleAxis (angle:angle,axis: axis);		
 	}
 
 	void OnDrawGizmos ()

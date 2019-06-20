@@ -26,27 +26,29 @@ public class Inverse : MonoBehaviour
 {
 	[Header ("Origin of vectors")]
 	[SerializeField]Vector3 origin = Vector3.zero;
-	[Space (11)][Header ("Quaternions in form of euler angle")]
-	[SerializeField]Vector3 rotation = Vector3.right;
+	[Space (11)][Header ("Quaternion in angle-axis representation")]
 
-	[Space (22)][Header ("Quaternions in form of euler angle")]
-	[SerializeField]Vector3 inverseEA;
+   
+    [SerializeField] Vector3 axis;
+    [SerializeField] float angle;
+
+
+    [Space(22)]
+    [Header("Quaternion and it's inverse ")]
+    [SerializeField] Quaternion q;
+    [SerializeField] Quaternion qInverse;
+
+       
+    void Update ()
+	{
+        q = Quaternion.AngleAxis(angle,axis);
+        qInverse = Quaternion.Inverse (rotation:q);	
+	}
+
 	
-
-
-	void Update ()
-	{
-		Quaternion startQ = Quaternion.Euler (rotation);
-		Quaternion	inverse = Quaternion.Inverse (startQ);			
-
-		inverseEA = inverse.eulerAngles;
-	}
-
-	void OnDrawGizmos ()
-	{
-		Quaternion startQ = Quaternion.Euler (rotation);
-
-		GizmosForQuaternion.Inverse (origin, startQ, 6f);
-
-	}
+    void OnDrawGizmos()
+    {
+        GizmosForQuaternion.ToAngleAxis(origin, q);
+        GizmosForQuaternion.ToAngleAxis(origin + Vector3.right * 9, qInverse);
+    }
 }
