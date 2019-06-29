@@ -39,15 +39,18 @@ namespace UnityBerserkersGizmos
 		public static void Angle (Vector3 origin, Quaternion startRotation, Quaternion endRotation, 
 		                          BaseVectorDirection builtinDirection = default(BaseVectorDirection), float lenght = lenght6, bool showVectorLabel = !default(bool))
 		{
-			Slerp (origin, startRotation, endRotation, builtinDirection, lenght, showVectorLabel);
-			GizmosForVector.ShowLabel (origin, "angle: " + System.Math.Round (Quaternion.Angle (startRotation, endRotation), 0) + "\xB0", new Color32 (127, 0, 255, 255));
+            Vector3 direction = ColorsAndDirections.GetBaseDirection(builtinDirection);
+            InterpolateQuaternions(Quaternion.Slerp, origin, startRotation, endRotation, builtinDirection, lenght, direction, showVectorLabel);
+            GizmosForVector.ShowLabel (origin, "angle: " + System.Math.Round (Quaternion.Angle (startRotation, endRotation), 0) + "\xB0", new Color32 (127, 0, 255, 255));
 		}
 
 		public static void Angle (Vector3 origin, Quaternion startRotation, Quaternion endRotation, 
 		                          Vector3 customDirection, float lenght = lenght6, bool showVectorLabel = !default(bool))
 		{
-			Slerp (origin, startRotation, endRotation, customDirection, lenght, showVectorLabel);
-			GizmosForVector.ShowLabel (origin, "angle: " + System.Math.Round (Quaternion.Angle (startRotation, endRotation), 0) + "\xB0", new Color32 (127, 0, 255, 255));
+			//Slerp (origin, startRotation, endRotation, customDirection, lenght, showVectorLabel);
+            InterpolateQuaternions(Quaternion.Slerp, 
+                origin, startRotation, endRotation, customVectorDirection, lenght, customDirection, showVectorLabel);
+            GizmosForVector.ShowLabel (origin, "angle: " + System.Math.Round (Quaternion.Angle (startRotation, endRotation), 0) + "\xB0", new Color32 (127, 0, 255, 255));
 		}
 
 		#endregion
@@ -102,9 +105,9 @@ namespace UnityBerserkersGizmos
 				axis.normalized, halfAxisLenght * 2, Gizmos.color);
 			Quaternion endRotation = Quaternion.AngleAxis (angle, axis);
 			endRotation = endRotation * startRotation;
-			Slerp (origin, startRotation, endRotation, builtinDirection, halfAxisLenght, direction, showVectorLabel);
-
-			Quaternion middle = Quaternion.Slerp (startRotation, endRotation, 0.5f);
+		//	Slerp (origin, startRotation, endRotation, builtinDirection, halfAxisLenght, direction, showVectorLabel);
+            InterpolateQuaternions(Quaternion.Slerp, origin, startRotation, endRotation, builtinDirection, halfAxisLenght, direction, showVectorLabel);
+            Quaternion middle = Quaternion.Slerp (startRotation, endRotation, 0.5f);
 //		DrawQuaternion (origin, middle, Color.yellow, 6, direction);////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			GizmosForVector.ShowLabel (origin + middle * direction * halfAxisLenght, //* startRotation
 //				System.Math.Round (Quaternion.Angle (startRotation, endRotation), 0) + "\xB0", Color.magenta);
@@ -131,11 +134,15 @@ namespace UnityBerserkersGizmos
 		{
 			upwards = upwards == default(Vector3) ? Vector3.up : upwards;
 			Vector3 up = Vector3.ProjectOnPlane (upwards, forward);
-			Quaternion forwardRotation = Quaternion.FromToRotation (Vector3.right, forward);
-			Quaternion upwardsRotation = Quaternion.FromToRotation (Vector3.right, up);
-			Slerp (origin, Quaternion.identity, forwardRotation, (BaseVectorDirection)5, lenght, right, showVectorLabel);
-			Slerp (origin, Quaternion.identity, upwardsRotation, (BaseVectorDirection)6, lenght, right, showVectorLabel);
-		}
+			Quaternion forwardRotation = Quaternion.FromToRotation (Vector3.forward, forward);
+			Quaternion upwardsRotation = Quaternion.FromToRotation (Vector3.up, up);
+            Quaternion upwardsRotation2 = Quaternion.FromToRotation(Vector3.up, upwards);
+
+			//Slerp (origin, Quaternion.identity, forwardRotation, (BaseVectorDirection)2, lenght, Vector3.forward, showVectorLabel);
+            InterpolateQuaternions(Quaternion.Slerp, origin, Quaternion.identity, forwardRotation, (BaseVectorDirection)2, lenght, Vector3.forward, showVectorLabel);
+           // Slerp (origin, Quaternion.identity, upwardsRotation, (BaseVectorDirection)1, lenght, Vector3.up, showVectorLabel);
+            InterpolateQuaternions(Quaternion.Slerp, origin, Quaternion.identity, upwardsRotation, (BaseVectorDirection)1, lenght, Vector3.up, showVectorLabel);
+        }
 
 		public static void SetLookRotation (Vector3 origin, Vector3 forward, Vector3 upwards = default(Vector3), float lenght = 5, bool showVectorLabel = !default(bool))
 		{
@@ -149,9 +156,11 @@ namespace UnityBerserkersGizmos
 		public static void Inverse (Vector3 origin, Quaternion rotation, float lenght = lenght6, bool showVectorLabel = !default(bool))
 		{
 			Quaternion inverseRotation = Quaternion.Inverse (rotation);
-			Slerp (origin, Quaternion.identity, rotation, (BaseVectorDirection)6, lenght, right, showVectorLabel, "", "rotation");
-			Slerp (origin, Quaternion.identity, inverseRotation, (BaseVectorDirection)7, lenght, right, showVectorLabel, "", "inverseRotation");
-			float angle;
+		//	Slerp (origin, Quaternion.identity, rotation, (BaseVectorDirection)6, lenght, right, showVectorLabel, "", "rotation");
+            InterpolateQuaternions(Quaternion.Slerp, origin, Quaternion.identity, rotation, (BaseVectorDirection)6, lenght, right, showVectorLabel, "", "rotation");
+          //  Slerp (origin, Quaternion.identity, inverseRotation, (BaseVectorDirection)7, lenght, right, showVectorLabel, "", "inverseRotation");
+            InterpolateQuaternions(Quaternion.Slerp, origin, Quaternion.identity, inverseRotation, (BaseVectorDirection)7, lenght, right, showVectorLabel, "", "inverseRotation");
+            float angle;
 			Vector3 axis; 
 			rotation.ToAngleAxis (out angle, out axis);
 			Vector3 cross = Vector3.Cross (axis, right);
@@ -166,15 +175,16 @@ namespace UnityBerserkersGizmos
 		                                  BaseVectorDirection builtinDirection = default(BaseVectorDirection), float lenght = lenght6, bool showVectorLabel = !default(bool))
 		{
 			Vector3 direction = ColorsAndDirections.GetBaseDirection (builtinDirection);
-			Slerp (origin, from, to, builtinDirection, lenght, direction, showVectorLabel, "from", "to");
-
-		}
+			//Slerp (origin, from, to, builtinDirection, lenght, direction, showVectorLabel, "from", "to");
+            InterpolateQuaternions(Quaternion.Slerp, origin, from, to, builtinDirection, lenght, direction, showVectorLabel, "from", "to");
+        }
 
 		public static void RotateTowards (Vector3 origin, Quaternion from, Quaternion to,
 		                                  Vector3 customDirection, float lenght = lenght6, bool showVectorLabel = !default(bool))
 		{
-			Slerp (origin, from, to, customVectorDirection, lenght, customDirection.normalized, showVectorLabel, "from", "to");
-		}
+			//Slerp (origin, from, to, customVectorDirection, lenght, customDirection.normalized, showVectorLabel, "from", "to");
+            InterpolateQuaternions(Quaternion.Slerp, origin, from, to, customVectorDirection, lenght, customDirection.normalized, showVectorLabel, "from", "to");
+        }
 
 
 		#endregion
@@ -183,8 +193,9 @@ namespace UnityBerserkersGizmos
 
 		public static void Dot (Vector3 origin, Quaternion a, Quaternion b, float lenght = 5, bool showVectorLabel = !default(bool))
 		{
-			Slerp (origin, a, b, (BaseVectorDirection)5, lenght, right, showVectorLabel);
-			GizmosForVector.ShowLabel (origin, "dotProduct: " + System.Math.Round (Quaternion.Dot (a, b), 4), new Color32 (0, 199, 29, 255));
+			//Slerp (origin, a, b, (BaseVectorDirection)5, lenght, right, showVectorLabel);
+            InterpolateQuaternions(Quaternion.Slerp, origin, a, b, (BaseVectorDirection)5, lenght, right, showVectorLabel);
+            GizmosForVector.ShowLabel (origin, "dotProduct: " + System.Math.Round (Quaternion.Dot (a, b), 4), new Color32 (0, 199, 29, 255));
 		}
 
 		#endregion
@@ -196,15 +207,18 @@ namespace UnityBerserkersGizmos
 		{
 			Quaternion startRotation = Quaternion.FromToRotation (Vector3.right, fromDirection);
 			Quaternion endRotation = Quaternion.FromToRotation (Vector3.right, toDirection);
-			Slerp (origin, startRotation, endRotation, BaseVectorDirection.right, lenght, showVectorLabel);
-		}
+			//Slerp (origin, startRotation, endRotation, BaseVectorDirection.right, lenght, showVectorLabel);
+            Vector3 direction = ColorsAndDirections.GetBaseDirection(BaseVectorDirection.right);
+            InterpolateQuaternions(Quaternion.Slerp, origin, startRotation, endRotation, BaseVectorDirection.right, lenght, direction, showVectorLabel);
 
-		#endregion
+        }
 
-		#region SetFromToRotation
+        #endregion
 
-		// work only for variables, not for properties like transform.rotation
-		public static void SetFromToRotation (Vector3 origin, Vector3 fromDirection, Vector3 toDirection, 
+        #region SetFromToRotation
+
+        // work only for variables, not for properties like transform.rotation
+        public static void SetFromToRotation (Vector3 origin, Vector3 fromDirection, Vector3 toDirection, 
 		                                      float lenght = lenght6, bool showVectorLabel = !default(bool))
 		{
 			FromToRotation (origin, fromDirection, toDirection, lenght, showVectorLabel);
@@ -214,18 +228,20 @@ namespace UnityBerserkersGizmos
 
 		#region Lerp
 
-		public static void Lerp (Vector3 origin, Quaternion startRotation, Quaternion endRotation, 
-		                         BaseVectorDirection builtinDirection = default(BaseVectorDirection), 
+		public static void Lerp (Vector3 origin, Quaternion startRotation, Quaternion endRotation, float t,
+                                 BaseVectorDirection builtinDirection = default(BaseVectorDirection), 
 		                         float lenght = lenght6, bool showVectorLabel = !default(bool))
 		{
 			Vector3 direction = ColorsAndDirections.GetBaseDirection (builtinDirection);
-			InterpolateQuaternions (Quaternion.Lerp, origin, startRotation, endRotation, builtinDirection, lenght, direction, showVectorLabel);
-		}
+            InterpolateQuaternionsForLerp(Quaternion.Lerp, origin, startRotation, endRotation,t, builtinDirection, lenght, direction, showVectorLabel);
+          //  InterpolateQuaternionsForLerp
 
-		public static void Lerp (Vector3 origin, Quaternion startRotation, Quaternion endRotation, 
-		                         Vector3 customDirection, float halfAxisLenght = 3, bool showVectorLabel = !default(bool))
+        }
+
+		public static void Lerp (Vector3 origin, Quaternion startRotation, Quaternion endRotation, float t,
+                                 Vector3 customDirection, float halfAxisLenght = 3, bool showVectorLabel = !default(bool))
 		{
-			InterpolateQuaternions (Quaternion.Lerp, origin, startRotation, endRotation, customVectorDirection, halfAxisLenght, customDirection, showVectorLabel);
+            InterpolateQuaternionsForLerp(Quaternion.Lerp, origin, startRotation, endRotation,t, customVectorDirection, halfAxisLenght, customDirection, showVectorLabel);
 		}
 
 		#endregion
@@ -237,20 +253,20 @@ namespace UnityBerserkersGizmos
 		                                  float lenght = lenght6, bool showVectorLabel = !default(bool))
 		{
 			Vector3	direction = ColorsAndDirections.GetBaseDirection (builtinDirection);
-			SlerpUnclampedRaw (origin, startRotation, endRotation, howFuther, builtinDirection, lenght, direction, showVectorLabel);
+			UnclampedRaw (Quaternion.LerpUnclamped, origin, startRotation, endRotation, howFuther, builtinDirection, lenght, direction, showVectorLabel);
 		}
 
 		public static void LerpUnclamped (Vector3 origin, Quaternion startRotation, Quaternion endRotation, 
 		                                  float howFuther, Vector3 customDirection, float lenght = 3, bool showVectorLabel = !default(bool))
 		{
-			SlerpUnclampedRaw (origin, startRotation, endRotation, howFuther, customVectorDirection, lenght, customDirection, showVectorLabel);	
+			UnclampedRaw (Quaternion.LerpUnclamped, origin, startRotation, endRotation, howFuther, customVectorDirection, lenght, customDirection, showVectorLabel);	
 		}
 
 		#endregion
 
 		#region SlerpUnclamped
 
-		public static void SlerpUnclampedRaw (Vector3 origin, Quaternion startRotation, Quaternion endRotation, 
+		internal static void UnclampedRaw (System.Func<Quaternion, Quaternion, float, Quaternion> func, Vector3 origin, Quaternion startRotation, Quaternion endRotation, 
 		                                      float howFuther, BaseVectorDirection builtinDirection = default(BaseVectorDirection), 
 		                                      float lenght = lenght6, Vector3 direction = default(Vector3), bool showVectorLabel = !default(bool))
 		{
@@ -264,16 +280,16 @@ namespace UnityBerserkersGizmos
 			float halfAxisLenght = lenght * 0.5f;
 			Gizmos.DrawRay (origin - axis.normalized * halfAxisLenght, axis.normalized * halfAxisLenght * 2);
 			//Vector3	direction = ColorsAndDirections.GetBaseDirection (builtinDirection);
-			//	directionn = (directionn == Vector3.zero) ? Vector3.right : directionn.normalized;///w bok
+			//	directionn = (directionn == Vector3.zero) ? Vector3.right : directionn.normalized;///w bokSlerp
 
 			direction = (direction == Vector3.zero) ? Vector3.right : direction.normalized;
 			Color startColor = ColorsAndDirections.GetColors (builtinDirection) [0];
 			Color endColor = ColorsAndDirections.GetColors (builtinDirection) [1];
 
-			DrawQuaternion (origin, startRotation, startColor, lenght, direction, showVectorLabel, "start");
-			DrawQuaternion (origin, endRotation, endColor, lenght, direction, showVectorLabel, "end");
+			DrawQuaternion (origin, startRotation, startColor, lenght, direction, showVectorLabel, "a");
+			DrawQuaternion (origin, endRotation, endColor, lenght, direction, showVectorLabel, "b");
 			Color finishColor = (builtinDirection == customVectorDirection) ? (Color)new Color32 (0, 174, 219, 255) : ColorsAndDirections.GetColors ((BaseVectorDirection)7) [1];
-			DrawQuaternion (origin, Quaternion.SlerpUnclamped (startRotation, endRotation, howFuther), finishColor, lenght, direction, showVectorLabel, "howFuther: " + howFuther + "\nfinal Position: ");
+			DrawQuaternion (origin, func(startRotation, endRotation, howFuther), finishColor, lenght, direction, showVectorLabel, "t: " + howFuther + "\nfinal Position: ");
 
 			Quaternion pendicularQ0 = Quaternion.AngleAxis (0, axis);
 			Quaternion pendicularQ90 = Quaternion.AngleAxis (90, axis);
@@ -301,38 +317,38 @@ namespace UnityBerserkersGizmos
 		                                   float lenght = lenght6, bool showVectorLabel = !default(bool))
 		{
 			Vector3	direction = ColorsAndDirections.GetBaseDirection (builtinDirection);
-			SlerpUnclampedRaw (origin, startRotation, endRotation, howFuther, builtinDirection, lenght, direction, showVectorLabel);
+			UnclampedRaw (Quaternion.SlerpUnclamped, origin, startRotation, endRotation, howFuther, builtinDirection, lenght, direction, showVectorLabel);
 		}
 
 		public static void SlerpUnclamped (Vector3 origin, Quaternion startRotation, Quaternion endRotation, 
 		                                   float howFuther, Vector3 customDirection, float lenght = 3, bool showVectorLabel = !default(bool))
 		{
-			SlerpUnclampedRaw (origin, startRotation, endRotation, howFuther, customVectorDirection, lenght, customDirection, showVectorLabel);	
+			UnclampedRaw (Quaternion.SlerpUnclamped,origin, startRotation, endRotation, howFuther, customVectorDirection, lenght, customDirection, showVectorLabel);	
 		}
 
 		#endregion
 
 		#region Slerp + InterpolateQuaternion
 
-		public static void Slerp (Vector3 origin, Quaternion startRotation, Quaternion endRotation, 
+		public static void Slerp (Vector3 origin, Quaternion startRotation, Quaternion endRotation, float t,
 		                          BaseVectorDirection builtinDirection = default(BaseVectorDirection), 
 		                          float lenght = lenght6, bool showVectorLabel = !default(bool))
 		{
 			Vector3 direction = ColorsAndDirections.GetBaseDirection (builtinDirection);
-			InterpolateQuaternions (Quaternion.Slerp, origin, startRotation, endRotation, builtinDirection, lenght, direction, showVectorLabel);
+            InterpolateQuaternionsForLerp(Quaternion.Slerp, origin, startRotation, endRotation,t, builtinDirection, lenght, direction, showVectorLabel);
 		}
 
-		public static void Slerp (Vector3 origin, Quaternion startRotation, Quaternion endRotation, 
+        public static void Slerp(Vector3 origin, Quaternion startRotation, Quaternion endRotation, float t,
 		                          Vector3 customDirection, float halfAxisLenght = 3, bool showVectorLabel = !default(bool))
 		{
-			InterpolateQuaternions (Quaternion.Slerp, origin, startRotation, endRotation, customVectorDirection, halfAxisLenght, customDirection, showVectorLabel);
+            InterpolateQuaternionsForLerp(Quaternion.Slerp, origin, startRotation, endRotation,t, customVectorDirection, halfAxisLenght, customDirection, showVectorLabel);
 		}
 
-		static void Slerp (Vector3 origin, Quaternion startRotation, Quaternion endRotation, 
+		static void Slerp (Vector3 origin, Quaternion startRotation, Quaternion endRotation, float t,
 		                   BaseVectorDirection builtinDirection, 
 		                   float lenght, Vector3 customDirection, bool showVectorLabel = !default(bool), string name1 = "", string name2 = "")
-		{		
-			InterpolateQuaternions (Quaternion.Slerp, origin, startRotation, endRotation, builtinDirection, lenght, customDirection, showVectorLabel, name1, name2);
+		{
+            InterpolateQuaternionsForLerp(Quaternion.Slerp, origin, startRotation, endRotation,t, builtinDirection, lenght, customDirection, showVectorLabel, name1, name2);
 		}
 
 		static void InterpolateQuaternions (System.Func<Quaternion,Quaternion,float,Quaternion> func, Vector3 origin, Quaternion startRotation, Quaternion endRotation, 
@@ -352,7 +368,45 @@ namespace UnityBerserkersGizmos
 			;
 		}
 
-		static void DrawDotsConnectingQuaternions (System.Func<Quaternion, Quaternion, float, Quaternion> func, Vector3 origin, Quaternion startRotation, Quaternion endRotation, float lenght, Vector3 direction, int iterations, Color startColor, Color endColor)
+
+        static void InterpolateQuaternionsForLerp(System.Func<Quaternion, Quaternion, float, Quaternion> func, Vector3 origin, Quaternion startRotation, Quaternion endRotation, float t,
+                                            BaseVectorDirection builtinDirection = default(BaseVectorDirection),
+                                            float lenght = lenght6, Vector3 direction = default(Vector3), bool showVectorLabel = default(bool), string name1 = "", string name2 = "")
+        {
+            Color temp = Gizmos.color;
+            int iterations = 100;
+            direction = (direction == Vector3.zero) ? Vector3.right : direction.normalized;
+            Color startColor = ColorsAndDirections.GetColors(builtinDirection)[0];
+            Color endColor = ColorsAndDirections.GetColors(builtinDirection)[1];
+            Quaternion middleRotation = func(startRotation, endRotation, t);
+
+
+            DrawQuaternion(origin, startRotation, startColor, lenght, direction, false, "a:");
+            DrawQuaternion(origin, middleRotation, Color.magenta, lenght, direction, false, "Interpolated for t = "+ System.Math.Round(t,2)+" :");
+            DrawQuaternion(origin, endRotation, endColor, lenght, direction, false, "b:");
+            DrawDotsConnectingQuaternions(func, origin, startRotation, middleRotation, lenght, direction, iterations, Color.magenta, Color.magenta);
+            DrawDotsConnectingQuaternions(func, origin, middleRotation, endRotation, lenght, direction, iterations, startColor, endColor);
+
+            Gizmos.color = temp;
+            ;
+        }
+
+        private static string AddNameAndEulerAngles(string name,Quaternion rotation, bool showVectorLabel)
+        {
+            if (!showVectorLabel)
+            {
+                return null;
+            }
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            string anglesOrVector = "";// "({0}, {1}, {2})"; //({0}\xB0, {1}\xB0, {2}\xB0)";
+            int digits = 0;
+            Vector3 tempPositionOrEulerAngles = rotation.eulerAngles;
+            sb.AppendFormat(name + "("+ anglesOrVector, System.Math.Round(tempPositionOrEulerAngles.x, digits),
+                System.Math.Round(tempPositionOrEulerAngles.y, digits), System.Math.Round(tempPositionOrEulerAngles.z, digits));
+            return sb.ToString();
+        }
+
+        static void DrawDotsConnectingQuaternions (System.Func<Quaternion, Quaternion, float, Quaternion> func, Vector3 origin, Quaternion startRotation, Quaternion endRotation, float lenght, Vector3 direction, int iterations, Color startColor, Color endColor)
 		{
 			List<Quaternion> points = new List<Quaternion> (iterations);
 			List<Color> colors = new List<Color> (iterations);

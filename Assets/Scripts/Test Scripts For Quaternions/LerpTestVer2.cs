@@ -1,22 +1,4 @@
-﻿/* MIT License
-Copyright (c) 2017 Uvi Vagabond, UnityBerserkers
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-*/
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityBerserkersGizmos;
@@ -24,38 +6,83 @@ using UnityBerserkersGizmos;
 public class LerpTestVer2 : MonoBehaviour
 {
 	[Header ("SHOWING CHANGE OF ROTATION")][Space (11)]
+    [Header("Press Space to start lerping")]
+    [Header("Press R to reset lerp")]
+    [Space(11)]
+    [Header ("Quaternions in form of euler angle")]
+    [SerializeField] Vector3 start = Vector3.right;
+    [SerializeField] Vector3 end = Vector3.up;
+    [Space(11)]
 
-	[Header ("Origin of vectors")]
-	[SerializeField]Vector3 origin = Vector3.zero;
-	[Header ("Quaternions in form of euler angle")]
-	[SerializeField]Vector3 end = Vector3.up;
+    [Range(1, 20)] [SerializeField] float lerpTime=5;
+    
+    void Update ()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && !isRotating)
+        {
+            Quaternion startRotation = Quaternion.Euler(start);
+            Quaternion endRotation = Quaternion.Euler(end);
 
-	[Space (22)][Header ("Which version of method")]
-	[SerializeField] bool useBuiltinDirection;
-	[Space (5)][SerializeField]BaseVectorDirection builtinDirection;
-	[SerializeField]Vector3 customDirectionn = Vector3.right;
+            IEnumerator lerp = Lerp(startRotation, endRotation, lerpTime);
 
-	void Update ()
+            StartCoroutine(lerp);
+
+            isRotating = true;
+        }
+
+        // when we press R we set cube to start rotation
+        ResetLerpExample();
+
+        UpdateTimer();
+    }
+
+   
+    public IEnumerator Lerp( Quaternion startRotation, Quaternion endRotation, float lerpTime)
+    {
+        float currentTime = 0;
+        float percentage = 0;
+
+        while (currentTime < lerpTime)
+        {
+            currentTime += Time.deltaTime;
+            percentage = currentTime / lerpTime;
+            transform.rotation = Quaternion.Lerp(startRotation, endRotation, percentage);
+            yield return null;
+        }
+    }
+
+
+
+
+
+    private void ResetLerpExample()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            transform.rotation = Quaternion.Euler(start);
+            isRotating = false;
+            timeCount = 0;
+        }
+    }
+
+    private void UpdateTimer()
+    {
+        if (isRotating)
+        {
+            timeCount += Time.deltaTime;
+        }
+    }
+
+
+    float timeCount = 0.0f;
+    bool isRotating = false;
+
+    void OnDrawGizmos ()
 	{
-		// when we press O we start lerping cube
+        Quaternion startQ = Quaternion.Euler(start);
+        Quaternion endQ = Quaternion.Euler(end);      
 
-		if (Input.GetKeyDown (KeyCode.O)) {
-			Quaternion startQ = transform.rotation;
-			Quaternion endQ =	Quaternion.Euler (end);
-
-			IEnumerator lerp = QuaternionCoroutines.Lerp (transform, startQ, endQ, 5);
-			StartCoroutine (lerp);
-		}	
-	}
-
-	void OnDrawGizmos ()
-	{
-		Quaternion startQ = transform.rotation;
-		Quaternion endQ = Quaternion.Euler (end);
-		if (useBuiltinDirection) {
-			GizmosForQuaternion.Lerp (origin, startQ, endQ, builtinDirection, 6f);
-		} else {
-			GizmosForQuaternion.Lerp (origin, startQ, endQ, customDirectionn, 6f);
-		}
-	}
+        GizmosForQuaternion.Lerp(Vector3.zero, startQ, endQ, Mathf.Clamp(timeCount/ lerpTime,0,1) , BaseVectorDirection.right, 6f);
+    }
+	
 }

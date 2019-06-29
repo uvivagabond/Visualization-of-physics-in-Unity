@@ -7,7 +7,10 @@ using UnityEngine;
 public class EulerTest : MonoBehaviour
 {
   public  Vector3 eulerAngles;
-  public  Quaternion quaternionCreatedFromEulerAngles=Quaternion.identity;
+
+    [Space(33)]
+    [Header("Created quaternion ")]
+    public  Quaternion quaternionCreatedFromEulerAngles=Quaternion.identity;
 
     void Update()
     {
